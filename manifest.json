@@ -1,0 +1,15 @@
+{
+  "name": "ប្រព័ន្ធគ្រប់គ្រងរឿងក្ដី",
+  "short_name": "Case Manager",
+  "description": "ប្រព័ន្ធគ្រប់គ្រងរឿងក្ដីសម្រាប់មេធាវី",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1e3a8a",
+  "theme_color": "#1e3a8a",
+  "lang": "km",
+  "icons": [
+    { "src": "icon.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
