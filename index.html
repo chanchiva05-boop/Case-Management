@@ -149,26 +149,26 @@ tailwind.config = {
   }
   @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   
-  /* ============ HEADER MOBILE OPTIMIZATION ============ */
-  #pageTitle {
-    line-height: 1.3;
-    word-break: break-word;
-  }
-  #pageSubtitle {
+  /* ============ HEADER STYLES ============ */
+  #pageTitle, #pageSubtitle {
     line-height: 1.3;
     word-break: break-word;
   }
   
-  /* អេក្រង់តូចខ្លាំង (≤ 400px) */
+  /* User Name Badge — ស្អាត */
+  #headerName {
+    font-family: 'Kantumruy Pro', 'Inter', sans-serif;
+    letter-spacing: -0.01em;
+  }
+  
   @media (max-width: 400px) {
     #pageTitle { font-size: 15px !important; }
     #pageSubtitle { font-size: 10.5px !important; }
   }
   
-  /* អេក្រង់តូចខ្លាំងពិសេស (≤ 340px) */
   @media (max-width: 340px) {
     #pageTitle { font-size: 14px !important; }
-    #headerName { display: none !important; }
+    #headerName { max-width: 70px !important; }
   }
 </style>
 </head>
@@ -344,13 +344,6 @@ tailwind.config = {
     </nav>
 
     <div class="p-4 border-t border-white/10 safe-bottom space-y-2">
-      <div class="flex items-center gap-3 px-3 py-2 mb-2">
-        <div id="userAvatar" class="w-9 h-9 bg-gradient-to-br from-brand-500 to-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm shrink-0">A</div>
-        <div class="min-w-0 flex-1">
-          <p id="userName" class="text-sm font-medium truncate">Admin</p>
-          <p id="userRole" class="text-[10px] text-brand-300">អ្នកគ្រប់គ្រង</p>
-        </div>
-      </div>
       <button onclick="installApp()" id="installBtn" class="hidden w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white py-2.5 rounded-xl text-sm font-medium shadow-lg transition-all">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M6 15l6 6 6-6M5 21h14"/></svg>
         ដំឡើង App
@@ -368,9 +361,9 @@ tailwind.config = {
 
   <main class="flex-1 overflow-y-auto scroll-smooth bg-slate-50 dark:bg-slate-950 flex flex-col min-w-0">
     
-    <!-- ============ HEADER (Mobile Optimized) ============ -->
+    <!-- ============ HEADER (Clean — គ្មាន Avatar) ============ -->
     <header class="glass sticky top-0 z-20 border-b border-slate-200/60 dark:border-slate-800/60 safe-top flex-shrink-0">
-      <div class="px-3 md:px-6 py-2.5 md:py-3 flex justify-between items-center gap-2">
+      <div class="px-3 md:px-6 py-2.5 md:py-3 flex justify-between items-center gap-3">
         
         <!-- Left: Menu + Title -->
         <div class="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
@@ -383,11 +376,17 @@ tailwind.config = {
           </div>
         </div>
 
-        <!-- Right: User Badge -->
-        <div class="flex items-center gap-1.5 pl-1 pr-2 md:pr-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full flex-shrink-0 max-w-[150px] md:max-w-none">
-          <div id="headerAvatar" class="w-7 h-7 bg-gradient-to-br from-brand-500 to-purple-600 text-white rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0">A</div>
-          <span id="headerName" class="text-xs md:text-sm font-medium truncate">Admin</span>
-        </div>
+        <!-- Right: User Name Badge (គ្មាន Avatar) -->
+        <button onclick="showPage('settings')" 
+                class="flex-shrink-0 max-w-[140px] md:max-w-[240px] px-3.5 md:px-5 py-2 rounded-full
+                       bg-gradient-to-r from-brand-50 to-purple-50 
+                       dark:from-brand-950 dark:to-purple-950
+                       border border-brand-100 dark:border-brand-900/50
+                       hover:shadow-md hover:shadow-brand-500/10
+                       active:scale-95
+                       transition-all duration-200">
+          <span id="headerName" class="block text-xs md:text-sm font-semibold gradient-text truncate">Admin</span>
+        </button>
       </div>
     </header>
 
@@ -1204,18 +1203,10 @@ function loadUser() {
     const stored = localStorage.getItem('user') || sessionStorage.getItem('user');
     if (stored) {
       currentUser = JSON.parse(stored);
-      const initial = currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'A';
       const fullName = currentUser.name || 'Admin';
       
-      // Sidebar
-      document.getElementById('userAvatar').textContent = initial;
-      document.getElementById('userName').textContent = fullName;
-      document.getElementById('userRole').textContent = 'អ្នកគ្រប់គ្រង';
-      
-      // Header — បង្ហាញឈ្មោះពេញ (កាត់បើវែងពេក)
-      document.getElementById('headerAvatar').textContent = initial;
-      const headerName = document.getElementById('headerName');
-      headerName.textContent = fullName;
+      // Header — បង្ហាញតែឈ្មោះ (គ្មាន Avatar)
+      document.getElementById('headerName').textContent = fullName;
       
       // Settings
       document.getElementById('settingsName').textContent = fullName;
