@@ -149,44 +149,32 @@ tailwind.config = {
   }
   @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   
-  /* ============ NAME DISPLAY FIX ============ */
-  #userName {
+  /* ============ HEADER MOBILE OPTIMIZATION ============ */
+  #pageTitle {
+    line-height: 1.3;
     word-break: break-word;
-    overflow-wrap: anywhere;
-    line-height: 1.35;
-    max-height: 2.7em;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+  }
+  #pageSubtitle {
+    line-height: 1.3;
+    word-break: break-word;
   }
   
-  #headerName {
-    max-width: 160px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  /* អេក្រង់តូចខ្លាំង (≤ 400px) */
+  @media (max-width: 400px) {
+    #pageTitle { font-size: 15px !important; }
+    #pageSubtitle { font-size: 10.5px !important; }
   }
   
-  @media (min-width: 768px) {
-    #headerName { max-width: 220px; }
-  }
-  @media (min-width: 1024px) {
-    #headerName { max-width: 280px; }
-  }
-  
-  #userName, #headerName {
-    transition: all 0.2s ease;
-  }
-  
-  #userAvatar, #headerAvatar {
-    aspect-ratio: 1 / 1;
+  /* អេក្រង់តូចខ្លាំងពិសេស (≤ 340px) */
+  @media (max-width: 340px) {
+    #pageTitle { font-size: 14px !important; }
+    #headerName { display: none !important; }
   }
 </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
 
-<!-- ============ SETUP SCREEN ============ -->
+<!-- ============ SETUP SCREEN (First Time) ============ -->
 <div id="setupScreen" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4 safe-top safe-bottom overflow-hidden">
   <div class="absolute inset-0 bg-gradient-to-br from-brand-950 via-brand-900 to-brand-800"></div>
   <div class="absolute inset-0 opacity-30" style="background-image: radial-gradient(circle at 20% 30%, rgba(139,92,246,0.4), transparent 40%), radial-gradient(circle at 80% 70%, rgba(53,99,255,0.5), transparent 40%);"></div>
@@ -208,7 +196,7 @@ tailwind.config = {
         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">ឈ្មោះពេញ <span class="text-red-500">*</span></label>
         <div class="relative">
           <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          <input id="setupName" type="text" placeholder="ឧ. លោក សុខ វិបុល" autocomplete="name" maxlength="60" class="w-full pl-11 pr-4 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
+          <input id="setupName" type="text" placeholder="ឧ. លោក សុខ វិបុល" autocomplete="name" class="w-full pl-11 pr-4 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
         </div>
       </div>
       <div>
@@ -292,7 +280,7 @@ tailwind.config = {
   <aside id="sidebar" class="w-72 bg-brand-950 text-white flex flex-col fixed lg:relative h-full z-40 safe-top shadow-2xl">
     <div class="p-5 border-b border-white/10 flex justify-between items-center">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 bg-gradient-to-br from-brand-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shrink-0">
+        <div class="w-10 h-10 bg-gradient-to-br from-brand-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 3v18M5 8h14M5 8l-3 8a3 3 0 0 0 6 0L5 8zM19 8l-3 8a3 3 0 0 0 6 0l-3-8z"/>
           </svg>
@@ -356,16 +344,13 @@ tailwind.config = {
     </nav>
 
     <div class="p-4 border-t border-white/10 safe-bottom space-y-2">
-      <!-- ============ USER INFO CARD ============ -->
-      <div class="flex items-center gap-3 px-3 py-3 mb-2 bg-white/5 rounded-xl border border-white/10">
-        <div id="userAvatar" class="w-11 h-11 bg-gradient-to-br from-brand-500 to-purple-600 text-white rounded-xl flex items-center justify-center font-bold text-base shrink-0 shadow-lg">A</div>
+      <div class="flex items-center gap-3 px-3 py-2 mb-2">
+        <div id="userAvatar" class="w-9 h-9 bg-gradient-to-br from-brand-500 to-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm shrink-0">A</div>
         <div class="min-w-0 flex-1">
-          <p class="text-[10px] uppercase tracking-widest text-brand-400 font-semibold mb-0.5">គណនី</p>
-          <p id="userName" class="text-sm font-semibold leading-tight">Admin</p>
-          <p id="userRole" class="text-[10px] text-brand-300 mt-0.5">អ្នកគ្រប់គ្រង</p>
+          <p id="userName" class="text-sm font-medium truncate">Admin</p>
+          <p id="userRole" class="text-[10px] text-brand-300">អ្នកគ្រប់គ្រង</p>
         </div>
       </div>
-      
       <button onclick="installApp()" id="installBtn" class="hidden w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white py-2.5 rounded-xl text-sm font-medium shadow-lg transition-all">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M6 15l6 6 6-6M5 21h14"/></svg>
         ដំឡើង App
@@ -381,30 +366,32 @@ tailwind.config = {
     </div>
   </aside>
 
-  <main class="flex-1 overflow-y-auto scroll-smooth bg-slate-50 dark:bg-slate-950">
+  <main class="flex-1 overflow-y-auto scroll-smooth bg-slate-50 dark:bg-slate-950 flex flex-col min-w-0">
     
-    <header class="glass sticky top-0 z-20 border-b border-slate-200/60 dark:border-slate-800/60 safe-top">
-      <div class="px-4 md:px-6 py-3 flex justify-between items-center gap-3">
-        <div class="flex items-center gap-3 min-w-0 flex-1">
-          <button onclick="toggleSidebar()" class="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shrink-0">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    <!-- ============ HEADER (Mobile Optimized) ============ -->
+    <header class="glass sticky top-0 z-20 border-b border-slate-200/60 dark:border-slate-800/60 safe-top flex-shrink-0">
+      <div class="px-3 md:px-6 py-2.5 md:py-3 flex justify-between items-center gap-2">
+        
+        <!-- Left: Menu + Title -->
+        <div class="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+          <button onclick="toggleSidebar()" class="lg:hidden w-9 h-9 flex-shrink-0 flex items-center justify-center rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
           </button>
-          <div class="min-w-0">
-            <h2 id="pageTitle" class="text-lg md:text-xl font-bold tracking-tight truncate">ផ្ទាំងគ្រប់គ្រង</h2>
-            <p id="pageSubtitle" class="hidden md:block text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">ទិដ្ឋភាពទូទៅនៃរឿងក្ដីរបស់អ្នក</p>
+          <div class="min-w-0 flex-1">
+            <h2 id="pageTitle" class="text-base md:text-xl font-bold tracking-tight truncate">ផ្ទាំងគ្រប់គ្រង</h2>
+            <p id="pageSubtitle" class="text-[11px] md:text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">ទិដ្ឋភាពទូទៅនៃរឿងក្ដីរបស់អ្នក</p>
           </div>
         </div>
-        <div class="flex items-center gap-2 shrink-0">
-          <!-- ============ HEADER USER INFO ============ -->
-          <div class="flex items-center gap-2 pl-1.5 pr-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full">
-            <div id="headerAvatar" class="w-7 h-7 bg-gradient-to-br from-brand-500 to-purple-600 text-white rounded-full flex items-center justify-center font-bold text-xs shrink-0">A</div>
-            <span id="headerName" class="hidden md:inline font-medium">Admin</span>
-          </div>
+
+        <!-- Right: User Badge -->
+        <div class="flex items-center gap-1.5 pl-1 pr-2 md:pr-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full flex-shrink-0 max-w-[150px] md:max-w-none">
+          <div id="headerAvatar" class="w-7 h-7 bg-gradient-to-br from-brand-500 to-purple-600 text-white rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0">A</div>
+          <span id="headerName" class="text-xs md:text-sm font-medium truncate">Admin</span>
         </div>
       </div>
     </header>
 
-    <div class="p-4 md:p-6 pb-24">
+    <div class="p-4 md:p-6 pb-24 flex-1">
 
       <!-- DASHBOARD -->
       <section id="page-dashboard" class="page animate-fade-in">
@@ -690,12 +677,9 @@ tailwind.config = {
             </div>
           </div>
           <div class="grid grid-cols-1 gap-3 text-sm mb-3">
-            <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg flex items-start gap-3">
-              <div id="settingsAvatar" class="w-12 h-12 bg-gradient-to-br from-brand-500 to-purple-600 text-white rounded-xl flex items-center justify-center font-bold text-lg shrink-0">A</div>
-              <div class="min-w-0 flex-1">
-                <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">ឈ្មោះពេញ</p>
-                <p id="settingsName" class="font-semibold break-words leading-snug">-</p>
-              </div>
+            <div class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">ឈ្មោះពេញ</p>
+              <p id="settingsName" class="font-semibold">-</p>
             </div>
           </div>
           <div class="flex flex-col sm:flex-row gap-2">
@@ -930,7 +914,7 @@ tailwind.config = {
     <div class="p-5 space-y-4">
       <div>
         <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">ឈ្មោះពេញថ្មី</label>
-        <input id="newName" type="text" maxlength="60" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
+        <input id="newName" type="text" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
       </div>
     </div>
     <div class="sticky bottom-0 bg-white dark:bg-slate-900 px-5 py-4 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3 safe-bottom">
@@ -1055,11 +1039,6 @@ async function handleSetup() {
     err.classList.remove('hidden');
     return;
   }
-  if (name.length > 60) {
-    err.textContent = '⚠️ ឈ្មោះពេញវែងពេក (ត្រូវ ≤ ៦០ តួ)';
-    err.classList.remove('hidden');
-    return;
-  }
   if (!pass) {
     err.textContent = '⚠️ សូមបញ្ចូលលេខសម្ងាត់';
     err.classList.remove('hidden');
@@ -1093,7 +1072,8 @@ function showLogin() {
   const auth = DB.get('auth', null);
   const greeting = document.getElementById('loginGreeting');
   if (auth && auth.name) {
-    greeting.textContent = `សូមស្វាគមន៍ត្រឡប់មកវិញ, ${auth.name}`;
+    const firstName = auth.name.split(' ').slice(-1)[0] || auth.name;
+    greeting.textContent = `សូមស្វាគមន៍ត្រឡប់មកវិញ, ${firstName}`;
   }
   document.getElementById('loginScreen').classList.remove('hidden');
   document.getElementById('loginPass').value = '';
@@ -1224,28 +1204,21 @@ function loadUser() {
     const stored = localStorage.getItem('user') || sessionStorage.getItem('user');
     if (stored) {
       currentUser = JSON.parse(stored);
-      const name = currentUser.name || 'Admin';
-      const initial = name.charAt(0).toUpperCase();
+      const initial = currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'A';
+      const fullName = currentUser.name || 'Admin';
       
-      // Update all avatar and name fields
-      ['userAvatar', 'headerAvatar', 'settingsAvatar'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = initial;
-      });
+      // Sidebar
+      document.getElementById('userAvatar').textContent = initial;
+      document.getElementById('userName').textContent = fullName;
+      document.getElementById('userRole').textContent = 'អ្នកគ្រប់គ្រង';
       
-      ['userName', 'headerName', 'settingsName'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = name;
-      });
-      
-      // Auto-adjust header font size based on name length
+      // Header — បង្ហាញឈ្មោះពេញ (កាត់បើវែងពេក)
+      document.getElementById('headerAvatar').textContent = initial;
       const headerName = document.getElementById('headerName');
-      if (headerName) {
-        const len = name.length;
-        if (len > 25) headerName.style.fontSize = '11px';
-        else if (len > 18) headerName.style.fontSize = '12px';
-        else headerName.style.fontSize = '';
-      }
+      headerName.textContent = fullName;
+      
+      // Settings
+      document.getElementById('settingsName').textContent = fullName;
     }
   } catch (e) {}
 }
@@ -1531,7 +1504,7 @@ function renderClients() {
           <div class="flex items-center gap-3 mb-4">
             <div class="w-12 h-12 bg-gradient-to-br from-brand-500 to-purple-600 text-white rounded-2xl flex items-center justify-center font-bold shrink-0">${initials}</div>
             <div class="min-w-0 flex-1">
-              <p class="font-bold break-words">${c.name}</p>
+              <p class="font-bold truncate">${c.name}</p>
               <p class="text-xs text-slate-500 dark:text-slate-400">${caseCount} រឿងក្ដី</p>
             </div>
           </div>
@@ -1707,7 +1680,6 @@ function saveName() {
   const newName = document.getElementById('newName').value.trim();
   if (!newName) return toast('⚠️ សូមបំពេញឈ្មោះ');
   if (newName.length < 2) return toast('⚠️ ឈ្មោះត្រូវមានយ៉ាងតិច ២ តួ');
-  if (newName.length > 60) return toast('⚠️ ឈ្មោះវែងពេក (ត្រូវ ≤ ៦០ តួ)');
   
   const auth = DB.get('auth', null);
   if (!auth) return;
