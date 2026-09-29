@@ -2,2607 +2,1488 @@
 <html lang="km">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF KH</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfjs-dist/3.11.174/pdf.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.2/confetti.browser.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Case Manager">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>⚖️ Case Manager Pro</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      fontFamily: {
+        khmer: ['"Kantumruy Pro"', 'sans-serif'],
+        sans: ['Inter', 'sans-serif']
+      },
+      colors: {
+        brand: {
+          50: '#eef4ff', 100: '#d9e5ff', 200: '#bcd1ff', 300: '#8eb4ff',
+          400: '#598cff', 500: '#3563ff', 600: '#1f42f5', 700: '#1830d8',
+          800: '#1a2aae', 900: '#1c2b89', 950: '#141a4f'
+        }
+      },
+      boxShadow: {
+        'card': '0 1px 3px rgba(0,0,0,0.04), 0 4px 16px -4px rgba(0,0,0,0.06)'
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.3s ease',
+        'slide-up': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+        'pulse-soft': 'pulseSoft 2s ease-in-out infinite'
+      },
+      keyframes: {
+        fadeIn: { '0%': { opacity: 0 }, '100%': { opacity: 1 } },
+        slideUp: { '0%': { opacity: 0, transform: 'translateY(20px)' }, '100%': { opacity: 1, transform: 'translateY(0)' } },
+        pulseSoft: { '0%,100%': { opacity: 1 }, '50%': { opacity: 0.6 } }
+      }
+    }
+  }
+}
+</script>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --primary: #6366f1;
-    --primary-dark: #4f46e5;
-    --secondary: #ec4899;
-    --success: #10b981;
-    --success-dark: #059669;
-    --danger: #ef4444;
-    --merge: #ef4444;
-    --split: #06b6d4;
-    --split-dark: #0891b2;
-    --share: #3b82f6;
-    --accent: #f59e0b;
-
-    --bg-body: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-    --bg-card: #ffffff;
-    --bg-soft: #f8fafc;
-    --bg-softer: #fafbff;
-    --bg-input: #ffffff;
-    --bg-tab: #f8fafc;
-    --bg-tab-hover: #eef2ff;
-    --bg-action: #fafbfc;
-    --bg-action-hover: #eef2ff;
-    --bg-danger-hover: #fee2e2;
-    --bg-hint: #fef3c7;
-    --bg-result: linear-gradient(135deg, #f0fdf4, #ecfdf5);
-    --bg-info: linear-gradient(135deg, #ecfeff, #e0f2fe);
-    --bg-skip: #fef3c7;
-    --bg-preview: #f8fafc;
-
-    --text-dark: #1e293b;
-    --text-mid: #475569;
-    --text-light: #94a3b8;
-    --border: #e2e8f0;
-    --radius: 16px;
-    --radius-sm: 10px;
-  }
-
-  body.dark {
-    --bg-body: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
-    --bg-card: #1e293b;
-    --bg-soft: #0f172a;
-    --bg-softer: #172033;
-    --bg-input: #0f172a;
-    --bg-tab: #0f172a;
-    --bg-tab-hover: #312e81;
-    --bg-action: #172033;
-    --bg-action-hover: #312e81;
-    --bg-danger-hover: #7f1d1d;
-    --bg-hint: #422006;
-    --bg-result: linear-gradient(135deg, #052e16, #064e3b);
-    --bg-info: linear-gradient(135deg, #083344, #164e63);
-    --bg-skip: #422006;
-    --bg-preview: #0f172a;
-    --text-dark: #f1f5f9;
-    --text-mid: #cbd5e1;
-    --text-light: #94a3b8;
-    --border: #334155;
-  }
-
+  * { -webkit-tap-highlight-color: transparent; }
   html { scroll-behavior: smooth; }
-  body {
-    font-family: 'Kantumruy Pro', 'Khmer OS', 'Khmer OS Battambang', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-    background: var(--bg-body);
-    background-attachment: fixed;
-    min-height: 100vh;
-    padding: 24px 16px;
+  body { 
+    font-family: 'Kantumruy Pro', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    overscroll-behavior-y: contain;
     -webkit-font-smoothing: antialiased;
-    -webkit-user-select: none;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    color: var(--text-dark);
-    transition: background 0.4s, color 0.3s;
   }
-
-  .top-bar {
-    max-width: 820px;
-    margin: 0 auto 12px;
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
+  .safe-top { padding-top: env(safe-area-inset-top); }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+  .dark ::-webkit-scrollbar-thumb { background: #475569; }
+  
+  .glass {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+  }
+  .dark .glass { background: rgba(15, 23, 42, 0.72); }
+  
+  @media (max-width: 1023px) {
+    #sidebar { transform: translateX(-100%); transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+    #sidebar.open { transform: translateX(0); }
+  }
+  @media (max-width: 767px) {
+    .desktop-table { display: none !important; }
+    .mobile-cards { display: block !important; }
+  }
+  @media (min-width: 768px) {
+    .desktop-table { display: block !important; }
+    .mobile-cards { display: none !important; }
   }
-  .top-btn {
-    width: 44px; height: 44px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    color: #fff; font-size: 18px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.2s, transform 0.15s;
-  }
-  .top-btn:hover { background: rgba(255, 255, 255, 0.4); }
-  .top-btn:active { transform: scale(0.94); }
-  .top-btn .lang-label { font-size: 12px; font-weight: 700; font-family: inherit; }
-
-  .container {
-    background: var(--bg-card);
-    border-radius: 24px;
-    padding: 0;
-    max-width: 820px;
-    margin: 0 auto;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-    overflow: hidden;
-    transition: background 0.3s;
-  }
-
-  .header { text-align: center; padding: 32px 32px 20px; }
-  .header .icon-badge {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 68px; height: 68px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    border-radius: 20px; font-size: 32px;
-    margin-bottom: 14px;
-    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
-  }
-  .header h1 { color: var(--text-dark); font-size: 24px; font-weight: 700; margin-bottom: 6px; }
-  .header p { color: var(--text-light); font-size: 13px; }
-
-  .tabs {
-    display: flex; gap: 6px;
-    padding: 0 32px 24px;
-    border-bottom: 1px solid var(--border);
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .tabs::-webkit-scrollbar { display: none; }
-  .tab {
-    flex: 1; min-width: 100px;
-    padding: 12px 8px;
-    background: var(--bg-tab);
-    border: 2px solid transparent;
-    border-radius: 12px;
-    font-family: inherit; font-size: 13px; font-weight: 600;
-    color: var(--text-mid); cursor: pointer;
-    display: flex; flex-direction: column; align-items: center; gap: 4px;
-    transition: background 0.2s, color 0.2s, transform 0.15s;
-  }
-  .tab:hover { background: var(--bg-tab-hover); color: var(--primary); }
-  .tab:active { transform: scale(0.97); }
-  .tab .tab-icon { font-size: 20px; }
-  .tab.active {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: #fff;
-    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.3);
-  }
-  .tab.active[data-tab="merge"] {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3);
-  }
-  .tab.active[data-tab="split"] {
-    background: linear-gradient(135deg, var(--split), var(--split-dark));
-    box-shadow: 0 6px 16px rgba(6, 182, 212, 0.3);
-  }
-  .tab.active[data-tab="history"] {
-    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-    box-shadow: 0 6px 16px rgba(139, 92, 246, 0.3);
-  }
-
-  .panel { padding: 28px 32px 32px; display: none; }
-  .panel.active {
-    display: block;
-    animation: panelIn 0.3s ease;
-  }
-  @keyframes panelIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  .form-group { margin-bottom: 22px; }
-  .form-group label {
-    display: flex; align-items: center; gap: 8px;
-    margin-bottom: 10px;
-    color: var(--text-mid); font-weight: 600; font-size: 14px;
-  }
-  .form-group label::before {
-    content: ''; width: 4px; height: 16px;
-    background: linear-gradient(180deg, var(--primary), var(--secondary));
-    border-radius: 4px;
-  }
-
-  .input-wrap { position: relative; }
-  .input-wrap::after {
-    content: '📝';
-    position: absolute; right: 16px; top: 50%;
-    transform: translateY(-50%);
-    font-size: 18px; pointer-events: none; opacity: 0.5;
-  }
-
-  input[type="text"], input[type="number"] {
-    width: 100%;
-    padding: 14px 48px 14px 16px;
-    border: 2px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-size: 16px; font-family: inherit;
-    background: var(--bg-input); color: var(--text-dark);
-    transition: border-color 0.2s, box-shadow 0.2s;
-    -webkit-user-select: text; user-select: text;
-    font-weight: 500;
-  }
-  input[type="text"]:focus, input[type="number"]:focus {
-    outline: none; border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
-  }
-  input::placeholder { color: var(--text-light); font-weight: 400; }
-
-  .file-drop {
-    position: relative;
-    border: 2px dashed var(--border);
-    border-radius: var(--radius);
-    padding: 32px 20px;
-    text-align: center;
-    cursor: pointer;
-    background: var(--bg-softer);
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .file-drop:hover { border-color: var(--primary); background: var(--bg-tab-hover); }
-  .file-drop.dragover {
-    border-color: var(--primary);
-    background: var(--bg-tab-hover);
-  }
-  .file-drop input { display: none; }
-  .file-drop .drop-icon {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 60px; height: 60px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    border-radius: 50%; font-size: 28px;
-    margin-bottom: 12px;
-    color: #fff;
-    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
-  }
-  .file-drop .drop-icon.merge {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
-  }
-  .file-drop .drop-icon.split {
-    background: linear-gradient(135deg, var(--split), var(--split-dark));
-    box-shadow: 0 8px 20px rgba(6, 182, 212, 0.3);
-  }
-  .file-drop .drop-title { color: var(--text-dark); font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-  .file-drop .drop-sub { color: var(--text-light); font-size: 13px; }
-
-  .thumbs-header {
-    display: none;
-    justify-content: space-between; align-items: center;
-    margin-top: 20px; margin-bottom: 12px; padding: 0 4px;
-  }
-  .thumbs-header.show { display: flex; }
-  .thumbs-header .count { font-size: 13px; color: var(--text-mid); font-weight: 600; }
-  .thumbs-header .count span {
-    display: inline-flex; align-items: center; justify-content: center;
-    min-width: 22px; height: 22px; padding: 0 7px;
-    background: var(--primary); color: #fff;
-    border-radius: 11px; font-size: 12px; margin-left: 6px;
-  }
-  .thumbs-header .clear-all {
-    background: none; border: none; color: var(--danger);
-    font-size: 13px; cursor: pointer;
-    padding: 4px 10px; border-radius: 6px;
-    font-weight: 600; font-family: inherit;
-    transition: background 0.15s;
-  }
-  .thumbs-header .clear-all:hover { background: var(--bg-danger-hover); }
-
-  .thumbs {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 14px;
-  }
-  .thumb {
-    position: relative;
-    border: 2px solid var(--border);
-    border-radius: var(--radius-sm);
-    overflow: hidden;
-    background: var(--bg-card);
-    cursor: grab;
-    transition: border-color 0.15s;
-    -webkit-user-select: none;
-    user-select: none;
-    -webkit-touch-callout: none;
-  }
-  .thumb:active { cursor: grabbing; }
-  .thumb:hover { border-color: var(--primary); }
-  .thumb.dragging { opacity: 0.4; border-color: var(--primary); border-style: dashed; }
-  .thumb.drag-over { border-color: var(--secondary); border-style: dashed; background: rgba(236, 72, 153, 0.08); }
-  .thumb .img-wrap {
-    width: 100%; height: 120px;
-    display: flex; align-items: center; justify-content: center;
-    background: var(--bg-preview);
-    overflow: hidden; pointer-events: none;
-  }
-  .thumb img { max-width: 100%; max-height: 100%; display: block; pointer-events: none; }
-  .thumb .num {
-    position: absolute; top: 8px; left: 8px;
-    background: var(--primary); color: #fff;
-    font-size: 11px; font-weight: 700;
-    min-width: 22px; height: 22px; padding: 0 6px;
-    border-radius: 11px;
-    display: flex; align-items: center; justify-content: center;
-    z-index: 2; pointer-events: none;
-  }
-  .thumb .drag-hint {
-    position: absolute; top: 8px; right: 8px;
-    background: rgba(15, 23, 42, 0.7); color: #fff;
-    font-size: 12px; width: 22px; height: 22px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    z-index: 2; pointer-events: none;
-  }
-  .thumb .actions {
-    display: flex; justify-content: space-around;
-    padding: 6px 4px; background: var(--bg-action);
-    border-top: 1px solid var(--border);
-  }
-  .thumb .actions button {
-    background: none; border: none; cursor: pointer;
-    font-size: 16px; width: 32px; height: 32px;
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s;
-    color: var(--text-mid);
-  }
-  .thumb .actions button:hover { background: var(--bg-action-hover); }
-  .thumb .actions button[data-act="del"]:hover { background: var(--bg-danger-hover); }
-
-  .pdf-list { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
-  .pdf-item {
-    position: relative;
-    display: flex; align-items: center; gap: 14px;
-    padding: 14px 16px;
-    border: 2px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: var(--bg-card);
-    cursor: grab;
-    transition: border-color 0.15s;
-    -webkit-user-select: none; user-select: none;
-  }
-  .pdf-item:active { cursor: grabbing; }
-  .pdf-item:hover { border-color: var(--primary); }
-  .pdf-item.dragging { opacity: 0.4; border-color: var(--primary); border-style: dashed; }
-  .pdf-item.drag-over { border-color: var(--secondary); border-style: dashed; background: rgba(236, 72, 153, 0.08); }
-  .pdf-item .pdf-icon {
-    flex-shrink: 0; width: 44px; height: 44px;
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px; color: #fff;
-    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.25);
-  }
-  .pdf-item .pdf-info { flex: 1; min-width: 0; }
-  .pdf-item .pdf-name {
-    font-size: 14px; font-weight: 600; color: var(--text-dark);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    margin-bottom: 3px;
-  }
-  .pdf-item .pdf-meta { font-size: 12px; color: var(--text-light); display: flex; align-items: center; gap: 8px; }
-  .pdf-item .pdf-num {
-    position: absolute; top: -6px; left: -6px;
-    background: var(--primary); color: #fff;
-    font-size: 11px; font-weight: 700;
-    min-width: 22px; height: 22px; padding: 0 6px;
-    border-radius: 11px;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 2px 6px rgba(99, 102, 241, 0.4);
-  }
-  .pdf-item .drag-handle { flex-shrink: 0; color: var(--text-light); font-size: 18px; padding: 4px; pointer-events: none; }
-  .pdf-item .remove-btn {
-    flex-shrink: 0; background: none; border: none;
-    width: 34px; height: 34px; border-radius: 8px;
-    cursor: pointer; font-size: 16px; color: var(--text-mid);
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s, color 0.15s;
-  }
-  .pdf-item .remove-btn:hover { background: var(--bg-danger-hover); color: var(--danger); }
-
-  .btn-main {
-    width: 100%; padding: 16px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: #fff; border: none; border-radius: var(--radius-sm);
-    font-size: 16px; font-weight: 700; font-family: inherit;
-    cursor: pointer; margin-top: 14px;
-    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.3);
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    transition: box-shadow 0.2s, transform 0.15s;
-  }
-  .btn-main:hover:not(:disabled) { box-shadow: 0 10px 24px rgba(99, 102, 241, 0.4); }
-  .btn-main:active:not(:disabled) { transform: scale(0.98); }
-  .btn-main:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; background: #cbd5e1; }
-  .btn-main.merge { background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3); }
-  .btn-main.merge:disabled { background: #cbd5e1; }
-  .btn-main.split { background: linear-gradient(135deg, var(--split), var(--split-dark)); box-shadow: 0 6px 16px rgba(6, 182, 212, 0.3); }
-  .btn-main.split:disabled { background: #cbd5e1; }
-  .btn-main .icon { font-size: 20px; }
-
-  .btn-reset {
-    width: 100%; padding: 15px;
-    background: var(--bg-card); color: var(--primary);
-    border: 2px solid var(--primary); border-radius: var(--radius-sm);
-    font-size: 15px; font-weight: 700; font-family: inherit;
-    cursor: pointer; margin-top: 12px;
-    display: none; align-items: center; justify-content: center; gap: 8px;
-    transition: background 0.2s, color 0.2s;
-  }
-  .btn-reset:hover { background: var(--primary); color: #fff; }
-  .btn-reset.show { display: flex; }
-  .btn-reset.split { color: var(--split); border-color: var(--split); }
-  .btn-reset.split:hover { background: var(--split); color: #fff; }
-
-  .result-card {
-    display: none; margin-top: 18px; padding: 20px;
-    background: var(--bg-result);
-    border: 2px solid #86efac;
-    border-radius: var(--radius);
-    animation: resultIn 0.3s ease;
-  }
-  .result-card.show { display: block; }
-  @keyframes resultIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .result-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-  .result-header .check-icon {
-    flex-shrink: 0; width: 46px; height: 46px;
-    background: linear-gradient(135deg, var(--success), var(--success-dark));
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 24px; color: #fff;
-    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35);
-  }
-  .result-header .result-title { flex: 1; min-width: 0; }
-  .result-header .result-title h3 { font-size: 16px; font-weight: 700; color: var(--success-dark); margin-bottom: 4px; }
-  .result-header .result-title p { font-size: 13px; color: var(--success-dark); opacity: 0.85; font-weight: 500; }
-  .result-header .result-name {
-    font-size: 13px; color: var(--success-dark); font-weight: 600;
-    background: rgba(16, 185, 129, 0.15); padding: 4px 10px;
-    border-radius: 8px; display: inline-block; margin-top: 4px;
-    max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  }
-
-  .result-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .result-btn {
-    padding: 14px 16px; border: none; border-radius: var(--radius-sm);
-    font-family: inherit; font-size: 14px; font-weight: 700;
-    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
-    transition: box-shadow 0.2s, transform 0.15s;
-  }
-  .result-btn:active { transform: scale(0.97); }
-  .result-btn .icon { font-size: 18px; }
-  .result-btn.download {
-    background: linear-gradient(135deg, var(--success), var(--success-dark));
-    color: #fff; box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35);
-  }
-  .result-btn.download:hover { box-shadow: 0 10px 24px rgba(16, 185, 129, 0.5); }
-  .result-btn.share {
-    background: var(--bg-card); color: var(--share);
-    border: 2px solid var(--share);
-  }
-  .result-btn.share:hover {
-    background: var(--share); color: #fff;
-    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
-  }
-
-  .share-menu {
-    display: none; margin-top: 12px; padding: 12px;
-    background: var(--bg-card); border: 2px solid var(--border);
-    border-radius: var(--radius-sm);
-  }
-  .share-menu.show { display: block; }
-  .share-menu .share-title {
-    font-size: 12px; font-weight: 700; color: var(--text-light);
-    text-transform: uppercase; letter-spacing: 0.5px;
-    margin-bottom: 10px; text-align: center;
-  }
-  .share-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-  .share-option {
-    display: flex; flex-direction: column; align-items: center; gap: 4px;
-    padding: 12px 6px; background: var(--bg-soft);
-    border: 1px solid var(--border); border-radius: 10px;
-    cursor: pointer; font-family: inherit; font-size: 11px;
-    font-weight: 600; color: var(--text-mid);
-    transition: background 0.15s, border-color 0.15s;
-  }
-  .share-option:hover { background: var(--bg-action-hover); border-color: var(--primary); }
-  .share-option .share-icon { font-size: 22px; line-height: 1; }
-
-  .progress-wrap { margin-top: 18px; display: none; }
-  .progress-wrap.active { display: block; }
-  .progress-bar {
-    width: 100%; height: 10px; background: var(--bg-soft);
-    border-radius: 10px; overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%; width: 0%;
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
-    transition: width 0.25s; border-radius: 10px;
-  }
-  .progress-wrap.merge-active .progress-fill { background: linear-gradient(90deg, #ef4444, #f59e0b); }
-  .progress-wrap.split-active .progress-fill { background: linear-gradient(90deg, var(--split), #22d3ee); }
-  .progress-text {
-    text-align: center; margin-top: 10px;
-    font-size: 14px; color: var(--text-mid); font-weight: 700;
-  }
-  .progress-text .pct { color: var(--primary); font-size: 16px; }
-  .progress-wrap.merge-active .progress-text .pct { color: var(--merge); }
-  .progress-wrap.split-active .progress-text .pct { color: var(--split); }
-
-  .status {
-    text-align: center; margin-top: 14px;
-    font-size: 14px; color: var(--text-mid);
-    min-height: 22px; font-weight: 500;
-  }
-  .status.success {
-    color: var(--success); font-weight: 700;
-    padding: 12px; background: rgba(16, 185, 129, 0.1);
-    border-radius: var(--radius-sm); border: 1px solid #a7f3d0;
-  }
-  .status.error { color: var(--danger); font-weight: 600; }
-
-  .hint-bar {
-    display: none; align-items: center; justify-content: center; gap: 6px;
-    margin-top: 12px; padding: 10px;
-    background: var(--bg-hint); border-radius: var(--radius-sm);
-    font-size: 13px; color: #92400e; font-weight: 500;
-  }
-  body.dark .hint-bar { color: #fbbf24; }
-  .hint-bar.show { display: flex; }
-
-  .history-list { display: flex; flex-direction: column; gap: 10px; }
-  .history-item {
-    display: flex; align-items: center; gap: 12px;
-    padding: 12px; background: var(--bg-softer);
-    border: 2px solid var(--border); border-radius: var(--radius-sm);
-    cursor: pointer;
-    transition: border-color 0.15s;
-  }
-  .history-item:hover { border-color: var(--primary); }
-  .history-item .hist-icon {
-    flex-shrink: 0; width: 44px; height: 44px;
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px; color: #fff;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  }
-  .history-item .hist-icon.convert { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); }
-  .history-item .hist-icon.merge { background: linear-gradient(135deg, #ef4444, #dc2626); }
-  .history-item .hist-icon.split { background: linear-gradient(135deg, var(--split), var(--split-dark)); }
-  .history-item .hist-info { flex: 1; min-width: 0; }
-  .history-item .hist-name {
-    font-size: 14px; font-weight: 600; color: var(--text-dark);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    margin-bottom: 3px;
-  }
-  .history-item .hist-meta {
-    font-size: 12px; color: var(--text-light);
-    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-  }
-  .history-item .hist-actions { display: flex; gap: 4px; flex-shrink: 0; }
-  .history-item .hist-btn {
-    width: 34px; height: 34px;
-    background: var(--bg-card); border: 1px solid var(--border);
-    border-radius: 8px; cursor: pointer; font-size: 15px;
-    color: var(--text-mid);
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s, color 0.15s;
-  }
-  .history-item .hist-btn:hover {
-    background: var(--primary); color: #fff;
-    border-color: var(--primary);
-  }
-  .history-item .hist-btn.danger:hover {
-    background: var(--danger); border-color: var(--danger);
-  }
-
-  .btn-clear-history {
-    width: 100%; padding: 12px;
-    background: transparent; color: var(--danger);
-    border: 2px solid var(--danger); border-radius: var(--radius-sm);
-    font-family: inherit; font-size: 14px; font-weight: 700;
-    cursor: pointer; margin-top: 16px;
-    transition: background 0.2s, color 0.2s;
-  }
-  .btn-clear-history:hover { background: var(--danger); color: #fff; }
-
-  .empty-state {
-    text-align: center; padding: 40px 20px;
-    color: var(--text-light); font-size: 14px;
-  }
-  .empty-state .big-icon {
-    font-size: 60px; margin-bottom: 12px;
-    display: block; opacity: 0.5;
-  }
-
-  .preview-modal {
-    display: none; position: fixed; inset: 0;
-    background: rgba(15, 23, 42, 0.92);
-    z-index: 1100; align-items: center; justify-content: center;
-    padding: 16px;
-  }
-  .preview-modal.active { display: flex; }
-  .preview-modal-box {
-    background: var(--bg-card); border-radius: 20px;
-    width: 100%; max-width: 900px; height: 92vh;
-    display: flex; flex-direction: column; overflow: hidden;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
-  }
-  .preview-modal-header {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 16px 20px; border-bottom: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-  .preview-modal-header .preview-title {
-    font-size: 15px; font-weight: 700; color: var(--text-dark);
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    flex: 1; margin-right: 12px;
-  }
-  .preview-modal-header .preview-actions { display: flex; gap: 8px; flex-shrink: 0; }
-  .preview-modal-header .pv-btn {
-    width: 40px; height: 40px; border-radius: 10px;
-    background: var(--bg-soft); border: 1px solid var(--border);
-    color: var(--text-mid); cursor: pointer; font-size: 17px;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s, color 0.15s;
-  }
-  .preview-modal-header .pv-btn:hover {
-    background: var(--primary); color: #fff; border-color: var(--primary);
-  }
-  .preview-modal-header .pv-btn.close:hover {
-    background: var(--danger); border-color: var(--danger);
-  }
-  .preview-modal-body {
-    flex: 1; overflow: auto; background: #334155;
-    display: flex; justify-content: center; align-items: flex-start;
-    padding: 16px; position: relative;
-  }
-  .preview-canvas-wrap {
-    display: flex; flex-direction: column;
-    gap: 12px; align-items: center;
-  }
-  .preview-canvas-wrap canvas {
-    max-width: 100%; box-shadow: 0 6px 20px rgba(0,0,0,0.5);
-    background: #fff; border-radius: 4px;
-  }
-  .preview-loading {
-    color: #cbd5e1; text-align: center; padding: 40px; font-size: 14px;
-  }
-  .preview-loading .spinner {
-    width: 40px; height: 40px;
-    border: 4px solid rgba(255,255,255,0.15);
-    border-top-color: #fff; border-radius: 50%;
-    margin: 0 auto 16px;
-    animation: spin 0.8s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .modal {
-    display: none; position: fixed; inset: 0;
-    background: rgba(15, 23, 42, 0.85);
-    z-index: 1000; align-items: center; justify-content: center;
-    padding: 16px;
-  }
-  .modal.active { display: flex; }
-  .modal-box {
-    background: var(--bg-card); border-radius: 20px;
-    padding: 22px; max-width: 820px; width: 100%; max-height: 96vh;
-    display: flex; flex-direction: column;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
-  }
-  .modal-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 16px; padding-bottom: 14px;
-    border-bottom: 1px solid var(--border);
-  }
-  .modal-header h3 {
-    color: var(--text-dark); font-size: 17px; font-weight: 700;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .modal-header .badge {
-    font-size: 12px; background: var(--primary); color: #fff;
-    padding: 4px 10px; border-radius: 20px; font-weight: 600;
-  }
-  .crop-toolbar {
-    display: flex; flex-wrap: wrap; gap: 8px;
-    margin-bottom: 14px; justify-content: center;
-  }
-  .crop-toolbar button {
-    padding: 8px 14px;
-    border: 1.5px solid var(--border); background: var(--bg-card);
-    border-radius: 10px; cursor: pointer; font-size: 13px;
-    font-family: inherit; font-weight: 600; color: var(--text-mid);
-    transition: all 0.15s;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .crop-toolbar button:hover {
-    background: var(--bg-action-hover);
-    border-color: var(--primary); color: var(--primary);
-  }
-  .crop-toolbar button.active {
-    background: var(--primary); color: #fff; border-color: transparent;
-  }
-  .crop-area {
-    flex: 1; min-height: 320px; max-height: 58vh;
-    background: #0f172a; border-radius: 14px;
-    overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .crop-area img { max-width: 100%; max-height: 100%; display: block; }
-  .modal-footer {
-    display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end;
-  }
-  .modal-footer button {
-    padding: 12px 26px; border: none; border-radius: 10px;
-    font-size: 14px; font-weight: 700; font-family: inherit;
-    cursor: pointer;
-    transition: background 0.15s;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .btn-cancel { background: var(--bg-soft); color: var(--text-mid); }
-  .btn-cancel:hover { background: var(--border); }
-  .btn-ok {
-    background: var(--primary); color: #fff;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-  }
-
-  .cropper-view-box {
-    outline: 2px solid #fff !important;
-    outline-color: rgba(255, 255, 255, 0.9) !important;
-    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6) !important;
-  }
-  .cropper-line { background-color: var(--primary) !important; }
-  .cropper-point {
-    background-color: #fff !important;
-    border: 2px solid var(--primary) !important;
-    width: 12px !important; height: 12px !important;
-    opacity: 1 !important; border-radius: 50%;
-  }
-  .cropper-canvas, .cropper-canvas img { cursor: default !important; }
-  .cropper-drag-box { cursor: default !important; }
-  .cropper-crop-box { cursor: move !important; }
-
-  .crop-hint {
-    text-align: center; font-size: 12px; color: var(--text-light);
-    margin-top: 10px; padding: 8px;
-    background: var(--bg-preview); border-radius: 8px;
-  }
-
   @media (max-width: 640px) {
-    body { padding: 12px 8px; }
-    .header { padding: 24px 18px 16px; }
-    .header .icon-badge { width: 56px; height: 56px; font-size: 28px; }
-    .header h1 { font-size: 19px; }
-    .tabs { padding: 0 18px 20px; gap: 4px; }
-    .tab { padding: 10px 6px; font-size: 11px; min-width: 80px; }
-    .tab .tab-icon { font-size: 18px; }
-    .panel { padding: 20px 18px 24px; }
-    .thumbs { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
-    .thumb .img-wrap { height: 100px; }
-    .share-options { grid-template-columns: repeat(3, 1fr); }
-    .result-actions { grid-template-columns: 1fr; }
-    .modal-box { padding: 16px; border-radius: 16px; }
+    .modal-content { border-radius: 24px 24px 0 0 !important; max-height: 92vh; margin-top: auto; }
+    .modal-wrap { align-items: flex-end; }
+  }
+  button, a, select, input, textarea { min-height: 44px; }
+  
+  .sidebar-link { position: relative; transition: all 0.2s ease; }
+  .sidebar-link.active {
+    background: linear-gradient(135deg, rgba(53, 99, 255, 0.9), rgba(31, 66, 245, 0.9));
+    color: white;
+    box-shadow: 0 8px 24px -8px rgba(53, 99, 255, 0.6);
+  }
+  .sidebar-link.active::before {
+    content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+    width: 3px; height: 60%; background: white; border-radius: 0 3px 3px 0;
+  }
+  .sidebar-link:not(.active):hover { background: rgba(255, 255, 255, 0.08); }
+  
+  .card-hover { transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+  .card-hover:hover { transform: translateY(-2px); box-shadow: 0 12px 32px -8px rgba(0,0,0,0.12); }
+  
+  .btn-primary {
+    background: linear-gradient(135deg, #3563ff, #1f42f5);
+    box-shadow: 0 4px 16px -4px rgba(53, 99, 255, 0.5);
+    transition: all 0.2s ease;
+  }
+  .btn-primary:hover { box-shadow: 0 6px 20px -4px rgba(53, 99, 255, 0.7); transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0) scale(0.98); }
+  
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  
+  .badge { 
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 600;
+  }
+  .empty-icon { font-size: 48px; opacity: 0.4; margin-bottom: 8px; }
+  
+  .stat-card { position: relative; overflow: hidden; }
+  
+  /* Custom select style */
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 40px;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+  }
+  select optgroup {
+    font-weight: 700;
+    font-size: 13px;
+    color: #3563ff;
+    background: #f1f5f9;
+    padding: 4px 0;
+  }
+  .dark select optgroup {
+    color: #8eb4ff;
+    background: #1e293b;
+  }
+  select option {
+    padding: 8px;
+    font-size: 14px;
+    color: #0f172a;
+  }
+  .dark select option {
+    background: #0f172a;
+    color: #e2e8f0;
   }
 </style>
 </head>
-<body>
-<div class="top-bar">
-  <button class="top-btn" id="themeToggle" title="បិទ/បើកពន្លឺ">🌙</button>
-  <button class="top-btn" id="langToggle" title="ប្តូរភាសា">
-    <span class="lang-label" id="langLabel">EN</span>
-  </button>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
+
+<!-- ============ LOGIN ============ -->
+<div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center p-4 safe-top safe-bottom overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-br from-brand-950 via-brand-900 to-brand-800"></div>
+  <div class="absolute inset-0 opacity-30" style="background-image: radial-gradient(circle at 20% 30%, rgba(139,92,246,0.4), transparent 40%), radial-gradient(circle at 80% 70%, rgba(53,99,255,0.5), transparent 40%);"></div>
+  <div class="absolute top-10 left-10 w-72 h-72 bg-brand-500/30 rounded-full blur-3xl animate-pulse-soft"></div>
+  <div class="absolute bottom-10 right-10 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse-soft" style="animation-delay: 1s;"></div>
+
+  <div class="relative bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl p-8 rounded-3xl shadow-2xl w-full max-w-md border border-white/20 animate-slide-up">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-brand-500 to-brand-700 rounded-2xl shadow-lg shadow-brand-500/30 mb-4">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v18M5 8h14M5 8l-3 8a3 3 0 0 0 6 0L5 8zM19 8l-3 8a3 3 0 0 0 6 0l-3-8z"/>
+        </svg>
+      </div>
+      <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Case Manager Pro</h1>
+      <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">ប្រព័ន្ធគ្រប់គ្រងរឿងក្ដី</p>
+    </div>
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">ឈ្មោះអ្នកប្រើ</label>
+        <div class="relative">
+          <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <input id="loginUser" type="text" value="admin" autocomplete="username" class="w-full pl-11 pr-4 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 focus:bg-white dark:focus:bg-slate-900 rounded-xl outline-none text-base transition-all">
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">លេខសម្ងាត់</label>
+        <div class="relative">
+          <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <input id="loginPass" type="password" value="1234" autocomplete="current-password" class="w-full pl-11 pr-4 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 focus:bg-white dark:focus:bg-slate-900 rounded-xl outline-none text-base transition-all">
+        </div>
+      </div>
+      <button onclick="login()" class="btn-primary w-full text-white py-3.5 rounded-xl font-semibold text-base">
+        ចូលប្រើប្រាស់ →
+      </button>
+      <div class="flex items-center gap-2 justify-center pt-2">
+        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+        <p class="text-xs text-slate-500 dark:text-slate-400">Demo: admin / 1234</p>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="container">
-  <div class="header">
-    <div class="icon-badge">📄</div>
-    <h1 data-i18n="title">ឧបករណ៍ PDF</h1>
-    <p data-i18n="subtitle">បម្លែង បញ្ចូល បំបែក និងគ្រប់គ្រងឯកសារ PDF</p>
-  </div>
+<!-- ============ APP ============ -->
+<div id="app" class="hidden flex h-screen overflow-hidden">
 
-  <div class="tabs" id="tabs">
-    <button class="tab active" data-tab="convert">
-      <span class="tab-icon">🖼️</span>
-      <span data-i18n="tab_convert">រូបភាព → PDF</span>
-    </button>
-    <button class="tab" data-tab="merge">
-      <span class="tab-icon">📎</span>
-      <span data-i18n="tab_merge">Merge PDF</span>
-    </button>
-    <button class="tab" data-tab="split">
-      <span class="tab-icon">✂️</span>
-      <span data-i18n="tab_split">Split PDF</span>
-    </button>
-    <button class="tab" data-tab="history">
-      <span class="tab-icon">📜</span>
-      <span data-i18n="tab_history">ប្រវត្តិ</span>
-    </button>
-  </div>
+  <div id="overlay" onclick="toggleSidebar()" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-30 lg:hidden animate-fade-in"></div>
 
-  <!-- Convert Panel -->
-  <div class="panel active" id="panelConvert">
-    <div class="form-group">
-      <label for="pdfName" data-i18n="label_pdf_name">ឈ្មោះឯកសារ PDF</label>
-      <div class="input-wrap">
-        <input type="text" id="pdfName" value="my-document" autocomplete="off">
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label data-i18n="label_select_img">ជ្រើសរើសរូបភាព</label>
-      <div class="file-drop" id="fileDrop" onclick="document.getElementById('fileInput').click()">
-        <input type="file" id="fileInput" accept="image/*" multiple>
-        <div class="drop-icon">📁</div>
-        <div class="drop-title" data-i18n="drop_title">ចុចទីនេះ ឬអូសរូបភាពមកទម្លាក់</div>
-        <div class="drop-sub" data-i18n="drop_sub">គាំទ្រ JPG, PNG, WEBP, GIF</div>
-      </div>
-    </div>
-
-    <div class="thumbs-header" id="thumbsHeader">
-      <div class="count"><span data-i18n="label_images">រូបភាព</span><span id="imgCount">0</span></div>
-      <button class="clear-all" id="clearAllBtn" data-i18n="clear_all">🗑️ លុបទាំងអស់</button>
-    </div>
-
-    <div class="thumbs" id="thumbs"></div>
-
-    <div class="hint-bar" id="hint" data-i18n="hint_drag">💡 ចុចទាញរូបដើម្បីតម្រៀបលំដាប់</div>
-
-    <button class="btn-main" id="convertBtn" disabled>
-      <span class="icon">✨</span>
-      <span data-i18n="btn_convert">បម្លែងទៅ PDF</span>
-    </button>
-
-    <div class="result-card" id="convertResultCard">
-      <div class="result-header">
-        <div class="check-icon">✓</div>
-        <div class="result-title">
-          <h3 data-i18n="result_success">បម្លែងជោគជ័យ!</h3>
-          <p data-i18n="result_ready">ឯកសារ PDF របស់អ្នករួចរាល់ហើយ</p>
-          <span class="result-name" id="convertResultName">document.pdf</span>
+  <!-- SIDEBAR -->
+  <aside id="sidebar" class="w-72 bg-brand-950 text-white flex flex-col fixed lg:relative h-full z-40 safe-top shadow-2xl">
+    <div class="p-5 border-b border-white/10 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-gradient-to-br from-brand-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v18M5 8h14M5 8l-3 8a3 3 0 0 0 6 0L5 8zM19 8l-3 8a3 3 0 0 0 6 0l-3-8z"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-base font-bold tracking-tight">Case Manager</h1>
+          <p class="text-[10px] text-brand-300 uppercase tracking-widest">Pro Edition</p>
         </div>
       </div>
-      <div class="result-actions">
-        <button class="result-btn download" data-result="convert" data-action="download">
-          <span class="icon">⬇️</span>
-          <span data-i18n="btn_download">ទាញយក</span>
-        </button>
-        <button class="result-btn share" data-result="convert" data-action="share">
-          <span class="icon">📤</span>
-          <span data-i18n="btn_share">ចែករំលែក</span>
-        </button>
-      </div>
-      <div class="share-menu" id="convertShareMenu">
-        <div class="share-title" data-i18n="share_title">ចែករំលែកជា File</div>
-        <div class="share-options">
-          <button class="share-option" data-share="native" data-result="convert"><span class="share-icon">📤</span><span data-i18n="sh_native">ចែករំលែក</span></button>
-          <button class="share-option" data-share="save" data-result="convert"><span class="share-icon">💾</span><span data-i18n="sh_save">រក្សាទុក</span></button>
-          <button class="share-option" data-share="open" data-result="convert"><span class="share-icon">👁️</span><span data-i18n="sh_open">មើល</span></button>
-        </div>
-      </div>
+      <button onclick="toggleSidebar()" class="lg:hidden text-brand-300 p-2 hover:text-white">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
     </div>
 
-    <button class="btn-reset" id="resetBtn">
-      <span>🔄</span>
-      <span data-i18n="btn_reset">ប្រើម្តងទៀត</span>
-    </button>
+    <nav class="flex-1 p-3 space-y-1 overflow-y-auto no-scrollbar">
+      <p class="px-4 pt-3 pb-1 text-[10px] uppercase tracking-widest text-brand-400 font-semibold">ម៉ឺនុយមេ</p>
+      
+      <a href="#" onclick="showPage('dashboard'); closeSidebarOnMobile()" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-brand-100" data-page="dashboard">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>
+        </svg>
+        <span class="font-medium">ផ្ទាំងគ្រប់គ្រង</span>
+      </a>
+      
+      <a href="#" onclick="showPage('cases'); closeSidebarOnMobile()" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-brand-100" data-page="cases">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/>
+        </svg>
+        <span class="font-medium">រឿងក្ដី</span>
+      </a>
+      
+      <a href="#" onclick="showPage('clients'); closeSidebarOnMobile()" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-brand-100" data-page="clients">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        <span class="font-medium">អតិថិជន</span>
+      </a>
+      
+      <a href="#" onclick="showPage('calendar'); closeSidebarOnMobile()" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-brand-100" data-page="calendar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+        </svg>
+        <span class="font-medium">កាលវិភាគ</span>
+      </a>
+      
+      <a href="#" onclick="showPage('documents'); closeSidebarOnMobile()" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-brand-100" data-page="documents">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+        </svg>
+        <span class="font-medium">ឯកសារ</span>
+      </a>
 
-    <div class="progress-wrap" id="progressWrap">
-      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-      <div class="progress-text"><span class="pct" id="progressText">0%</span></div>
+      <p class="px-4 pt-5 pb-1 text-[10px] uppercase tracking-widest text-brand-400 font-semibold">ប្រព័ន្ធ</p>
+
+      <a href="#" onclick="showPage('settings'); closeSidebarOnMobile()" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-brand-100" data-page="settings">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        <span class="font-medium">ការកំណត់</span>
+      </a>
+    </nav>
+
+    <div class="p-4 border-t border-white/10 safe-bottom space-y-2">
+      <button onclick="installApp()" id="installBtn" class="hidden w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white py-2.5 rounded-xl text-sm font-medium shadow-lg transition-all">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M6 15l6 6 6-6M5 21h14"/></svg>
+        ដំឡើង App
+      </button>
+      <button onclick="toggleDark()" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-brand-200 hover:bg-white/5 hover:text-white transition-colors text-sm">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span id="themeLabel">ផ្ទាំងងងឹត</span>
+      </button>
+      <button onclick="logout()" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-brand-200 hover:bg-white/5 hover:text-red-400 transition-colors text-sm">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        ចាកចេញ
+      </button>
     </div>
+  </aside>
 
-    <div class="status" id="status"></div>
-  </div>
-
-  <!-- Merge Panel -->
-  <div class="panel" id="panelMerge">
-    <div class="form-group">
-      <label for="mergedName" data-i18n="label_merged_name">ឈ្មោះឯកសារចុងក្រោយ</label>
-      <div class="input-wrap">
-        <input type="text" id="mergedName" value="merged-document" autocomplete="off">
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label data-i18n="label_select_pdfs">ជ្រើសរើសឯកសារ PDF</label>
-      <div class="file-drop" id="pdfDrop" onclick="document.getElementById('pdfInput').click()">
-        <input type="file" id="pdfInput" accept="application/pdf" multiple>
-        <div class="drop-icon merge">📎</div>
-        <div class="drop-title" data-i18n="drop_title_pdf">ចុចទីនេះ ឬអូសឯកសារ PDF មកទម្លាក់</div>
-        <div class="drop-sub" data-i18n="drop_sub_pdf">ជ្រើសបានច្រើនឯកសារ ដើម្បីបញ្ចូលគ្នា</div>
-      </div>
-    </div>
-
-    <div class="thumbs-header" id="pdfHeader">
-      <div class="count"><span data-i18n="label_pdfs">ឯកសារ PDF</span><span id="pdfCount">0</span></div>
-      <button class="clear-all" id="clearPdfsBtn" data-i18n="clear_all">🗑️ លុបទាំងអស់</button>
-    </div>
-
-    <div class="pdf-list" id="pdfList"></div>
-
-    <div class="hint-bar" id="mergeHint" data-i18n="hint_merge">💡 ចុចទាញឯកសារ ដើម្បីតម្រៀបលំដាប់</div>
-
-    <button class="btn-main merge" id="mergeBtn" disabled>
-      <span class="icon">🔗</span>
-      <span data-i18n="btn_merge">បញ្ចូល PDF ចូលគ្នា</span>
-    </button>
-
-    <div class="result-card" id="mergeResultCard">
-      <div class="result-header">
-        <div class="check-icon">✓</div>
-        <div class="result-title">
-          <h3 data-i18n="merge_success">បញ្ចូលជោគជ័យ!</h3>
-          <p data-i18n="merge_ready">ឯកសារ PDF ត្រូវបានបញ្ចូលគ្នាហើយ</p>
-          <span class="result-name" id="mergeResultName">merged.pdf</span>
-        </div>
-      </div>
-      <div class="result-actions">
-        <button class="result-btn download" data-result="merge" data-action="download">
-          <span class="icon">⬇️</span>
-          <span data-i18n="btn_download">ទាញយក</span>
-        </button>
-        <button class="result-btn share" data-result="merge" data-action="share">
-          <span class="icon">📤</span>
-          <span data-i18n="btn_share">ចែករំលែក</span>
-        </button>
-      </div>
-      <div class="share-menu" id="mergeShareMenu">
-        <div class="share-title" data-i18n="share_title">ចែករំលែកជា File</div>
-        <div class="share-options">
-          <button class="share-option" data-share="native" data-result="merge"><span class="share-icon">📤</span><span data-i18n="sh_native">ចែករំលែក</span></button>
-          <button class="share-option" data-share="save" data-result="merge"><span class="share-icon">💾</span><span data-i18n="sh_save">រក្សាទុក</span></button>
-          <button class="share-option" data-share="open" data-result="merge"><span class="share-icon">👁️</span><span data-i18n="sh_open">មើល</span></button>
-        </div>
-      </div>
-    </div>
-
-    <button class="btn-reset" id="resetMergeBtn">
-      <span>🔄</span>
-      <span data-i18n="btn_reset">ប្រើម្តងទៀត</span>
-    </button>
-
-    <div class="progress-wrap" id="mergeProgressWrap">
-      <div class="progress-bar"><div class="progress-fill" id="mergeProgressFill"></div></div>
-      <div class="progress-text"><span class="pct" id="mergeProgressText">0%</span></div>
-    </div>
-
-    <div class="status" id="mergeStatus"></div>
-  </div>
-
-  <!-- Split Panel -->
-  <div class="panel" id="panelSplit">
-    <div class="form-group">
-      <label for="splitName" data-i18n="label_split_name">ឈ្មោះឯកសារចុងក្រោយ</label>
-      <div class="input-wrap">
-        <input type="text" id="splitName" value="split-document" autocomplete="off">
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label data-i18n="label_select_pdf_one">ជ្រើសរើសឯកសារ PDF តែមួយ</label>
-      <div class="file-drop" id="splitDrop" onclick="document.getElementById('splitInput').click()">
-        <input type="file" id="splitInput" accept="application/pdf">
-        <div class="drop-icon split">✂️</div>
-        <div class="drop-title" data-i18n="drop_title_pdf">ចុចទីនេះ ឬអូសឯកសារ PDF មកទម្លាក់</div>
-        <div class="drop-sub" data-i18n="drop_sub_one_pdf">ជ្រើសបានតែ 1 ឯកសារ</div>
-      </div>
-    </div>
-
-    <div id="splitInfo" style="display:none; padding:16px; background:var(--bg-info); border:2px solid #a5f3fc; border-radius:var(--radius-sm); margin-bottom:22px; align-items:center; gap:14px;">
-      <div style="flex-shrink:0; width:46px;height:46px; background:linear-gradient(135deg,var(--split),var(--split-dark)); border-radius:12px; display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;">📕</div>
-      <div style="flex:1;min-width:0;">
-        <div id="splitFileName" style="font-size:14px;font-weight:700;color:var(--split-dark);margin-bottom:3px;">file.pdf</div>
-        <div id="splitFileMeta" style="font-size:13px;color:var(--text-mid);">0 pages</div>
-      </div>
-      <div id="splitTotalPages" style="flex-shrink:0; padding:6px 12px; background:var(--split); color:#fff; border-radius:20px; font-size:12px; font-weight:700;">0</div>
-    </div>
-
-    <div id="splitOptions" style="display:none;">
-      <div class="form-group">
-        <label data-i18n="label_split_mode">របៀបបំបែក</label>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-          <button class="mode-btn active" data-mode="range" style="padding:14px;border:2px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-card);font-family:inherit;font-size:13px;font-weight:600;color:var(--text-mid);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;">
-            <span style="font-size:22px;">📏</span>
-            <span data-i18n="mode_range">ជ្រើសជួរទំព័រ</span>
+  <!-- MAIN -->
+  <main class="flex-1 overflow-y-auto scroll-smooth bg-slate-50 dark:bg-slate-950">
+    
+    <header class="glass sticky top-0 z-20 border-b border-slate-200/60 dark:border-slate-800/60 safe-top">
+      <div class="px-4 md:px-6 py-3 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <button onclick="toggleSidebar()" class="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
           </button>
-          <button class="mode-btn" data-mode="each" style="padding:14px;border:2px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-card);font-family:inherit;font-size:13px;font-weight:600;color:var(--text-mid);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;">
-            <span style="font-size:22px;">📚</span>
-            <span data-i18n="mode_each">បំបែករាល់ទំព័រ</span>
-          </button>
-        </div>
-      </div>
-
-      <div id="rangeModeOptions">
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:16px;">
           <div>
-            <label style="display:block;font-size:13px;font-weight:600;color:var(--text-mid);margin-bottom:6px;" data-i18n="label_from">ចាប់ពីទំព័រ</label>
-            <input type="number" id="rangeFrom" min="1" value="1" style="text-align:center;padding:12px;font-weight:700;">
-          </div>
-          <div>
-            <label style="display:block;font-size:13px;font-weight:600;color:var(--text-mid);margin-bottom:6px;" data-i18n="label_to">ដល់ទំព័រ</label>
-            <input type="number" id="rangeTo" min="1" value="1" style="text-align:center;padding:12px;font-weight:700;">
+            <h2 id="pageTitle" class="text-lg md:text-xl font-bold tracking-tight">ផ្ទាំងគ្រប់គ្រង</h2>
+            <p id="pageSubtitle" class="hidden md:block text-xs text-slate-500 dark:text-slate-400 mt-0.5">ទិដ្ឋភាពទូទៅនៃរឿងក្ដីរបស់អ្នក</p>
           </div>
         </div>
-        <div style="margin-bottom:18px;padding:14px;background:var(--bg-skip);border-radius:var(--radius-sm);border:1px solid #fde68a;">
-          <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#92400e;margin-bottom:8px;" data-i18n="label_skip">⏭️ រំលងទំព័រ</label>
-          <input type="text" id="skipPages" placeholder="2, 4, 5-7" autocomplete="off" style="background:var(--bg-card);padding:10px 14px;font-size:14px;">
+        <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 pl-2 pr-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full">
+            <div class="w-7 h-7 bg-gradient-to-br from-brand-500 to-purple-600 text-white rounded-full flex items-center justify-center font-bold text-xs">A</div>
+            <span class="hidden md:inline text-sm font-medium">Admin</span>
+          </div>
         </div>
       </div>
+    </header>
 
-      <div id="eachModeOptions" style="display:none;">
-        <div style="margin-bottom:18px;padding:14px;background:var(--bg-info);border-radius:var(--radius-sm);border:1px solid #a5f3fc;font-size:13px;color:var(--text-mid);font-weight:500;">
-          <span data-i18n="each_info">បំបែករាល់ទំព័រជា PDF ដោយឡែកៗ ទាញយកជា ZIP file។ ឈ្មោះឯកសារនីមួយៗនឹងមានលេខទំព័រ។</span>
+    <div class="p-4 md:p-6 pb-24">
+
+      <!-- DASHBOARD -->
+      <section id="page-dashboard" class="page animate-fade-in">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
+          <div class="stat-card bg-white dark:bg-slate-900 p-4 md:p-5 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 card-hover">
+            <div class="w-10 h-10 bg-brand-50 dark:bg-brand-950 rounded-xl flex items-center justify-center mb-3">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3563ff" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
+            </div>
+            <p class="text-slate-500 dark:text-slate-400 text-xs font-medium">រឿងក្ដីសរុប</p>
+            <p id="statTotal" class="text-2xl md:text-3xl font-bold mt-1 tracking-tight">0</p>
+          </div>
+          <div class="stat-card bg-white dark:bg-slate-900 p-4 md:p-5 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 card-hover">
+            <div class="w-10 h-10 bg-green-50 dark:bg-green-950 rounded-xl flex items-center justify-center mb-3">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+            </div>
+            <p class="text-slate-500 dark:text-slate-400 text-xs font-medium">កំពុងដំណើរការ</p>
+            <p id="statActive" class="text-2xl md:text-3xl font-bold mt-1 tracking-tight">0</p>
+          </div>
+          <div class="stat-card bg-white dark:bg-slate-900 p-4 md:p-5 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 card-hover">
+            <div class="w-10 h-10 bg-amber-50 dark:bg-amber-950 rounded-xl flex items-center justify-center mb-3">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <p class="text-slate-500 dark:text-slate-400 text-xs font-medium">រង់ចាំ</p>
+            <p id="statPending" class="text-2xl md:text-3xl font-bold mt-1 tracking-tight">0</p>
+          </div>
+          <div class="stat-card bg-white dark:bg-slate-900 p-4 md:p-5 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 card-hover">
+            <div class="w-10 h-10 bg-purple-50 dark:bg-purple-950 rounded-xl flex items-center justify-center mb-3">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <p class="text-slate-500 dark:text-slate-400 text-xs font-medium">បានបញ្ចប់</p>
+            <p id="statClosed" class="text-2xl md:text-3xl font-bold mt-1 tracking-tight">0</p>
+          </div>
         </div>
-      </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-5">
+          <div class="lg:col-span-3 bg-white dark:bg-slate-900 p-5 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-bold flex items-center gap-2">
+                <span class="w-8 h-8 bg-brand-50 dark:bg-brand-950 rounded-lg flex items-center justify-center">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3563ff" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                </span>
+                ថ្ងៃកាត់ក្ដីខាងមុខ
+              </h3>
+              <button onclick="showPage('calendar')" class="text-xs text-brand-600 hover:text-brand-700 font-medium">មើលទាំងអស់ →</button>
+            </div>
+            <div id="upcomingHearings" class="space-y-2"></div>
+          </div>
+          <div class="lg:col-span-2 bg-white dark:bg-slate-900 p-5 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800">
+            <h3 class="font-bold mb-4 flex items-center gap-2">
+              <span class="w-8 h-8 bg-purple-50 dark:bg-purple-950 rounded-lg flex items-center justify-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg>
+              </span>
+              ស្ថិតិ
+            </h3>
+            <div class="max-w-xs mx-auto">
+              <canvas id="statusChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CASES -->
+      <section id="page-cases" class="page hidden animate-fade-in">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+          <div class="relative sm:col-span-2 lg:col-span-2">
+            <svg class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input id="caseSearch" oninput="renderCases()" placeholder="ស្វែងរករឿងក្ដី..." class="w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:border-brand-500 rounded-xl outline-none text-base transition-all">
+          </div>
+          <div class="relative">
+            <select id="caseFilterCourt" onchange="renderCases()" class="w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:border-brand-500 rounded-xl outline-none text-sm transition-all">
+              <option value="">🏛️ តុលាការទាំងអស់</option>
+              <optgroup label="សាលាដំបូង">
+                <option value="សាលាដំបូងរាជធានីភ្នំពេញ">ភ្នំពេញ</option>
+                <option value="សាលាដំបូងខេត្តកណ្ដាល">កណ្ដាល</option>
+                <option value="សាលាដំបូងខេត្តតាកែវ">តាកែវ</option>
+                <option value="សាលាដំបូងខេត្តកែប">កែប</option>
+                <option value="សាលាដំបូងខេត្តកំពង់ស្ពឺ">កំពង់ស្ពឺ</option>
+                <option value="សាលាដំបូងខេត្តព្រះសីហនុ">ព្រះសីហនុ</option>
+                <option value="សាលាដំបូងខេត្តកំពត">កំពត</option>
+                <option value="សាលាដំបូងខេត្តកំពង់ឆ្នាំង">កំពង់ឆ្នាំង</option>
+                <option value="សាលាដំបូងខេត្តពោធិ៍សាត់">ពោធិ៍សាត់</option>
+                <option value="សាលាដំបូងខេត្តបាត់ដំបង">បាត់ដំបង</option>
+                <option value="សាលាដំបូងខេត្តប៉ៃលិន">ប៉ៃលិន</option>
+                <option value="សាលាដំបូងខេត្តបន្ទាយមានជ័យ">បន្ទាយមានជ័យ</option>
+                <option value="សាលាដំបូងខេត្តសៀមរាប">សៀមរាប</option>
+                <option value="សាលាដំបូងខេត្តកំពង់ធំ">កំពង់ធំ</option>
+                <option value="សាលាដំបូងខេត្តកំពង់ចាម">កំពង់ចាម</option>
+                <option value="សាលាដំបូងខេត្តត្បូងឃ្មុំ">ត្បូងឃ្មុំ</option>
+                <option value="សាលាដំបូងខេត្តក្រចេះ">ក្រចេះ</option>
+                <option value="សាលាដំបូងខេត្តព្រៃវែង">ព្រៃវែង</option>
+                <option value="សាលាដំបូងខេត្តស្វាយរៀង">ស្វាយរៀង</option>
+                <option value="សាលាដំបូងខេត្តកោះកុង">កោះកុង</option>
+                <option value="សាលាដំបូងខេត្តព្រះវិហារ">ព្រះវិហារ</option>
+                <option value="សាលាដំបូងខេត្តស្ទឹងត្រែង">ស្ទឹងត្រែង</option>
+                <option value="សាលាដំបូងខេត្តរតនគិរី">រតនគិរី</option>
+                <option value="សាលាដំបូងខេត្តមណ្ឌលគិរី">មណ្ឌលគិរី</option>
+                <option value="សាលាដំបូងខេត្តឧត្តរមានជ័យ">ឧត្តរមានជ័យ</option>
+              </optgroup>
+              <optgroup label="សាលាឧទ្ធរណ៍">
+                <option value="សាលាឧទ្ធរណ៍ភ្នំពេញ">ភ្នំពេញ</option>
+                <option value="សាលាឧទ្ធរណ៍បាត់ដំបង">បាត់ដំបង</option>
+                <option value="សាលាឧទ្ធរណ៍ព្រះសីហនុ">ព្រះសីហនុ</option>
+                <option value="សាលាឧទ្ធរណ៍ត្បូងឃ្មុំ">ត្បូងឃ្មុំ</option>
+              </optgroup>
+              <optgroup label="តុលាការកំពូល">
+                <option value="តុលាការកំពូលភ្នំពេញ">តុលាការកំពូលភ្នំពេញ</option>
+              </optgroup>
+            </select>
+          </div>
+          <button onclick="openCaseModal()" class="btn-primary text-white px-5 py-3 rounded-xl font-medium flex items-center justify-center gap-2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+            បន្ថែមរឿងក្ដី
+          </button>
+        </div>
+
+        <div class="desktop-table bg-white dark:bg-slate-900 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="text-left text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider border-b border-slate-100 dark:border-slate-800">
+                  <th class="px-5 py-4 font-semibold">លេខក្ដី</th>
+                  <th class="px-5 py-4 font-semibold">ចំណងជើង</th>
+                  <th class="px-5 py-4 font-semibold">តុលាការ</th>
+                  <th class="px-5 py-4 font-semibold">អតិថិជន</th>
+                  <th class="px-5 py-4 font-semibold">ស្ថានភាព</th>
+                  <th class="px-5 py-4 font-semibold">ថ្ងៃកាត់ក្ដី</th>
+                  <th class="px-5 py-4 font-semibold text-right">សកម្មភាព</th>
+                </tr>
+              </thead>
+              <tbody id="casesTable"></tbody>
+            </table>
+          </div>
+        </div>
+        <div id="casesCards" class="mobile-cards space-y-3"></div>
+      </section>
+
+      <!-- CLIENTS -->
+      <section id="page-clients" class="page hidden animate-fade-in">
+        <div class="flex justify-between items-center mb-5 gap-3">
+          <div>
+            <h3 class="font-bold text-base">បញ្ជីអតិថិជន</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">គ្រប់គ្រងព័ត៌មានអតិថិជន</p>
+          </div>
+          <button onclick="openClientModal()" class="btn-primary text-white px-4 py-2.5 rounded-xl font-medium flex items-center gap-2 text-sm">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+            បន្ថែម
+          </button>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="clientsGrid"></div>
+      </section>
+
+      <!-- CALENDAR -->
+      <section id="page-calendar" class="page hidden animate-fade-in">
+        <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800">
+          <div class="flex items-center gap-2 mb-5">
+            <span class="w-9 h-9 bg-brand-50 dark:bg-brand-950 rounded-xl flex items-center justify-center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3563ff" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            </span>
+            <h3 class="font-bold">កាលវិភាគថ្ងៃកាត់ក្ដី</h3>
+          </div>
+          <div id="calendarList" class="space-y-3"></div>
+        </div>
+      </section>
+
+      <!-- DOCUMENTS -->
+      <section id="page-documents" class="page hidden animate-fade-in">
+        <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800">
+          <div class="flex items-center gap-2 mb-5">
+            <span class="w-9 h-9 bg-brand-50 dark:bg-brand-950 rounded-xl flex items-center justify-center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3563ff" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+            </span>
+            <h3 class="font-bold">ឯកសាររឿងក្ដី</h3>
+          </div>
+          <select id="docCaseSelect" onchange="renderDocs()" class="w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl mb-4 text-base outline-none"></select>
+          <div id="docsList" class="space-y-2"></div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="page-settings" class="page hidden animate-fade-in">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-5 mb-5">
+          
+          <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800">
+            <div class="flex items-start gap-3 mb-4">
+              <div class="w-11 h-11 bg-green-50 dark:bg-green-950 rounded-xl flex items-center justify-center shrink-0">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-bold">Backup ទិន្នន័យ</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">ទាញយកទិន្នន័យទាំងអស់ជា File JSON</p>
+              </div>
+            </div>
+            
+            <div class="space-y-2 mb-4 text-sm">
+              <div class="flex justify-between p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                <span class="text-slate-600 dark:text-slate-400">📁 រឿងក្ដី</span>
+                <span id="backupCaseCount" class="font-semibold">0</span>
+              </div>
+              <div class="flex justify-between p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                <span class="text-slate-600 dark:text-slate-400">👥 អតិថិជន</span>
+                <span id="backupClientCount" class="font-semibold">0</span>
+              </div>
+              <div class="flex justify-between p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                <span class="text-slate-600 dark:text-slate-400">📄 ឯកសារ</span>
+                <span id="backupDocCount" class="font-semibold">0</span>
+              </div>
+            </div>
+            
+            <button onclick="exportData()" class="btn-primary w-full text-white py-3 rounded-xl font-medium flex items-center justify-center gap-2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+              ទាញយក Backup
+            </button>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800">
+            <div class="flex items-start gap-3 mb-4">
+              <div class="w-11 h-11 bg-brand-50 dark:bg-brand-950 rounded-xl flex items-center justify-center shrink-0">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3563ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-bold">ដាក់បញ្ចូលទិន្នន័យ</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Upload File JSON ដែលធ្លាប់ Backup</p>
+              </div>
+            </div>
+            
+            <div id="dropZone" 
+                 ondragover="event.preventDefault(); this.classList.add('border-brand-500', 'bg-brand-50')"
+                 ondragleave="this.classList.remove('border-brand-500', 'bg-brand-50')"
+                 ondrop="handleDrop(event)"
+                 onclick="document.getElementById('importFile').click()"
+                 class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-6 text-center cursor-pointer transition-all hover:border-brand-500 hover:bg-brand-50 dark:hover:bg-brand-950 mb-4">
+              <svg class="mx-auto mb-2 text-slate-400" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+              </svg>
+              <p class="text-sm font-medium">ចុចដើម្បីជ្រើស File</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">ឬ Drag & Drop នៅទីនេះ</p>
+              <p class="text-[10px] text-slate-400 mt-2">គាំទ្រ: .json</p>
+              <input type="file" id="importFile" accept=".json" onchange="handleImport(event)" class="hidden">
+            </div>
+
+            <div class="mb-4">
+              <p class="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2">របៀបដាក់បញ្ចូល</p>
+              <div class="grid grid-cols-2 gap-2">
+                <label class="cursor-pointer">
+                  <input type="radio" name="importMode" value="merge" checked class="peer hidden">
+                  <div class="p-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 peer-checked:border-brand-500 peer-checked:bg-brand-50 dark:peer-checked:bg-brand-950 transition-all text-center">
+                    <p class="text-sm font-semibold">🔗 បញ្ចូលបន្ថែម</p>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Merge ជាមួយទិន្នន័យចាស់</p>
+                  </div>
+                </label>
+                <label class="cursor-pointer">
+                  <input type="radio" name="importMode" value="replace" class="peer hidden">
+                  <div class="p-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 peer-checked:border-red-500 peer-checked:bg-red-50 dark:peer-checked:bg-red-950 transition-all text-center">
+                    <p class="text-sm font-semibold">♻️ ជំនួសទាំងអស់</p>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">លុបទិន្នន័យចាស់ចោល</p>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div id="importPreview" class="hidden p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl mb-4 text-xs space-y-1"></div>
+
+            <button id="confirmImportBtn" onclick="confirmImport()" disabled class="w-full py-3 rounded-xl font-medium flex items-center justify-center gap-2 bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed transition-all">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+              ដាក់បញ្ចូល
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-red-50 dark:bg-red-950/30 p-5 rounded-2xl border border-red-200 dark:border-red-900">
+          <div class="flex items-start gap-3">
+            <div class="w-11 h-11 bg-red-100 dark:bg-red-950 rounded-xl flex items-center justify-center shrink-0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-bold text-red-700 dark:text-red-400">តំបន់គ្រោះថ្នាក់</h3>
+              <p class="text-xs text-red-600 dark:text-red-400/80 mt-1">សកម្មភាពទាំងនេះមិនអាចត្រឡប់វិញបានទេ</p>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <button onclick="clearAllData()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium">🗑️ លុបទិន្នន័យទាំងអស់</button>
+                <button onclick="resetDemo()" class="px-4 py-2 bg-white dark:bg-slate-800 border border-red-300 dark:border-red-900 text-red-600 dark:text-red-400 rounded-lg text-sm font-medium">🔄 ត្រឡប់ទៅ Demo</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
 
-    <button class="btn-main split" id="splitBtn" disabled>
-      <span class="icon">✂️</span>
-      <span data-i18n="btn_split">បំបែក PDF</span>
+    <button onclick="handleFAB()" class="fixed bottom-6 right-6 md:hidden w-14 h-14 btn-primary text-white rounded-2xl shadow-xl flex items-center justify-center z-20 safe-bottom">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
     </button>
 
-    <div class="result-card" id="splitResultCard">
-      <div class="result-header">
-        <div class="check-icon">✓</div>
-        <div class="result-title">
-          <h3 data-i18n="split_success">បំបែកជោគជ័យ!</h3>
-          <p data-i18n="split_ready">ឯកសារ PDF ត្រូវបានបំបែកហើយ</p>
-          <span class="result-name" id="splitResultName">split.pdf</span>
+  </main>
+</div>
+
+<!-- CASE MODAL -->
+<div id="caseModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 modal-wrap flex items-end sm:items-center justify-center animate-fade-in">
+  <div class="modal-content bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl shadow-2xl w-full sm:max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto animate-slide-up">
+    <div class="sticky top-0 bg-white dark:bg-slate-900 px-5 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center z-10 rounded-t-3xl">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 bg-brand-50 dark:bg-brand-950 rounded-xl flex items-center justify-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3563ff" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
         </div>
+        <h3 id="caseModalTitle" class="font-bold">បន្ថែមរឿងក្ដីថ្មី</h3>
       </div>
-      <div class="result-actions">
-        <button class="result-btn download" data-result="split" data-action="download">
-          <span class="icon">⬇️</span>
-          <span data-i18n="btn_download">ទាញយក</span>
-        </button>
-        <button class="result-btn share" data-result="split" data-action="share">
-          <span class="icon">📤</span>
-          <span data-i18n="btn_share">ចែករំលែក</span>
-        </button>
+      <button onclick="closeCaseModal()" class="w-9 h-9 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="p-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <input type="hidden" id="caseId">
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">លេខក្ដី <span class="text-red-500">*</span></label>
+        <input id="caseNumber" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base transition-all">
       </div>
-      <div class="share-menu" id="splitShareMenu">
-        <div class="share-title" data-i18n="share_title">ចែករំលែកជា File</div>
-        <div class="share-options">
-          <button class="share-option" data-share="native" data-result="split"><span class="share-icon">📤</span><span data-i18n="sh_native">ចែករំលែក</span></button>
-          <button class="share-option" data-share="save" data-result="split"><span class="share-icon">💾</span><span data-i18n="sh_save">រក្សាទុក</span></button>
-          <button class="share-option" data-share="open" data-result="split"><span class="share-icon">👁️</span><span data-i18n="sh_open">មើល</span></button>
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">ចំណងជើង <span class="text-red-500">*</span></label>
+        <input id="caseTitle" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base transition-all">
+      </div>
+      <div class="md:col-span-2">
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">តុលាការ <span class="text-red-500">*</span></label>
+        <select id="caseCourt" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base transition-all">
+          <option value="">— សូមជ្រើសរើសតុលាការ —</option>
+          
+          <optgroup label="🏛️ សាលាដំបូង">
+            <option value="សាលាដំបូងរាជធានីភ្នំពេញ">សាលាដំបូងរាជធានីភ្នំពេញ</option>
+            <option value="សាលាដំបូងខេត្តកណ្ដាល">សាលាដំបូងខេត្តកណ្ដាល</option>
+            <option value="សាលាដំបូងខេត្តតាកែវ">សាលាដំបូងខេត្តតាកែវ</option>
+            <option value="សាលាដំបូងខេត្តកែប">សាលាដំបូងខេត្តកែប</option>
+            <option value="សាលាដំបូងខេត្តកំពង់ស្ពឺ">សាលាដំបូងខេត្តកំពង់ស្ពឺ</option>
+            <option value="សាលាដំបូងខេត្តព្រះសីហនុ">សាលាដំបូងខេត្តព្រះសីហនុ</option>
+            <option value="សាលាដំបូងខេត្តកំពត">សាលាដំបូងខេត្តកំពត</option>
+            <option value="សាលាដំបូងខេត្តកំពង់ឆ្នាំង">សាលាដំបូងខេត្តកំពង់ឆ្នាំង</option>
+            <option value="សាលាដំបូងខេត្តពោធិ៍សាត់">សាលាដំបូងខេត្តពោធិ៍សាត់</option>
+            <option value="សាលាដំបូងខេត្តបាត់ដំបង">សាលាដំបូងខេត្តបាត់ដំបង</option>
+            <option value="សាលាដំបូងខេត្តប៉ៃលិន">សាលាដំបូងខេត្តប៉ៃលិន</option>
+            <option value="សាលាដំបូងខេត្តបន្ទាយមានជ័យ">សាលាដំបូងខេត្តបន្ទាយមានជ័យ</option>
+            <option value="សាលាដំបូងខេត្តសៀមរាប">សាលាដំបូងខេត្តសៀមរាប</option>
+            <option value="សាលាដំបូងខេត្តកំពង់ធំ">សាលាដំបូងខេត្តកំពង់ធំ</option>
+            <option value="សាលាដំបូងខេត្តកំពង់ចាម">សាលាដំបូងខេត្តកំពង់ចាម</option>
+            <option value="សាលាដំបូងខេត្តត្បូងឃ្មុំ">សាលាដំបូងខេត្តត្បូងឃ្មុំ</option>
+            <option value="សាលាដំបូងខេត្តក្រចេះ">សាលាដំបូងខេត្តក្រចេះ</option>
+            <option value="សាលាដំបូងខេត្តព្រៃវែង">សាលាដំបូងខេត្តព្រៃវែង</option>
+            <option value="សាលាដំបូងខេត្តស្វាយរៀង">សាលាដំបូងខេត្តស្វាយរៀង</option>
+            <option value="សាលាដំបូងខេត្តកោះកុង">សាលាដំបូងខេត្តកោះកុង</option>
+            <option value="សាលាដំបូងខេត្តព្រះវិហារ">សាលាដំបូងខេត្តព្រះវិហារ</option>
+            <option value="សាលាដំបូងខេត្តស្ទឹងត្រែង">សាលាដំបូងខេត្តស្ទឹងត្រែង</option>
+            <option value="សាលាដំបូងខេត្តរតនគិរី">សាលាដំបូងខេត្តរតនគិរី</option>
+            <option value="សាលាដំបូងខេត្តមណ្ឌលគិរី">សាលាដំបូងខេត្តមណ្ឌលគិរី</option>
+            <option value="សាលាដំបូងខេត្តឧត្តរមានជ័យ">សាលាដំបូងខេត្តឧត្តរមានជ័យ</option>
+          </optgroup>
+          
+          <optgroup label="⚖️ សាលាឧទ្ធរណ៍">
+            <option value="សាលាឧទ្ធរណ៍ភ្នំពេញ">សាលាឧទ្ធរណ៍ភ្នំពេញ</option>
+            <option value="សាលាឧទ្ធរណ៍បាត់ដំបង">សាលាឧទ្ធរណ៍បាត់ដំបង</option>
+            <option value="សាលាឧទ្ធរណ៍ព្រះសីហនុ">សាលាឧទ្ធរណ៍ព្រះសីហនុ</option>
+            <option value="សាលាឧទ្ធរណ៍ត្បូងឃ្មុំ">សាលាឧទ្ធរណ៍ត្បូងឃ្មុំ</option>
+          </optgroup>
+          
+          <optgroup label="👑 តុលាការកំពូល">
+            <option value="តុលាការកំពូលភ្នំពេញ">តុលាការកំពូលភ្នំពេញ</option>
+          </optgroup>
+        </select>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">ប្រភេទក្ដី</label>
+        <select id="caseType" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
+          <option>រដ្ឋប្បវេណី</option>
+          <option>ព្រហ្មទណ្ឌ</option>
+          <option>ពាណិជ្ជកម្ម</option>
+          <option>គ្រួសារ</option>
+          <option>ដីធ្លី</option>
+          <option>ការងារ</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">អតិថិជន</label>
+        <select id="caseClient" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base"></select>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">ស្ថានភាព</label>
+        <select id="caseStatus" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
+          <option value="active">កំពុងដំណើរការ</option>
+          <option value="pending">រង់ចាំ</option>
+          <option value="closed">បានបញ្ចប់</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">ថ្ងៃកាត់ក្ដីបន្ទាប់</label>
+        <input id="caseHearing" type="date" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
+      </div>
+      <div class="md:col-span-2">
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">កំណត់ចំណាំ</label>
+        <textarea id="caseNote" rows="3" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base resize-none"></textarea>
+      </div>
+    </div>
+    <div class="sticky bottom-0 bg-white dark:bg-slate-900 px-5 py-4 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3 safe-bottom">
+      <button onclick="closeCaseModal()" class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 font-medium">បោះបង់</button>
+      <button onclick="saveCase()" class="btn-primary text-white px-6 py-2.5 rounded-xl font-medium">រក្សាទុក</button>
+    </div>
+  </div>
+</div>
+
+<!-- CLIENT MODAL -->
+<div id="clientModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 modal-wrap flex items-end sm:items-center justify-center animate-fade-in">
+  <div class="modal-content bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl shadow-2xl w-full sm:max-w-md max-h-[95vh] overflow-y-auto animate-slide-up">
+    <div class="sticky top-0 bg-white dark:bg-slate-900 px-5 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center z-10 rounded-t-3xl">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 bg-brand-50 dark:bg-brand-950 rounded-xl flex items-center justify-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3563ff" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
         </div>
+        <h3 id="clientModalTitle" class="font-bold">បន្ថែមអតិថិជនថ្មី</h3>
+      </div>
+      <button onclick="closeClientModal()" class="w-9 h-9 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="p-5 space-y-4">
+      <input type="hidden" id="clientId">
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">ឈ្មោះ <span class="text-red-500">*</span></label>
+        <input id="clientName" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">លេខទូរស័ព្ទ</label>
+        <input id="clientPhone" type="tel" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">អ៊ីមែល</label>
+        <input id="clientEmail" type="email" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">អាសយដ្ឋាន</label>
+        <input id="clientAddress" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
       </div>
     </div>
-
-    <button class="btn-reset split" id="resetSplitBtn">
-      <span>🔄</span>
-      <span data-i18n="btn_reset">ប្រើម្តងទៀត</span>
-    </button>
-
-    <div class="progress-wrap" id="splitProgressWrap">
-      <div class="progress-bar"><div class="progress-fill" id="splitProgressFill"></div></div>
-      <div class="progress-text"><span class="pct" id="splitProgressText">0%</span></div>
-    </div>
-
-    <div class="status" id="splitStatus"></div>
-  </div>
-
-  <!-- History Panel -->
-  <div class="panel" id="panelHistory">
-    <div id="historyContent"></div>
-    <button class="btn-clear-history" id="clearHistoryBtn" data-i18n="btn_clear_history">🗑️ លុបប្រវត្តិទាំងអស់</button>
-  </div>
-</div>
-
-<!-- Preview Modal -->
-<div class="preview-modal" id="previewModal">
-  <div class="preview-modal-box">
-    <div class="preview-modal-header">
-      <span class="preview-title" id="previewTitle">Document.pdf</span>
-      <div class="preview-actions">
-        <button class="pv-btn" id="previewDownloadBtn" title="ទាញយក">⬇️</button>
-        <button class="pv-btn close" id="previewCloseBtn" title="បិទ">✕</button>
-      </div>
-    </div>
-    <div class="preview-modal-body" id="previewBody">
-      <div class="preview-loading">
-        <div class="spinner"></div>
-        <div data-i18n="preview_loading">កំពុងផ្ទុក PDF...</div>
-      </div>
+    <div class="sticky bottom-0 bg-white dark:bg-slate-900 px-5 py-4 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3 safe-bottom">
+      <button onclick="closeClientModal()" class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 font-medium">បោះបង់</button>
+      <button onclick="saveClient()" class="btn-primary text-white px-6 py-2.5 rounded-xl font-medium">រក្សាទុក</button>
     </div>
   </div>
 </div>
 
-<!-- Crop Modal -->
-<div class="modal" id="cropModal">
-  <div class="modal-box">
-    <div class="modal-header">
-      <h3>✂️ <span data-i18n="crop_title">Crop រូបភាព</span></h3>
-      <span class="badge" id="cropInfo">0 × 0 px</span>
-    </div>
-    <div class="crop-toolbar">
-      <button data-tool="free" class="active" data-i18n="crop_free">🆓 សេរី</button>
-      <button data-tool="square">⬛ 1:1</button>
-      <button data-tool="16-9">🖼️ 16:9</button>
-      <button data-tool="4-3">📐 4:3</button>
-      <button data-tool="reset" data-i18n="crop_reset">🔄 កំណត់ឡើងវិញ</button>
-    </div>
-    <div class="crop-area"><img id="cropImage" src=""></div>
-    <p class="crop-hint" data-i18n="crop_hint">💡 ទាញជ្រុង ⚪ ឬ គែម ដើម្បីកាត់</p>
-    <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeCrop()" data-i18n="btn_cancel">បោះបង់</button>
-      <button class="btn-ok" onclick="applyCrop()" data-i18n="btn_ok">✓ យល់ព្រម</button>
-    </div>
-  </div>
-</div>
+<!-- TOAST -->
+<div id="toast" class="hidden fixed bottom-24 md:bottom-6 left-1/2 -translate-x-1/2 md:left-auto md:right-6 md:translate-x-0 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-3 rounded-2xl shadow-2xl z-[60] max-w-[90vw] text-center text-sm font-medium animate-slide-up"></div>
 
 <script>
-const { jsPDF } = window.jspdf;
-const { PDFDocument } = PDFLib;
-
-/* ============================================================
-   INDEXEDDB — ជំនួស localStorage សម្រាប់ history
-   ចំណុះធំជាង 100x — រក្សាទុក Blob ដោយផ្ទាល់
-   ============================================================ */
-const DB_NAME = 'pdfToolsDB';
-const DB_VERSION = 1;
-const STORE_NAME = 'history';
-const MAX_HISTORY = 50;
-let db = null;
-
-function openDB() {
-  return new Promise((resolve, reject) => {
-    if (db) return resolve(db);
-    const req = indexedDB.open(DB_NAME, DB_VERSION);
-    req.onerror = () => reject(req.error);
-    req.onsuccess = () => {
-      db = req.result;
-      resolve(db);
-    };
-    req.onupgradeneeded = (e) => {
-      const database = e.target.result;
-      if (!database.objectStoreNames.contains(STORE_NAME)) {
-        const store = database.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
-        store.createIndex('date', 'date', { unique: false });
-      }
-    };
-  });
+// ============ THEME ============
+function toggleDark() {
+  const isDark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  document.getElementById('themeLabel').textContent = isDark ? 'ផ្ទាំងភ្លឺ' : 'ផ្ទាំងងងឹត';
 }
-
-async function dbAdd(entry) {
-  const database = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = database.transaction(STORE_NAME, 'readwrite');
-    const store = tx.objectStore(STORE_NAME);
-    const req = store.add(entry);
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
-}
-
-async function dbGetAll() {
-  const database = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = database.transaction(STORE_NAME, 'readonly');
-    const store = tx.objectStore(STORE_NAME);
-    const req = store.getAll();
-    req.onsuccess = () => {
-      // តម្រៀបតាម date ចុះក្រោម
-      const arr = req.result.sort((a, b) => new Date(b.date) - new Date(a.date));
-      resolve(arr);
-    };
-    req.onerror = () => reject(req.error);
-  });
-}
-
-async function dbGet(id) {
-  const database = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = database.transaction(STORE_NAME, 'readonly');
-    const store = tx.objectStore(STORE_NAME);
-    const req = store.get(id);
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
-}
-
-async function dbDelete(id) {
-  const database = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = database.transaction(STORE_NAME, 'readwrite');
-    const store = tx.objectStore(STORE_NAME);
-    const req = store.delete(id);
-    req.onsuccess = () => resolve();
-    req.onerror = () => reject(req.error);
-  });
-}
-
-async function dbClear() {
-  const database = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = database.transaction(STORE_NAME, 'readwrite');
-    const store = tx.objectStore(STORE_NAME);
-    const req = store.clear();
-    req.onsuccess = () => resolve();
-    req.onerror = () => reject(req.error);
-  });
-}
-
-async function dbCount() {
-  const database = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = database.transaction(STORE_NAME, 'readonly');
-    const store = tx.objectStore(STORE_NAME);
-    const req = store.count();
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
-}
-
-// លុបចាស់បំផុត ពេលលើស 50
-async function dbTrim() {
-  const all = await dbGetAll();
-  if (all.length <= MAX_HISTORY) return;
-  const toDelete = all.slice(MAX_HISTORY);
-  for (const item of toDelete) {
-    await dbDelete(item.id);
+function initTheme() {
+  const saved = localStorage.getItem('theme');
+  const isDark = saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  if (isDark) {
+    document.documentElement.classList.add('dark');
+    document.getElementById('themeLabel').textContent = 'ផ្ទាំងភ្លឺ';
   }
 }
 
-async function addToHistory(entry) {
-  try {
-    await dbAdd({
-      type: entry.type,
-      name: entry.name,
-      size: entry.blob.size,
-      pages: entry.pages || 0,
-      mime: entry.blob.type || 'application/pdf',
-      date: new Date().toISOString(),
-      blob: entry.blob           // ✅ រក្សាទុក Blob ដោយផ្ទាល់
-    });
-    await dbTrim();
-    await renderHistory();
-  } catch (err) {
-    console.error('History save failed:', err);
-    // បើ IndexedDB fail → try cleanup ចាស់ៗ
-    try {
-      const all = await dbGetAll();
-      for (const item of all.slice(20)) await dbDelete(item.id);
-    } catch (e2) {}
-  }
+// ============ PWA ============
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installBtn').classList.remove('hidden');
+});
+function installApp() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then((c) => {
+    if (c.outcome === 'accepted') {
+      document.getElementById('installBtn').classList.add('hidden');
+      toast('✅ បានដំឡើង App!');
+    }
+    deferredPrompt = null;
+  });
+}
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
 }
 
-/* ==================== I18N ==================== */
-const i18n = {
-  km: {
-    title: 'ឧបករណ៍ PDF',
-    subtitle: 'បម្លែង បញ្ចូល បំបែក និងគ្រប់គ្រងឯកសារ PDF',
-    tab_convert: 'រូបភាព → PDF',
-    tab_merge: 'Merge PDF',
-    tab_split: 'Split PDF',
-    tab_history: 'ប្រវត្តិ',
-    label_pdf_name: 'ឈ្មោះឯកសារ PDF',
-    label_merged_name: 'ឈ្មោះឯកសារចុងក្រោយ',
-    label_split_name: 'ឈ្មោះឯកសារចុងក្រោយ',
-    label_select_img: 'ជ្រើសរើសរូបភាព',
-    label_select_pdfs: 'ជ្រើសរើសឯកសារ PDF',
-    label_select_pdf_one: 'ជ្រើសរើសឯកសារ PDF តែមួយ',
-    label_images: 'រូបភាព',
-    label_pdfs: 'ឯកសារ PDF',
-    drop_title: 'ចុចទីនេះ ឬអូសរូបភាពមកទម្លាក់',
-    drop_sub: 'គាំទ្រ JPG, PNG, WEBP, GIF',
-    drop_title_pdf: 'ចុចទីនេះ ឬអូសឯកសារ PDF មកទម្លាក់',
-    drop_sub_pdf: 'ជ្រើសបានច្រើនឯកសារ ដើម្បីបញ្ចូលគ្នា',
-    drop_sub_one_pdf: 'ជ្រើសបានតែ 1 ឯកសារ',
-    clear_all: '🗑️ លុបទាំងអស់',
-    hint_drag: '💡 ចុចទាញរូបដើម្បីតម្រៀបលំដាប់',
-    hint_merge: '💡 ចុចទាញឯកសារ ដើម្បីតម្រៀបលំដាប់',
-    btn_convert: 'បម្លែងទៅ PDF',
-    btn_merge: 'បញ្ចូល PDF ចូលគ្នា',
-    btn_split: 'បំបែក PDF',
-    btn_download: 'ទាញយក',
-    btn_share: 'ចែករំលែក',
-    btn_reset: 'ប្រើម្តងទៀត',
-    btn_cancel: 'បោះបង់',
-    btn_ok: '✓ យល់ព្រម',
-    btn_clear_history: '🗑️ លុបប្រវត្តិទាំងអស់',
-    result_success: 'បម្លែងជោគជ័យ!',
-    result_ready: 'ឯកសារ PDF របស់អ្នករួចរាល់ហើយ',
-    merge_success: 'បញ្ចូលជោគជ័យ!',
-    merge_ready: 'ឯកសារ PDF ត្រូវបានបញ្ចូលគ្នាហើយ',
-    split_success: 'បំបែកជោគជ័យ!',
-    split_ready: 'ឯកសារ PDF ត្រូវបានបំបែកហើយ',
-    share_title: 'ចែករំលែកជា File',
-    sh_native: 'ចែករំលែក',
-    sh_save: 'រក្សាទុក',
-    sh_open: 'មើល',
-    label_from: 'ចាប់ពីទំព័រ',
-    label_to: 'ដល់ទំព័រ',
-    label_skip: '⏭️ រំលងទំព័រ',
-    label_split_mode: 'របៀបបំបែក',
-    mode_range: 'ជ្រើសជួរទំព័រ',
-    mode_each: 'បំបែករាល់ទំព័រ',
-    each_info: 'បំបែករាល់ទំព័រជា PDF ដោយឡែកៗ ទាញយកជា ZIP file។ ឈ្មោះឯកសារនីមួយៗនឹងមានលេខទំព័រ។',
-    crop_title: 'Crop រូបភាព',
-    crop_free: '🆓 សេរី',
-    crop_reset: '🔄 កំណត់ឡើងវិញ',
-    crop_hint: '💡 ទាញជ្រុង ⚪ ឬ គែម ដើម្បីកាត់',
-    preview_loading: 'កំពុងផ្ទុក PDF...',
-    history_empty: 'មិនមានប្រវត្តិនៅឡើយទេ',
-    pages: 'ទំព័រ',
-    msg_shared: '✅ បានចែករំលែក',
-    msg_saved: '✅ បានរក្សាទុក',
-    msg_share_failed: 'មិនអាចចែករំលែកបានទេ',
-    confirm_clear: 'លុបប្រវត្តិទាំងអស់?'
+// ============ DATA ============
+const DB = {
+  get(key, def=[]) {
+    try { return JSON.parse(localStorage.getItem(key)) ?? def; }
+    catch { return def; }
   },
-  en: {
-    title: 'PDF Tools',
-    subtitle: 'Convert, merge, split and manage PDF files',
-    tab_convert: 'Image → PDF',
-    tab_merge: 'Merge PDF',
-    tab_split: 'Split PDF',
-    tab_history: 'History',
-    label_pdf_name: 'PDF file name',
-    label_merged_name: 'Output file name',
-    label_split_name: 'Output file name',
-    label_select_img: 'Select images',
-    label_select_pdfs: 'Select PDF files',
-    label_select_pdf_one: 'Select one PDF file',
-    label_images: 'Images',
-    label_pdfs: 'PDF files',
-    drop_title: 'Click here or drag images here',
-    drop_sub: 'Supports JPG, PNG, WEBP, GIF',
-    drop_title_pdf: 'Click here or drag PDF files',
-    drop_sub_pdf: 'Select multiple files to merge',
-    drop_sub_one_pdf: 'Only 1 file allowed',
-    clear_all: '🗑️ Clear all',
-    hint_drag: '💡 Drag images to reorder',
-    hint_merge: '💡 Drag files to reorder',
-    btn_convert: 'Convert to PDF',
-    btn_merge: 'Merge PDFs',
-    btn_split: 'Split PDF',
-    btn_download: 'Download',
-    btn_share: 'Share',
-    btn_reset: 'Start over',
-    btn_cancel: 'Cancel',
-    btn_ok: '✓ OK',
-    btn_clear_history: '🗑️ Clear all history',
-    result_success: 'Converted!',
-    result_ready: 'Your PDF file is ready',
-    merge_success: 'Merged!',
-    merge_ready: 'PDFs have been merged',
-    split_success: 'Split!',
-    split_ready: 'PDF has been split',
-    share_title: 'Share as File',
-    sh_native: 'Share',
-    sh_save: 'Save',
-    sh_open: 'View',
-    label_from: 'From page',
-    label_to: 'To page',
-    label_skip: '⏭️ Skip pages',
-    label_split_mode: 'Split mode',
-    mode_range: 'Page range',
-    mode_each: 'Split each page',
-    each_info: 'Split each page as a separate PDF, download as ZIP. Each file will have a page number.',
-    crop_title: 'Crop image',
-    crop_free: '🆓 Free',
-    crop_reset: '🔄 Reset',
-    crop_hint: '💡 Drag corners ⚪ or edges to crop',
-    preview_loading: 'Loading PDF...',
-    history_empty: 'No history yet',
-    pages: 'pages',
-    msg_shared: '✅ Shared',
-    msg_saved: '✅ Saved',
-    msg_share_failed: 'Cannot share file',
-    confirm_clear: 'Clear all history?'
-  }
+  set(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
 };
 
-let currentLang = localStorage.getItem('pdf_lang') || 'km';
-
-function applyLang() {
-  const dict = i18n[currentLang];
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (dict[key]) el.textContent = dict[key];
-  });
-  document.getElementById('langLabel').textContent = currentLang === 'km' ? 'EN' : 'ខ្មែរ';
-  document.documentElement.lang = currentLang;
-  renderHistory();
-}
-
-document.getElementById('langToggle').addEventListener('click', () => {
-  currentLang = currentLang === 'km' ? 'en' : 'km';
-  localStorage.setItem('pdf_lang', currentLang);
-  applyLang();
-});
-
-/* ==================== DARK MODE ==================== */
-const themeToggle = document.getElementById('themeToggle');
-let currentTheme = localStorage.getItem('pdf_theme') || 'light';
-
-function applyTheme() {
-  if (currentTheme === 'dark') {
-    document.body.classList.add('dark');
-    themeToggle.textContent = '☀️';
-  } else {
-    document.body.classList.remove('dark');
-    themeToggle.textContent = '🌙';
-  }
-}
-applyTheme();
-
-themeToggle.addEventListener('click', () => {
-  currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-  localStorage.setItem('pdf_theme', currentTheme);
-  applyTheme();
-});
-
-/* ==================== HISTORY RENDER ==================== */
-function formatSize(bytes) {
-  if (bytes < 1024) return bytes + ' B';
-  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-  return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
-}
-
-function timeAgo(iso) {
-  const diff = Date.now() - new Date(iso).getTime();
-  const m = Math.floor(diff / 60000);
-  if (m < 1) return currentLang === 'km' ? 'ឥឡូវ' : 'just now';
-  if (m < 60) return currentLang === 'km' ? `${m} នាទីមុន` : `${m} min ago`;
-  const h = Math.floor(m / 60);
-  if (h < 24) return currentLang === 'km' ? `${h} ម៉ោងមុន` : `${h} hr ago`;
-  const d = Math.floor(h / 24);
-  if (d < 30) return currentLang === 'km' ? `${d} ថ្ងៃមុន` : `${d} day${d>1?'s':''} ago`;
-  return new Date(iso).toLocaleDateString();
-}
-
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-  }[c]));
-}
-
-async function renderHistory() {
-  const el = document.getElementById('historyContent');
-  if (!el) return;
-  const dict = i18n[currentLang];
-
-  let h = [];
-  try { h = await dbGetAll(); }
-  catch (err) {
-    console.error(err);
-    el.innerHTML = `<div class="empty-state"><div>❌ ${err.message}</div></div>`;
-    return;
-  }
-
-  if (h.length === 0) {
-    el.innerHTML = `
-      <div class="empty-state">
-        <span class="big-icon">📜</span>
-        <div>${dict.history_empty}</div>
-      </div>`;
-    return;
-  }
-
-  const iconMap = { convert: '🖼️', merge: '📎', split: '✂️' };
-  const frag = document.createDocumentFragment();
-  const list = document.createElement('div');
-  list.className = 'history-list';
-
-  h.forEach(item => {
-    const div = document.createElement('div');
-    div.className = 'history-item';
-    div.dataset.id = item.id;
-    div.innerHTML = `
-      <div class="hist-icon ${item.type}">${iconMap[item.type] || '📄'}</div>
-      <div class="hist-info">
-        <div class="hist-name">${escapeHtml(item.name)}</div>
-        <div class="hist-meta">
-          <span>${formatSize(item.size)}</span>
-          ${item.pages > 0 ? `<span>•</span><span>${item.pages} ${dict.pages}</span>` : ''}
-          <span>•</span>
-          <span>${timeAgo(item.date)}</span>
-        </div>
-      </div>
-      <div class="hist-actions">
-        <button class="hist-btn" data-action="download" data-id="${item.id}" title="${dict.btn_download}">⬇️</button>
-        <button class="hist-btn danger" data-action="del" data-id="${item.id}" title="Delete">🗑️</button>
-      </div>`;
-    list.appendChild(div);
-  });
-  frag.appendChild(list);
-  el.innerHTML = '';
-  el.appendChild(frag);
-
-  el.querySelectorAll('.history-item').forEach(item => {
-    item.addEventListener('click', (e) => {
-      if (e.target.closest('.hist-btn')) return;
-      openHistoryPreview(Number(item.dataset.id));
-    });
-  });
-  el.querySelectorAll('.hist-btn').forEach(btn => {
-    btn.addEventListener('click', async (e) => {
-      e.stopPropagation();
-      const id = Number(btn.dataset.id);
-      if (btn.dataset.action === 'del') {
-        await dbDelete(id);
-        renderHistory();
-      } else if (btn.dataset.action === 'download') {
-        await downloadHistory(id);
-      }
-    });
-  });
-}
-
-async function downloadHistory(id) {
-  const item = await dbGet(id);
-  if (!item) return;
-  const url = URL.createObjectURL(item.blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = item.name;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-}
-
-document.getElementById('clearHistoryBtn').addEventListener('click', async () => {
-  if (confirm(i18n[currentLang].confirm_clear)) {
-    await dbClear();
-    renderHistory();
-  }
-});
-
-/* ==================== PREVIEW ==================== */
-const previewModal = document.getElementById('previewModal');
-const previewBody = document.getElementById('previewBody');
-const previewTitle = document.getElementById('previewTitle');
-let currentPreviewData = null;
-
-async function openPdfPreview(blob, name) {
-  previewModal.classList.add('active');
-  previewTitle.textContent = name;
-  previewBody.innerHTML = `
-    <div class="preview-loading">
-      <div class="spinner"></div>
-      <div>${i18n[currentLang].preview_loading}</div>
-    </div>`;
-  currentPreviewData = { blob, name };
-
-  try {
-    const arrayBuffer = await blob.arrayBuffer();
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-    const totalPages = pdf.numPages;
-    const maxPages = Math.min(totalPages, 5);
-    const wrap = document.createElement('div');
-    wrap.className = 'preview-canvas-wrap';
-
-    for (let p = 1; p <= maxPages; p++) {
-      const page = await pdf.getPage(p);
-      const viewport = page.getViewport({ scale: 1.5 });
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
-      await page.render({ canvasContext: ctx, viewport }).promise;
-      wrap.appendChild(canvas);
-    }
-    if (totalPages > maxPages) {
-      const info = document.createElement('div');
-      info.style.cssText = 'color:#cbd5e1;text-align:center;padding:12px;font-size:13px;';
-      info.textContent = `+${totalPages - maxPages} more pages`;
-      wrap.appendChild(info);
-    }
-    previewBody.innerHTML = '';
-    previewBody.appendChild(wrap);
-  } catch (err) {
-    console.error(err);
-    previewBody.innerHTML = `<div class="preview-loading">❌ ${err.message}</div>`;
+function seedData() {
+  if (!localStorage.getItem('cases')) {
+    DB.set('clients', [
+      {id:1, name:'លោក សុខ វិបុល', phone:'012345678', email:'sok@mail.com', address:'ភ្នំពេញ'},
+      {id:2, name:'អ្នកស្រី ចាន់ ធីតា', phone:'098765432', email:'chan@mail.com', address:'សៀមរាប'},
+    ]);
+    DB.set('cases', [
+      {id:1, caseNumber:'C-2024-001', title:'រឿងក្ដីដីធ្លី', court:'សាលាដំបូងរាជធានីភ្នំពេញ', caseType:'ដីធ្លី', clientId:1, status:'active', nextHearing:'2026-10-15', note:'ត្រូវរៀបចំឯកសារបន្ថែម'},
+      {id:2, caseNumber:'C-2024-002', title:'រឿងក្ដីព្រហ្មទណ្ឌ', court:'សាលាដំបូងខេត្តសៀមរាប', caseType:'ព្រហ្មទណ្ឌ', clientId:2, status:'pending', nextHearing:'2026-10-20', note:''},
+      {id:3, caseNumber:'C-2024-003', title:'រឿងក្ដីគ្រួសារ', court:'សាលាឧទ្ធរណ៍ភ្នំពេញ', caseType:'គ្រួសារ', clientId:1, status:'closed', nextHearing:'', note:'បានបញ្ចប់ដោយជោគជ័យ'},
+    ]);
+    DB.set('documents', [
+      {id:1, caseId:1, name:'ចុងបញ្ចប់កិច្ចសន្យា.pdf', date:'2026-09-01'},
+      {id:2, caseId:2, name:'របាយការណ៍ប៉ូលិស.docx', date:'2026-09-10'},
+    ]);
   }
 }
 
-document.getElementById('previewCloseBtn').addEventListener('click', () => {
-  previewModal.classList.remove('active');
-  previewBody.innerHTML = '';
-  currentPreviewData = null;
-});
-document.getElementById('previewDownloadBtn').addEventListener('click', () => {
-  if (currentPreviewData) {
-    const url = URL.createObjectURL(currentPreviewData.blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = currentPreviewData.name;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  }
-});
-previewModal.addEventListener('click', (e) => {
-  if (e.target === previewModal) {
-    previewModal.classList.remove('active');
-    previewBody.innerHTML = '';
-  }
-});
+let statusChart = null;
 
-async function openHistoryPreview(id) {
-  const item = await dbGet(id);
-  if (!item) return;
-  if (item.mime === 'application/zip') {
-    await downloadHistory(id);
-    return;
+// ============ SIDEBAR ============
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('hidden');
+}
+function closeSidebarOnMobile() {
+  if (window.innerWidth < 1024) {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.add('hidden');
   }
-  openPdfPreview(item.blob, item.name);
 }
 
-/* ==================== RESULT STATE ==================== */
-const results = {
-  convert: { blob: null, name: '', url: null },
-  merge:   { blob: null, name: '', url: null },
-  split:   { blob: null, name: '', url: null }
+// ============ AUTH ============
+function login() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  if (u === 'admin' && p === '1234') {
+    sessionStorage.setItem('loggedIn', '1');
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    initApp();
+  } else toast('❌ ឈ្មោះអ្នកប្រើ ឬលេខសម្ងាត់មិនត្រឹមត្រូវ');
+}
+function logout() {
+  if (!confirm('តើអ្នកចង់ចាកចេញមែនទេ?')) return;
+  sessionStorage.removeItem('loggedIn');
+  location.reload();
+}
+
+// ============ NAVIGATION ============
+const pageInfo = {
+  dashboard: { title: 'ផ្ទាំងគ្រប់គ្រង', subtitle: 'ទិដ្ឋភាពទូទៅនៃរឿងក្ដីរបស់អ្នក' },
+  cases: { title: 'រឿងក្ដី', subtitle: 'គ្រប់គ្រងរឿងក្ដីទាំងអស់' },
+  clients: { title: 'អតិថិជន', subtitle: 'ព័ត៌មានអតិថិជន' },
+  calendar: { title: 'កាលវិភាគ', subtitle: 'ថ្ងៃកាត់ក្ដីខាងមុខ' },
+  documents: { title: 'ឯកសារ', subtitle: 'ឯកសាររឿងក្ដី' },
+  settings: { title: 'ការកំណត់', subtitle: 'Backup, Restore និងគ្រប់គ្រងទិន្នន័យ' }
 };
 
-function setResult(type, blob, name) {
-  if (results[type].url) URL.revokeObjectURL(results[type].url);
-  results[type].blob = blob;
-  results[type].name = name;
-  results[type].url = URL.createObjectURL(blob);
-}
-function clearResult(type) {
-  if (results[type].url) URL.revokeObjectURL(results[type].url);
-  results[type].blob = null;
-  results[type].name = '';
-  results[type].url = null;
-}
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+  document.getElementById('page-' + page).classList.remove('hidden');
+  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+  document.querySelector(`[data-page="${page}"]`)?.classList.add('active');
+  document.getElementById('pageTitle').textContent = pageInfo[page].title;
+  document.getElementById('pageSubtitle').textContent = pageInfo[page].subtitle;
+  document.querySelector('main').scrollTop = 0;
 
-function showResultCard(type, name) {
-  const card = document.getElementById(`${type}ResultCard`);
-  document.getElementById(`${type}ResultName`).textContent = name;
-  card.classList.add('show');
-  setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 200);
-  fireConfetti();
-}
-function hideResultCard(type) {
-  document.getElementById(`${type}ResultCard`).classList.remove('show');
-  document.getElementById(`${type}ShareMenu`).classList.remove('show');
+  if (page === 'dashboard') renderDashboard();
+  if (page === 'cases') renderCases();
+  if (page === 'clients') renderClients();
+  if (page === 'calendar') renderCalendar();
+  if (page === 'documents') renderDocSelect();
+  if (page === 'settings') renderSettingsStats();
 }
 
-function fireConfetti() {
-  if (typeof confetti !== 'function') return;
-  confetti({
-    particleCount: 60,
-    spread: 60,
-    origin: { y: 0.6 },
-    colors: ['#6366f1', '#ec4899', '#10b981', '#f59e0b']
-  });
+function handleFAB() {
+  const active = document.querySelector('.page:not(.hidden)')?.id;
+  if (active === 'page-clients') openClientModal();
+  else openCaseModal();
 }
 
-/* ==================== TABS ==================== */
-const tabs = document.querySelectorAll('.tab');
-const panels = {
-  convert: document.getElementById('panelConvert'),
-  merge: document.getElementById('panelMerge'),
-  split: document.getElementById('panelSplit'),
-  history: document.getElementById('panelHistory')
-};
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    tabs.forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    Object.values(panels).forEach(p => p.classList.remove('active'));
-    panels[tab.dataset.tab].classList.add('active');
-    if (tab.dataset.tab === 'history') renderHistory();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-});
+// ============ DASHBOARD ============
+function renderDashboard() {
+  const cases = DB.get('cases');
+  document.getElementById('statTotal').textContent = cases.length;
+  document.getElementById('statActive').textContent = cases.filter(c => c.status === 'active').length;
+  document.getElementById('statPending').textContent = cases.filter(c => c.status === 'pending').length;
+  document.getElementById('statClosed').textContent = cases.filter(c => c.status === 'closed').length;
 
-/* ==================== DOWNLOAD / SHARE ==================== */
-document.querySelectorAll('.result-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const type = btn.dataset.result;
-    if (btn.dataset.action === 'download') downloadResult(type);
-    else if (btn.dataset.action === 'share') {
-      document.getElementById(`${type}ShareMenu`).classList.toggle('show');
-    }
-  });
-});
+  const upcoming = cases.filter(c => c.nextHearing).sort((a,b) => new Date(a.nextHearing) - new Date(b.nextHearing)).slice(0, 4);
+  document.getElementById('upcomingHearings').innerHTML = upcoming.length
+    ? upcoming.map(c => {
+        const days = Math.ceil((new Date(c.nextHearing) - new Date()) / 86400000);
+        const badge = days <= 3 ? 'bg-red-50 text-red-600 dark:bg-red-950 dark:text-red-400' : 
+                     days <= 7 ? 'bg-amber-50 text-amber-600 dark:bg-amber-950 dark:text-amber-400' : 
+                     'bg-brand-50 text-brand-600 dark:bg-brand-950 dark:text-brand-400';
+        return `<div class="flex items-center gap-3 p-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-xl transition-colors">
+          <div class="w-11 h-11 bg-gradient-to-br from-brand-500 to-brand-700 text-white rounded-xl flex flex-col items-center justify-center shrink-0 shadow-sm">
+            <p class="text-sm font-bold leading-none">${c.nextHearing.slice(8,10)}</p>
+            <p class="text-[9px] opacity-80 mt-0.5">${c.nextHearing.slice(5,7)}</p>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="font-semibold text-sm truncate">${c.caseNumber}</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 truncate">${c.title}</p>
+          </div>
+          <span class="badge ${badge} whitespace-nowrap">${days > 0 ? days + ' ថ្ងៃ' : 'ថ្ងៃនេះ'}</span>
+        </div>`;
+      }).join('')
+    : `<div class="text-center py-8"><div class="empty-icon">📅</div><p class="text-slate-400 text-sm">មិនមានកាលវិភាគខាងមុខ</p></div>`;
 
-function downloadResult(type) {
-  const r = results[type];
-  if (!r.blob) return;
-  const url = URL.createObjectURL(r.blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = r.name;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-}
-
-document.querySelectorAll('.share-option').forEach(btn => {
-  btn.addEventListener('click', async () => {
-    await handleShare(btn.dataset.result, btn.dataset.share);
-  });
-});
-
-async function handleShare(type, shareType) {
-  const r = results[type];
-  if (!r.blob) return;
-
-  const dict = i18n[currentLang];
-  const file = new File([r.blob], r.name, { type: r.blob.type || 'application/pdf' });
-
-  if (shareType === 'native') {
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      try {
-        await navigator.share({ files: [file], title: r.name, text: r.name });
-        showTempMessage(type, dict.msg_shared);
-      } catch (err) {
-        if (err.name !== 'AbortError') showTempMessage(type, dict.msg_share_failed);
-      }
-    } else if (navigator.share) {
-      try {
-        await navigator.share({ files: [file] });
-        showTempMessage(type, dict.msg_shared);
-      } catch (err) {
-        if (err.name !== 'AbortError') {
-          downloadResult(type);
-          showTempMessage(type, dict.msg_saved);
+  const ctx = document.getElementById('statusChart').getContext('2d');
+  if (statusChart) statusChart.destroy();
+  const isDark = document.documentElement.classList.contains('dark');
+  statusChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['កំពុងដំណើរការ','រង់ចាំ','បានបញ្ចប់'],
+      datasets: [{
+        data: [
+          cases.filter(c=>c.status==='active').length,
+          cases.filter(c=>c.status==='pending').length,
+          cases.filter(c=>c.status==='closed').length
+        ],
+        backgroundColor: ['#22c55e','#f59e0b','#8b5cf6'],
+        borderWidth: 0, spacing: 3, borderRadius: 8
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true, cutout: '65%',
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { boxWidth: 8, boxHeight: 8, padding: 12, font: { size: 11, family: 'Kantumruy Pro' },
+            color: isDark ? '#cbd5e1' : '#475569', usePointStyle: true, pointStyle: 'circle' }
         }
       }
+    }
+  });
+}
+
+// ============ CASES ============
+function statusInfo(status) {
+  return {
+    active: { label:'កំពុងដំណើរការ', cls:'bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-400', dot:'bg-green-500' },
+    pending:{ label:'រង់ចាំ', cls:'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-400', dot:'bg-amber-500' },
+    closed: { label:'បានបញ្ចប់', cls:'bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-400', dot:'bg-purple-500' }
+  }[status] || { label:'?', cls:'bg-slate-100', dot:'bg-slate-400' };
+}
+
+function renderCases() {
+  const search = (document.getElementById('caseSearch')?.value || '').toLowerCase();
+  const courtFilter = document.getElementById('caseFilterCourt')?.value || '';
+  const cases = DB.get('cases');
+  const clients = DB.get('clients');
+  const filtered = cases.filter(c => {
+    const matchSearch = c.caseNumber.toLowerCase().includes(search) ||
+      c.title.toLowerCase().includes(search) ||
+      (c.court||'').toLowerCase().includes(search);
+    const matchCourt = !courtFilter || c.court === courtFilter;
+    return matchSearch && matchCourt;
+  });
+
+  document.getElementById('casesTable').innerHTML = filtered.length
+    ? filtered.map(c => {
+        const client = clients.find(x => x.id === c.clientId);
+        const s = statusInfo(c.status);
+        return `<tr class="border-t border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+          <td class="px-5 py-4 font-semibold text-brand-600 dark:text-brand-400">${c.caseNumber}</td>
+          <td class="px-5 py-4">${c.title}</td>
+          <td class="px-5 py-4 text-slate-600 dark:text-slate-400 text-xs">${c.court||'-'}</td>
+          <td class="px-5 py-4 text-slate-600 dark:text-slate-400">${client?.name||'-'}</td>
+          <td class="px-5 py-4"><span class="badge ${s.cls}"><span class="w-1.5 h-1.5 rounded-full ${s.dot}"></span>${s.label}</span></td>
+          <td class="px-5 py-4 text-slate-600 dark:text-slate-400">${c.nextHearing||'-'}</td>
+          <td class="px-5 py-4 text-right whitespace-nowrap">
+            <button onclick="editCase(${c.id})" class="w-8 h-8 rounded-lg hover:bg-brand-50 dark:hover:bg-brand-950 text-brand-600 dark:text-brand-400 mr-1" title="កែ">
+              <svg class="inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button onclick="deleteCase(${c.id})" class="w-8 h-8 rounded-lg hover:bg-red-50 dark:hover:bg-red-950 text-red-500" title="លុប">
+              <svg class="inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+            </button>
+          </td>
+        </tr>`;
+      }).join('')
+    : '<tr><td colspan="7" class="px-5 py-12 text-center"><div class="empty-icon">📁</div><p class="text-slate-400 text-sm">មិនមានរឿងក្ដី</p></td></tr>';
+
+  document.getElementById('casesCards').innerHTML = filtered.length
+    ? filtered.map(c => {
+        const client = clients.find(x => x.id === c.clientId);
+        const s = statusInfo(c.status);
+        return `<div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 card-hover">
+          <div class="flex justify-between items-start mb-3 gap-2">
+            <div class="min-w-0 flex-1">
+              <p class="font-bold text-brand-600 dark:text-brand-400 text-sm">${c.caseNumber}</p>
+              <p class="font-semibold mt-0.5 truncate">${c.title}</p>
+            </div>
+            <span class="badge ${s.cls} whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full ${s.dot}"></span>${s.label}</span>
+          </div>
+          <div class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
+            <p class="flex items-start gap-2"><span class="shrink-0">🏛️</span><span class="text-xs">${c.court||'-'}</span></p>
+            <p class="flex items-center gap-2"><span>👤</span>${client?.name||'-'}</p>
+            ${c.nextHearing ? `<p class="flex items-center gap-2"><span>📅</span>${c.nextHearing}</p>` : ''}
+          </div>
+          <div class="flex gap-2 mt-4 pt-3 border-t border-slate-100 dark:border-slate-800">
+            <button onclick="editCase(${c.id})" class="flex-1 py-2 bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-400 rounded-xl font-medium text-sm">✏️ កែ</button>
+            <button onclick="deleteCase(${c.id})" class="flex-1 py-2 bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 rounded-xl font-medium text-sm">🗑️ លុប</button>
+          </div>
+        </div>`;
+      }).join('')
+    : '<div class="text-center py-12"><div class="empty-icon">📁</div><p class="text-slate-400 text-sm">មិនមានរឿងក្ដី</p></div>';
+}
+
+function openCaseModal(id=null) {
+  const clients = DB.get('clients');
+  document.getElementById('caseClient').innerHTML = clients.length
+    ? clients.map(c => `<option value="${c.id}">${c.name}</option>`).join('')
+    : '<option value="">— គ្មានអតិថិជន —</option>';
+  
+  const courtSelect = document.getElementById('caseCourt');
+  
+  if (id) {
+    const c = DB.get('cases').find(x => x.id === id);
+    document.getElementById('caseModalTitle').textContent = 'កែរឿងក្ដី';
+    document.getElementById('caseId').value = c.id;
+    document.getElementById('caseNumber').value = c.caseNumber;
+    document.getElementById('caseTitle').value = c.title;
+    
+    // Handle court value — check if exists
+    const savedCourt = c.court || '';
+    const exists = Array.from(courtSelect.options).some(opt => opt.value === savedCourt);
+    // Remove old custom option if any
+    Array.from(courtSelect.options).forEach(opt => {
+      if (opt.dataset.custom === '1') opt.remove();
+    });
+    if (exists) {
+      courtSelect.value = savedCourt;
+    } else if (savedCourt) {
+      // Add custom option for legacy value
+      const opt = document.createElement('option');
+      opt.value = savedCourt;
+      opt.textContent = savedCourt + ' (ចាស់)';
+      opt.dataset.custom = '1';
+      courtSelect.appendChild(opt);
+      courtSelect.value = savedCourt;
     } else {
-      downloadResult(type);
-      showTempMessage(type, dict.msg_saved);
+      courtSelect.value = '';
     }
-    document.getElementById(`${type}ShareMenu`).classList.remove('show');
-    return;
-  }
-
-  if (shareType === 'save') {
-    downloadResult(type);
-    showTempMessage(type, dict.msg_saved);
-    document.getElementById(`${type}ShareMenu`).classList.remove('show');
-    return;
-  }
-
-  if (shareType === 'open') {
-    window.open(r.url, '_blank');
-    document.getElementById(`${type}ShareMenu`).classList.remove('show');
-    return;
-  }
-}
-
-function showTempMessage(type, msg) {
-  const el = document.getElementById(`${type}Status`);
-  const prev = el.textContent;
-  el.textContent = msg;
-  el.classList.add('success');
-  setTimeout(() => { el.textContent = prev; el.classList.remove('success'); }, 2000);
-}
-
-/* ==================== FILE DROP ==================== */
-function attachFileDrop(dropEl, onFiles) {
-  let dragCount = 0;
-  dropEl.addEventListener('dragenter', (e) => {
-    e.preventDefault(); e.stopPropagation();
-    dragCount++;
-    if (dragCount === 1) dropEl.classList.add('dragover');
-  });
-  dropEl.addEventListener('dragover', (e) => {
-    e.preventDefault(); e.stopPropagation();
-    e.dataTransfer.dropEffect = 'copy';
-  });
-  dropEl.addEventListener('dragleave', (e) => {
-    e.preventDefault(); e.stopPropagation();
-    dragCount--;
-    if (dragCount <= 0) { dragCount = 0; dropEl.classList.remove('dragover'); }
-  });
-  dropEl.addEventListener('drop', (e) => {
-    e.preventDefault(); e.stopPropagation();
-    dragCount = 0;
-    dropEl.classList.remove('dragover');
-    const files = Array.from(e.dataTransfer.files || []);
-    if (files.length) onFiles(files);
-  });
-  ['dragenter','dragover','drop'].forEach(evt => {
-    document.addEventListener(evt, (e) => {
-      if (!e.target.closest('.file-drop')) return;
-      e.preventDefault();
+    
+    document.getElementById('caseType').value = c.caseType||'រដ្ឋប្បវេណី';
+    document.getElementById('caseClient').value = c.clientId;
+    document.getElementById('caseStatus').value = c.status;
+    document.getElementById('caseHearing').value = c.nextHearing||'';
+    document.getElementById('caseNote').value = c.note||'';
+  } else {
+    document.getElementById('caseModalTitle').textContent = 'បន្ថែមរឿងក្ដីថ្មី';
+    ['caseId','caseNumber','caseTitle','caseHearing','caseNote'].forEach(i => document.getElementById(i).value = '');
+    // Remove custom options
+    Array.from(courtSelect.options).forEach(opt => {
+      if (opt.dataset.custom === '1') opt.remove();
     });
-  });
-}
-
-/* ==================== PART 1: CONVERT ==================== */
-const fileInput = document.getElementById('fileInput');
-const fileDrop = document.getElementById('fileDrop');
-const thumbsEl = document.getElementById('thumbs');
-const thumbsHeader = document.getElementById('thumbsHeader');
-const imgCount = document.getElementById('imgCount');
-const clearAllBtn = document.getElementById('clearAllBtn');
-const convertBtn = document.getElementById('convertBtn');
-const resetBtn = document.getElementById('resetBtn');
-const statusEl = document.getElementById('status');
-const progressWrap = document.getElementById('progressWrap');
-const progressFill = document.getElementById('progressFill');
-const progressText = document.getElementById('progressText');
-const hint = document.getElementById('hint');
-const cropInfo = document.getElementById('cropInfo');
-const pdfNameInput = document.getElementById('pdfName');
-
-let images = [];
-let uid = 0;
-let dragSrcId = null;
-
-fileInput.addEventListener('change', (e) => addFiles(Array.from(e.target.files)));
-attachFileDrop(fileDrop, (files) => addFiles(files));
-
-clearAllBtn.addEventListener('click', () => {
-  if (images.length === 0) return;
-  if (confirm('លុបរូបភាពទាំងអស់?')) { images = []; renderThumbs(); }
-});
-
-async function addFiles(files) {
-  const imgs = files.filter(f => f.type.startsWith('image/'));
-  if (imgs.length === 0) return;
-  if (imgs.length > 20) statusEl.textContent = `⏳ កំពុងអាន ${imgs.length} រូបភាព...`;
-
-  const newItems = [];
-  for (const file of imgs) {
-    const src = await readAsDataURL(file);
-    const dim = await getImageSize(src);
-    newItems.push({ id: uid++, file, src, rotation: 0, crop: null, naturalW: dim.w, naturalH: dim.h });
+    courtSelect.value = '';
+    document.getElementById('caseStatus').value = 'active';
   }
-  images = images.concat(newItems);
-  renderThumbs();
-  fileInput.value = '';
-  statusEl.textContent = '';
+  document.getElementById('caseModal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
 }
-
-function readAsDataURL(file) {
-  return new Promise(res => {
-    const r = new FileReader();
-    r.onload = e => res(e.target.result);
-    r.readAsDataURL(file);
-  });
+function closeCaseModal() { 
+  document.getElementById('caseModal').classList.add('hidden'); 
+  document.body.style.overflow = '';
 }
-function getImageSize(src) {
-  return new Promise(res => {
-    const img = new Image();
-    img.onload = () => res({ w: img.naturalWidth, h: img.naturalHeight });
-    img.src = src;
-  });
-}
-
-function renderThumbs() {
-  const frag = document.createDocumentFragment();
-  images.forEach((item, idx) => {
-    const div = document.createElement('div');
-    div.className = 'thumb';
-    div.draggable = true;
-    div.dataset.id = item.id;
-    div.innerHTML = `
-      <span class="num">${idx + 1}</span>
-      <span class="drag-hint">✥</span>
-      <div class="img-wrap"><img src="${item.src}" style="transform: rotate(${item.rotation}deg);" loading="lazy"></div>
-      <div class="actions">
-        <button data-act="rotl">↺</button>
-        <button data-act="rotr">↻</button>
-        <button data-act="crop">✂️</button>
-        <button data-act="del">🗑️</button>
-      </div>`;
-    div.querySelectorAll('button[data-act]').forEach(btn => {
-      btn.addEventListener('click', (e) => { e.stopPropagation(); handleAction(item.id, btn.dataset.act); });
-    });
-    div.addEventListener('dragstart', onDragStart);
-    div.addEventListener('dragend', onDragEnd);
-    div.addEventListener('dragover', onDragOver);
-    div.addEventListener('dragleave', onDragLeave);
-    div.addEventListener('drop', onDrop);
-    addTouchDrag(div, item.id, pdfNameInput, 'images');
-    frag.appendChild(div);
-  });
-  thumbsEl.innerHTML = '';
-  thumbsEl.appendChild(frag);
-  convertBtn.disabled = images.length === 0;
-  thumbsHeader.classList.toggle('show', images.length > 0);
-  if (images.length > 0) imgCount.textContent = images.length;
-  hint.classList.toggle('show', images.length > 1);
-}
-
-function onDragStart(e) {
-  dragSrcId = Number(this.dataset.id);
-  this.classList.add('dragging');
-  e.dataTransfer.effectAllowed = 'move';
-  e.dataTransfer.setData('text/plain', String(dragSrcId));
-}
-function onDragEnd() {
-  this.classList.remove('dragging');
-  document.querySelectorAll('.drag-over').forEach(t => t.classList.remove('drag-over'));
-  dragSrcId = null;
-}
-function onDragOver(e) {
-  e.preventDefault();
-  e.dataTransfer.dropEffect = 'move';
-  if (Number(this.dataset.id) !== dragSrcId) this.classList.add('drag-over');
-}
-function onDragLeave() { this.classList.remove('drag-over'); }
-function onDrop(e) {
-  e.preventDefault();
-  this.classList.remove('drag-over');
-  const targetId = Number(this.dataset.id);
-  if (dragSrcId === null || dragSrcId === targetId) return;
-  const srcIdx = images.findIndex(i => i.id === dragSrcId);
-  const tgtIdx = images.findIndex(i => i.id === targetId);
-  if (srcIdx < 0 || tgtIdx < 0) return;
-  const [moved] = images.splice(srcIdx, 1);
-  images.splice(tgtIdx, 0, moved);
-  renderThumbs();
-}
-
-function addTouchDrag(el, id, inputToBlur, collection) {
-  let touchDragEl = null;
-  let holdTimer = null;
-  let startX, startY;
-  el.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-    holdTimer = setTimeout(() => {
-      touchDragEl = el;
-      el.classList.add('dragging');
-      if (navigator.vibrate) navigator.vibrate(30);
-      if (document.activeElement && document.activeElement !== document.body) document.activeElement.blur();
-      if (inputToBlur) {
-        inputToBlur.setAttribute('readonly', 'readonly');
-        inputToBlur.setAttribute('inputmode', 'none');
-      }
-    }, 250);
-  }, { passive: true });
-  el.addEventListener('touchmove', (e) => {
-    if (!touchDragEl) {
-      const dx = Math.abs(e.touches[0].clientX - startX);
-      const dy = Math.abs(e.touches[0].clientY - startY);
-      if (dx > 10 || dy > 10) clearTimeout(holdTimer);
-      return;
-    }
-    e.preventDefault();
-    const t = e.touches[0];
-    const target = document.elementFromPoint(t.clientX, t.clientY);
-    const item = target ? target.closest('[data-id]') : null;
-    document.querySelectorAll('.drag-over').forEach(x => x.classList.remove('drag-over'));
-    if (item && Number(item.dataset.id) !== id) item.classList.add('drag-over');
-  }, { passive: false });
-  const finish = () => {
-    clearTimeout(holdTimer);
-    if (inputToBlur) {
-      inputToBlur.removeAttribute('readonly');
-      inputToBlur.removeAttribute('inputmode');
-    }
-    if (!touchDragEl) return;
-    const overEl = el.parentElement.querySelector('.drag-over');
-    if (overEl) {
-      const targetId = Number(overEl.dataset.id);
-      const arr = collection === 'pdfs' ? pdfs : images;
-      const srcIdx = arr.findIndex(i => i.id === id);
-      const tgtIdx = arr.findIndex(i => i.id === targetId);
-      if (srcIdx >= 0 && tgtIdx >= 0) {
-        const [moved] = arr.splice(srcIdx, 1);
-        arr.splice(tgtIdx, 0, moved);
-      }
-    }
-    document.querySelectorAll('.dragging, .drag-over').forEach(x => x.classList.remove('dragging', 'drag-over'));
-    touchDragEl = null;
-    if (collection === 'pdfs') renderPdfs(); else renderThumbs();
+function saveCase() {
+  const id = document.getElementById('caseId').value;
+  const clientVal = document.getElementById('caseClient').value;
+  const courtVal = document.getElementById('caseCourt').value;
+  const data = {
+    caseNumber: document.getElementById('caseNumber').value.trim(),
+    title: document.getElementById('caseTitle').value.trim(),
+    court: courtVal,
+    caseType: document.getElementById('caseType').value,
+    clientId: clientVal ? parseInt(clientVal) : null,
+    status: document.getElementById('caseStatus').value,
+    nextHearing: document.getElementById('caseHearing').value,
+    note: document.getElementById('caseNote').value.trim()
   };
-  el.addEventListener('touchend', finish);
-  el.addEventListener('touchcancel', finish);
-}
-
-function handleAction(id, act) {
-  const idx = images.findIndex(i => i.id === id);
-  if (idx < 0) return;
-  const item = images[idx];
-  if (act === 'rotl') item.rotation = (item.rotation - 90 + 360) % 360;
-  else if (act === 'rotr') item.rotation = (item.rotation + 90) % 360;
-  else if (act === 'del') images.splice(idx, 1);
-  else if (act === 'crop') { openCrop(item); return; }
-  renderThumbs();
-}
-
-let cropper = null;
-let cropTarget = null;
-function openCrop(item) {
-  cropTarget = item;
-  const modal = document.getElementById('cropModal');
-  const img = document.getElementById('cropImage');
-  img.src = item.src;
-  modal.classList.add('active');
-  if (cropper) { cropper.destroy(); cropper = null; }
-  document.querySelectorAll('.crop-toolbar button[data-tool]').forEach(b => b.classList.remove('active'));
-  document.querySelector('.crop-toolbar button[data-tool="free"]').classList.add('active');
-  setTimeout(() => {
-    cropper = new Cropper(img, {
-      viewMode: 1, dragMode: 'none', autoCropArea: 0.8, responsive: true, restore: false,
-      guides: true, center: true, highlight: false, cropBoxMovable: true, cropBoxResizable: true,
-      toggleDragModeOnDblclick: false, background: true, modal: true,
-      minContainerHeight: 320, minCropBoxWidth: 30, minCropBoxHeight: 30,
-      ready() {
-        updateCropInfo();
-        const canvas = cropper.getCropperCanvas();
-        if (canvas) canvas.style.pointerEvents = 'none';
-        const cropBox = cropper.getCropperCropBox();
-        if (cropBox) cropBox.style.pointerEvents = 'auto';
-      },
-      crop(event) { updateCropInfo(event.detail); }
-    });
-    if (item.crop) cropper.setData(item.crop);
-  }, 100);
-}
-function updateCropInfo(detail) {
-  if (!cropper) return;
-  const data = detail || cropper.getData(true);
-  cropInfo.textContent = `${Math.round(data.width)} × ${Math.round(data.height)} px`;
-}
-function closeCrop() {
-  if (cropper) { cropper.destroy(); cropper = null; }
-  document.getElementById('cropModal').classList.remove('active');
-  cropTarget = null;
-}
-function applyCrop() {
-  if (!cropper || !cropTarget) return closeCrop();
-  const data = cropper.getData(true);
-  cropTarget.crop = { x: data.x, y: data.y, w: data.width, h: data.height };
-  closeCrop();
-  renderThumbs();
-}
-document.querySelectorAll('.crop-toolbar button[data-tool]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    if (!cropper) return;
-    const tool = btn.dataset.tool;
-    if (tool === 'free') { cropper.setAspectRatio(NaN); setActiveTool(btn); }
-    else if (tool === 'square') { cropper.setAspectRatio(1); setActiveTool(btn); }
-    else if (tool === '16-9') { cropper.setAspectRatio(16 / 9); setActiveTool(btn); }
-    else if (tool === '4-3') { cropper.setAspectRatio(4 / 3); setActiveTool(btn); }
-    else if (tool === 'reset') {
-      cropper.reset();
-      document.querySelectorAll('.crop-toolbar button[data-tool]').forEach(b => b.classList.remove('active'));
-      document.querySelector('.crop-toolbar button[data-tool="free"]').classList.add('active');
-    }
-  });
-});
-function setActiveTool(btn) {
-  document.querySelectorAll('.crop-toolbar button[data-tool]').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-}
-
-convertBtn.addEventListener('click', async () => {
-  if (images.length === 0) return;
-  const name = pdfNameInput.value.trim() || 'document';
-  convertBtn.disabled = true;
-  statusEl.textContent = '';
-  statusEl.classList.remove('success', 'error');
-  hideResultCard('convert');
-  clearResult('convert');
-  progressWrap.classList.add('active');
-  updateProgress(0);
-
-  try {
-    const pdf = new jsPDF({ unit: 'px', format: 'a4' });
-    const pageW = pdf.internal.pageSize.getWidth();
-    const pageH = pdf.internal.pageSize.getHeight();
-    const margin = 20;
-
-    for (let i = 0; i < images.length; i++) {
-      if (i > 0) pdf.addPage();
-      const dataUrl = await processImage(images[i]);
-      const img = await loadImg(dataUrl);
-      const maxW = pageW - margin * 2;
-      const maxH = pageH - margin * 2;
-      let w = img.width, h = img.height;
-      const ratio = Math.min(maxW / w, maxH / h, 1);
-      w *= ratio; h *= ratio;
-      const x = (pageW - w) / 2;
-      const y = (pageH - h) / 2;
-      pdf.addImage(dataUrl, 'JPEG', x, y, w, h);
-      updateProgress(Math.round(((i + 1) / images.length) * 100));
-      if (i % 5 === 0) await new Promise(r => setTimeout(r, 0));
-    }
-
-    const blob = pdf.output('blob');
-    const fileName = `${name}.pdf`;
-    setResult('convert', blob, fileName);
-    showResultCard('convert', fileName);
-    resetBtn.classList.add('show');
-    await addToHistory({ type: 'convert', name: fileName, pages: images.length, blob });
-  } catch (err) {
-    console.error(err);
-    statusEl.textContent = '❌ ' + err.message;
-    statusEl.classList.add('error');
-  } finally {
-    convertBtn.disabled = false;
-    setTimeout(() => {
-      progressWrap.classList.remove('active');
-      updateProgress(0);
-    }, 1500);
+  if (!data.caseNumber || !data.title) return toast('⚠️ សូមបំពេញលេខក្ដី និងចំណងជើង');
+  if (!data.court) return toast('⚠️ សូមជ្រើសរើសតុលាការ');
+  
+  const cases = DB.get('cases');
+  if (id) {
+    const idx = cases.findIndex(c => c.id == id);
+    cases[idx] = {...cases[idx], ...data};
+    toast('✅ បានកែប្រែរឿងក្ដី');
+  } else {
+    data.id = Date.now();
+    cases.push(data);
+    toast('✅ បន្ថែមរឿងក្ដីថ្មីជោគជ័យ');
   }
-});
-
-resetBtn.addEventListener('click', () => {
-  images = []; uid = 0; dragSrcId = null;
-  fileInput.value = '';
-  pdfNameInput.value = 'my-document';
-  clearResult('convert');
-  hideResultCard('convert');
-  progressWrap.classList.remove('active');
-  updateProgress(0);
-  statusEl.textContent = '';
-  statusEl.classList.remove('success', 'error');
-  convertBtn.disabled = true;
-  resetBtn.classList.remove('show');
-  renderThumbs();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-
-function updateProgress(p) {
-  progressFill.style.width = p + '%';
-  progressText.textContent = p + '%';
+  DB.set('cases', cases);
+  closeCaseModal();
+  renderCases();
 }
-function loadImg(src) {
-  return new Promise((res, rej) => {
-    const img = new Image();
-    img.onload = () => res(img);
-    img.onerror = rej;
-    img.src = src;
-  });
-}
-async function processImage(item) {
-  const base = await loadImg(item.src);
-  let sx = 0, sy = 0, sw = base.naturalWidth, sh = base.naturalHeight;
-  if (item.crop) { sx = item.crop.x; sy = item.crop.y; sw = item.crop.w; sh = item.crop.h; }
-  const rot = item.rotation % 360;
-  const rad = rot * Math.PI / 180;
-  const cos = Math.abs(Math.cos(rad));
-  const sin = Math.abs(Math.sin(rad));
-  const cw = Math.round(sw * cos + sh * sin);
-  const ch = Math.round(sw * sin + sh * cos);
-  const canvas = document.createElement('canvas');
-  canvas.width = cw; canvas.height = ch;
-  const ctx = canvas.getContext('2d');
-  ctx.translate(cw / 2, ch / 2);
-  ctx.rotate(rad);
-  ctx.drawImage(base, sx, sy, sw, sh, -sw / 2, -sh / 2, sw, sh);
-  return canvas.toDataURL('image/jpeg', 0.9);
+function editCase(id) { openCaseModal(id); }
+function deleteCase(id) {
+  if (!confirm('តើអ្នកពិតជាចង់លុបរឿងក្ដីនេះ?')) return;
+  DB.set('cases', DB.get('cases').filter(c => c.id !== id));
+  toast('🗑️ បានលុបរឿងក្ដី');
+  renderCases();
 }
 
-/* ==================== PART 2: MERGE ==================== */
-const pdfInput = document.getElementById('pdfInput');
-const pdfDrop = document.getElementById('pdfDrop');
-const pdfList = document.getElementById('pdfList');
-const pdfHeader = document.getElementById('pdfHeader');
-const pdfCount = document.getElementById('pdfCount');
-const clearPdfsBtn = document.getElementById('clearPdfsBtn');
-const mergeBtn = document.getElementById('mergeBtn');
-const resetMergeBtn = document.getElementById('resetMergeBtn');
-const mergeStatus = document.getElementById('mergeStatus');
-const mergeProgressWrap = document.getElementById('mergeProgressWrap');
-const mergeProgressFill = document.getElementById('mergeProgressFill');
-const mergeProgressText = document.getElementById('mergeProgressText');
-const mergeHint = document.getElementById('mergeHint');
-const mergedNameInput = document.getElementById('mergedName');
-
-let pdfs = [];
-let pdfUid = 0;
-let pdfDragSrcId = null;
-
-pdfInput.addEventListener('change', (e) => addPdfs(Array.from(e.target.files)));
-attachFileDrop(pdfDrop, (files) => addPdfs(files));
-
-clearPdfsBtn.addEventListener('click', () => {
-  if (pdfs.length === 0) return;
-  if (confirm('លុបឯកសារ PDF ទាំងអស់?')) { pdfs = []; renderPdfs(); }
-});
-
-async function addPdfs(files) {
-  const pdfFiles = files.filter(f => f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf'));
-  if (pdfFiles.length === 0) return;
-  if (pdfFiles.length > 10) mergeStatus.textContent = `⏳ កំពុងអាន ${pdfFiles.length} ឯកសារ...`;
-
-  for (const file of pdfFiles) {
-    let pageCount = null;
-    try {
-      const buf = await file.arrayBuffer();
-      const doc = await PDFDocument.load(buf, { ignoreEncryption: true });
-      pageCount = doc.getPageCount();
-    } catch (err) {}
-    pdfs.push({ id: pdfUid++, file, name: file.name, size: file.size, pageCount });
+// ============ CLIENTS ============
+function renderClients() {
+  const clients = DB.get('clients');
+  const cases = DB.get('cases');
+  document.getElementById('clientsGrid').innerHTML = clients.length
+    ? clients.map(c => {
+        const caseCount = cases.filter(x => x.clientId === c.id).length;
+        const initials = c.name.split(' ').slice(-2).map(s => s.charAt(0)).join('');
+        return `<div class="bg-white dark:bg-slate-900 p-5 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 card-hover">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 bg-gradient-to-br from-brand-500 to-purple-600 text-white rounded-2xl flex items-center justify-center font-bold shrink-0">${initials}</div>
+            <div class="min-w-0 flex-1">
+              <p class="font-bold truncate">${c.name}</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400">${caseCount} រឿងក្ដី</p>
+            </div>
+          </div>
+          <div class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
+            <p class="truncate flex items-center gap-2"><span>📞</span>${c.phone||'-'}</p>
+            <p class="truncate flex items-center gap-2"><span>✉️</span>${c.email||'-'}</p>
+            <p class="truncate flex items-center gap-2"><span>📍</span>${c.address||'-'}</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex gap-2">
+            <button onclick="editClient(${c.id})" class="flex-1 py-2 bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-400 rounded-xl text-sm font-medium">✏️ កែ</button>
+            <button onclick="deleteClient(${c.id})" class="flex-1 py-2 bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 rounded-xl text-sm font-medium">🗑️ លុប</button>
+          </div>
+        </div>`;
+      }).join('')
+    : '<div class="col-span-full text-center py-12"><div class="empty-icon">👥</div><p class="text-slate-400 text-sm">មិនមានអតិថិជន</p></div>';
+}
+function openClientModal(id=null) {
+  if (id) {
+    const c = DB.get('clients').find(x => x.id === id);
+    document.getElementById('clientModalTitle').textContent = 'កែអតិថិជន';
+    document.getElementById('clientId').value = c.id;
+    document.getElementById('clientName').value = c.name;
+    document.getElementById('clientPhone').value = c.phone||'';
+    document.getElementById('clientEmail').value = c.email||'';
+    document.getElementById('clientAddress').value = c.address||'';
+  } else {
+    document.getElementById('clientModalTitle').textContent = 'បន្ថែមអតិថិជនថ្មី';
+    ['clientId','clientName','clientPhone','clientEmail','clientAddress'].forEach(i => document.getElementById(i).value = '');
   }
-  renderPdfs();
-  pdfInput.value = '';
-  mergeStatus.textContent = '';
+  document.getElementById('clientModal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+function closeClientModal() { 
+  document.getElementById('clientModal').classList.add('hidden'); 
+  document.body.style.overflow = '';
+}
+function saveClient() {
+  const id = document.getElementById('clientId').value;
+  const data = {
+    name: document.getElementById('clientName').value.trim(),
+    phone: document.getElementById('clientPhone').value.trim(),
+    email: document.getElementById('clientEmail').value.trim(),
+    address: document.getElementById('clientAddress').value.trim()
+  };
+  if (!data.name) return toast('⚠️ សូមបំពេញឈ្មោះអតិថិជន');
+  const clients = DB.get('clients');
+  if (id) {
+    const idx = clients.findIndex(c => c.id == id);
+    clients[idx] = {...clients[idx], ...data};
+    toast('✅ បានកែប្រែអតិថិជន');
+  } else {
+    data.id = Date.now();
+    clients.push(data);
+    toast('✅ បានបន្ថែមអតិថិជនថ្មី');
+  }
+  DB.set('clients', clients);
+  closeClientModal();
+  renderClients();
+}
+function editClient(id) { openClientModal(id); }
+function deleteClient(id) {
+  if (!confirm('តើអ្នកពិតជាចង់លុបអតិថិជននេះ?')) return;
+  DB.set('clients', DB.get('clients').filter(c => c.id !== id));
+  toast('🗑️ បានលុបអតិថិជន');
+  renderClients();
 }
 
-function renderPdfs() {
-  const frag = document.createDocumentFragment();
-  pdfs.forEach((item, idx) => {
-    const div = document.createElement('div');
-    div.className = 'pdf-item';
-    div.draggable = true;
-    div.dataset.id = item.id;
-    div.innerHTML = `
-      <span class="pdf-num">${idx + 1}</span>
-      <div class="pdf-icon">📕</div>
-      <div class="pdf-info">
-        <div class="pdf-name">${escapeHtml(item.name)}</div>
-        <div class="pdf-meta">
-          <span>${formatSize(item.size)}</span>
-          ${item.pageCount !== null ? `<span>•</span><span>${item.pageCount} ${i18n[currentLang].pages}</span>` : ''}
+// ============ CALENDAR ============
+function renderCalendar() {
+  const cases = DB.get('cases').filter(c => c.nextHearing).sort((a,b) => new Date(a.nextHearing) - new Date(b.nextHearing));
+  document.getElementById('calendarList').innerHTML = cases.length
+    ? cases.map(c => {
+        const days = Math.ceil((new Date(c.nextHearing) - new Date()) / 86400000);
+        const badge = days <= 3 ? 'bg-red-50 text-red-600 dark:bg-red-950 dark:text-red-400' :
+                     days <= 7 ? 'bg-amber-50 text-amber-600 dark:bg-amber-950 dark:text-amber-400' :
+                     'bg-brand-50 text-brand-600 dark:bg-brand-950 dark:text-brand-400';
+        return `<div class="flex items-center gap-3 p-4 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border-l-4 border-brand-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+          <div class="text-center bg-gradient-to-br from-brand-500 to-brand-700 text-white rounded-xl px-3 py-2 min-w-[64px] shrink-0 shadow-sm">
+            <p class="text-xl font-bold leading-none">${c.nextHearing.slice(8,10)}</p>
+            <p class="text-[10px] mt-1 opacity-90">${c.nextHearing.slice(0,7)}</p>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="font-bold text-sm truncate">${c.caseNumber}</p>
+            <p class="text-sm text-slate-600 dark:text-slate-400 truncate">${c.title}</p>
+            <p class="text-xs text-slate-500 dark:text-slate-500 truncate mt-1">🏛️ ${c.court}</p>
+          </div>
+          <span class="badge ${badge} whitespace-nowrap">${days > 0 ? days + ' ថ្ងៃ' : 'ថ្ងៃនេះ'}</span>
+        </div>`;
+      }).join('')
+    : '<div class="text-center py-12"><div class="empty-icon">📅</div><p class="text-slate-400 text-sm">មិនមានកាលវិភាគ</p></div>';
+}
+
+// ============ DOCUMENTS ============
+function renderDocSelect() {
+  const cases = DB.get('cases');
+  document.getElementById('docCaseSelect').innerHTML = cases.length
+    ? cases.map(c => `<option value="${c.id}">${c.caseNumber} - ${c.title}</option>`).join('')
+    : '<option>មិនមានរឿងក្ដី</option>';
+  renderDocs();
+}
+function renderDocs() {
+  const caseId = parseInt(document.getElementById('docCaseSelect').value);
+  const docs = DB.get('documents').filter(d => d.caseId === caseId);
+  document.getElementById('docsList').innerHTML = docs.length
+    ? docs.map(d => `
+      <div class="flex justify-between items-center p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-xl gap-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-10 h-10 bg-red-50 dark:bg-red-950 rounded-xl flex items-center justify-center shrink-0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+          </div>
+          <div class="min-w-0">
+            <p class="font-medium text-sm truncate">${d.name}</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400">${d.date}</p>
+          </div>
         </div>
-      </div>
-      <span class="drag-handle">✥</span>
-      <button class="remove-btn" data-remove="${item.id}">🗑️</button>`;
-    div.querySelector('[data-remove]').addEventListener('click', (e) => {
-      e.stopPropagation();
-      pdfs = pdfs.filter(p => p.id !== item.id);
-      renderPdfs();
-    });
-    div.addEventListener('dragstart', onPdfDragStart);
-    div.addEventListener('dragend', onPdfDragEnd);
-    div.addEventListener('dragover', onPdfDragOver);
-    div.addEventListener('dragleave', onPdfDragLeave);
-    div.addEventListener('drop', onPdfDrop);
-    addTouchDrag(div, item.id, mergedNameInput, 'pdfs');
-    frag.appendChild(div);
-  });
-  pdfList.innerHTML = '';
-  pdfList.appendChild(frag);
-  mergeBtn.disabled = pdfs.length < 2;
-  pdfHeader.classList.toggle('show', pdfs.length > 0);
-  if (pdfs.length > 0) pdfCount.textContent = pdfs.length;
-  mergeHint.classList.toggle('show', pdfs.length > 1);
+        <button onclick="deleteDoc(${d.id})" class="w-9 h-9 rounded-xl hover:bg-red-50 dark:hover:bg-red-950 text-red-500 shrink-0 flex items-center justify-center">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        </button>
+      </div>`).join('')
+    : '<div class="text-center py-8"><div class="empty-icon">📄</div><p class="text-slate-400 text-sm">មិនមានឯកសារ</p></div>';
+}
+function deleteDoc(id) {
+  if (!confirm('លុបឯកសារនេះ?')) return;
+  DB.set('documents', DB.get('documents').filter(d => d.id !== id));
+  renderDocs();
 }
 
-function onPdfDragStart(e) {
-  pdfDragSrcId = Number(this.dataset.id);
-  this.classList.add('dragging');
-  e.dataTransfer.effectAllowed = 'move';
-  e.dataTransfer.setData('text/plain', String(pdfDragSrcId));
-}
-function onPdfDragEnd() {
-  this.classList.remove('dragging');
-  document.querySelectorAll('.pdf-item').forEach(t => t.classList.remove('drag-over'));
-  pdfDragSrcId = null;
-}
-function onPdfDragOver(e) {
-  e.preventDefault();
-  e.dataTransfer.dropEffect = 'move';
-  if (Number(this.dataset.id) !== pdfDragSrcId) this.classList.add('drag-over');
-}
-function onPdfDragLeave() { this.classList.remove('drag-over'); }
-function onPdfDrop(e) {
-  e.preventDefault();
-  this.classList.remove('drag-over');
-  const targetId = Number(this.dataset.id);
-  if (pdfDragSrcId === null || pdfDragSrcId === targetId) return;
-  const srcIdx = pdfs.findIndex(i => i.id === pdfDragSrcId);
-  const tgtIdx = pdfs.findIndex(i => i.id === targetId);
-  if (srcIdx < 0 || tgtIdx < 0) return;
-  const [moved] = pdfs.splice(srcIdx, 1);
-  pdfs.splice(tgtIdx, 0, moved);
-  renderPdfs();
-}
-
-mergeBtn.addEventListener('click', async () => {
-  if (pdfs.length < 2) return;
-  const name = mergedNameInput.value.trim() || 'merged-document';
-  mergeBtn.disabled = true;
-  mergeStatus.textContent = '';
-  mergeStatus.classList.remove('success', 'error');
-  hideResultCard('merge');
-  clearResult('merge');
-  mergeProgressWrap.classList.add('active', 'merge-active');
-  updateMergeProgress(0);
-  let totalPages = 0;
-
-  try {
-    const mergedPdf = await PDFDocument.create();
-    const total = pdfs.length;
-    for (let i = 0; i < total; i++) {
-      const item = pdfs[i];
-      const buf = await item.file.arrayBuffer();
-      const srcDoc = await PDFDocument.load(buf, { ignoreEncryption: true });
-      totalPages += srcDoc.getPageCount();
-      const copiedPages = await mergedPdf.copyPages(srcDoc, srcDoc.getPageIndices());
-      copiedPages.forEach(p => mergedPdf.addPage(p));
-      updateMergeProgress(Math.round(((i + 1) / total) * 90));
-      await new Promise(r => setTimeout(r, 20));
+// ============ BACKUP / RESTORE ============
+function exportData() {
+  const data = {
+    version: '1.0',
+    appName: 'Case Manager Pro',
+    exportedAt: new Date().toISOString(),
+    exportedBy: 'admin',
+    data: {
+      cases: DB.get('cases'),
+      clients: DB.get('clients'),
+      documents: DB.get('documents')
     }
-    updateMergeProgress(95);
-    const bytes = await mergedPdf.save();
-    updateMergeProgress(100);
-    const blob = new Blob([bytes], { type: 'application/pdf' });
-    const fileName = `${name}.pdf`;
-    setResult('merge', blob, fileName);
-    showResultCard('merge', fileName);
-    resetMergeBtn.classList.add('show');
-    await addToHistory({ type: 'merge', name: fileName, pages: totalPages, blob });
-  } catch (err) {
-    mergeStatus.textContent = '❌ ' + (err.message || 'Error');
-    mergeStatus.classList.add('error');
-  } finally {
-    mergeBtn.disabled = false;
-    setTimeout(() => {
-      mergeProgressWrap.classList.remove('active', 'merge-active');
-      updateMergeProgress(0);
-    }, 1500);
-  }
-});
-
-resetMergeBtn.addEventListener('click', () => {
-  pdfs = []; pdfUid = 0; pdfDragSrcId = null;
-  pdfInput.value = '';
-  mergedNameInput.value = 'merged-document';
-  clearResult('merge');
-  hideResultCard('merge');
-  mergeProgressWrap.classList.remove('active', 'merge-active');
-  updateMergeProgress(0);
-  mergeStatus.textContent = '';
-  mergeStatus.classList.remove('success', 'error');
-  mergeBtn.disabled = true;
-  resetMergeBtn.classList.remove('show');
-  renderPdfs();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-function updateMergeProgress(p) {
-  mergeProgressFill.style.width = p + '%';
-  mergeProgressText.textContent = p + '%';
+  };
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const now = new Date();
+  const dateStr = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`;
+  const timeStr = `${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}`;
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `case-manager-backup-${dateStr}-${timeStr}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('✅ បានទាញយក Backup ជោគជ័យ!');
 }
 
-/* ==================== PART 3: SPLIT ==================== */
-const splitInput = document.getElementById('splitInput');
-const splitDrop = document.getElementById('splitDrop');
-const splitInfo = document.getElementById('splitInfo');
-const splitFileName = document.getElementById('splitFileName');
-const splitFileMeta = document.getElementById('splitFileMeta');
-const splitTotalPages = document.getElementById('splitTotalPages');
-const splitOptions = document.getElementById('splitOptions');
-const splitBtn = document.getElementById('splitBtn');
-const resetSplitBtn = document.getElementById('resetSplitBtn');
-const splitStatus = document.getElementById('splitStatus');
-const splitProgressWrap = document.getElementById('splitProgressWrap');
-const splitProgressFill = document.getElementById('splitProgressFill');
-const splitProgressText = document.getElementById('splitProgressText');
-const rangeFrom = document.getElementById('rangeFrom');
-const rangeTo = document.getElementById('rangeTo');
-const skipPages = document.getElementById('skipPages');
-const rangeModeOptions = document.getElementById('rangeModeOptions');
-const eachModeOptions = document.getElementById('eachModeOptions');
-const splitNameInput = document.getElementById('splitName');
+let pendingImportData = null;
 
-let splitFile = null;
-let splitDoc = null;
-let splitPageCount = 0;
-let splitMode = 'range';
-
-splitInput.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (file) loadSplitFile(file);
-});
-attachFileDrop(splitDrop, (files) => {
-  const file = files.find(f => f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf'));
-  if (file) loadSplitFile(file);
-});
-
-async function loadSplitFile(file) {
-  splitStatus.textContent = '⏳...';
-  splitStatus.classList.remove('success', 'error');
-  try {
-    const buf = await file.arrayBuffer();
-    const doc = await PDFDocument.load(buf, { ignoreEncryption: true });
-    splitFile = file; splitDoc = doc; splitPageCount = doc.getPageCount();
-    splitFileName.textContent = file.name;
-    splitFileMeta.textContent = `${formatSize(file.size)} • ${splitPageCount} ${i18n[currentLang].pages}`;
-    splitTotalPages.textContent = splitPageCount;
-    splitInfo.style.display = 'flex';
-    splitOptions.style.display = 'block';
-    rangeFrom.max = splitPageCount;
-    rangeTo.max = splitPageCount;
-    rangeFrom.value = 1;
-    rangeTo.value = splitPageCount;
-
-    if (!splitNameInput.value || splitNameInput.value === 'split-document') {
-      splitNameInput.value = file.name.replace(/\.pdf$/i, '') + '-split';
-    }
-
-    splitBtn.disabled = false;
-    splitStatus.textContent = '';
-  } catch (err) {
-    splitStatus.textContent = '❌ PDF error';
-    splitStatus.classList.add('error');
-    splitFile = null; splitDoc = null; splitPageCount = 0;
-    splitInfo.style.display = 'none'; splitOptions.style.display = 'none';
-    splitBtn.disabled = true;
-  }
-  splitInput.value = '';
+function handleDrop(event) {
+  event.preventDefault();
+  document.getElementById('dropZone').classList.remove('border-brand-500', 'bg-brand-50');
+  const file = event.dataTransfer.files[0];
+  if (file) processImportFile(file);
 }
 
-document.querySelectorAll('.mode-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.mode-btn').forEach(b => {
-      b.classList.remove('active');
-      b.style.background = 'var(--bg-card)';
-      b.style.color = 'var(--text-mid)';
-    });
-    btn.classList.add('active');
-    btn.style.background = 'linear-gradient(135deg,#ecfeff,#cffafe)';
-    btn.style.color = 'var(--split-dark)';
-    splitMode = btn.dataset.mode;
-    if (splitMode === 'range') {
-      rangeModeOptions.style.display = 'block';
-      eachModeOptions.style.display = 'none';
-    } else {
-      rangeModeOptions.style.display = 'none';
-      eachModeOptions.style.display = 'block';
-    }
-  });
-});
+function handleImport(event) {
+  const file = event.target.files[0];
+  if (file) processImportFile(file);
+}
 
-function parseSkipList(str, total) {
-  const set = new Set();
-  if (!str || !str.trim()) return set;
-  const parts = str.split(',').map(s => s.trim()).filter(Boolean);
-  for (const part of parts) {
-    if (part.includes('-')) {
-      const [a, b] = part.split('-').map(s => parseInt(s.trim(), 10));
-      if (!isNaN(a) && !isNaN(b)) {
-        const s1 = Math.min(a, b), e1 = Math.max(a, b);
-        for (let i = s1; i <= e1; i++) if (i >= 1 && i <= total) set.add(i);
+function processImportFile(file) {
+  if (!file.name.endsWith('.json')) return toast('❌ សូមជ្រើស File .json ប៉ុណ្ណោះ');
+  if (file.size > 10 * 1024 * 1024) return toast('❌ File ធំពេក (ត្រូវ < 10MB)');
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const json = JSON.parse(e.target.result);
+      if (!json.data || (!Array.isArray(json.data.cases) && !Array.isArray(json.data.clients))) {
+        return toast('❌ File មិនត្រឹមត្រូវ ឬខូច');
       }
-    } else {
-      const n = parseInt(part, 10);
-      if (!isNaN(n) && n >= 1 && n <= total) set.add(n);
+      pendingImportData = json;
+      showImportPreview(json);
+    } catch (err) {
+      toast('❌ File មិនមែនជា JSON ត្រឹមត្រូវ');
     }
-  }
-  return set;
+  };
+  reader.readAsText(file);
 }
 
-function getSplitPages() {
-  if (!splitDoc) return [];
-  const total = splitPageCount;
-  if (splitMode === 'each') {
-    const arr = [];
-    for (let i = 0; i < total; i++) arr.push(i);
-    return arr;
-  }
-  let from = parseInt(rangeFrom.value, 10) || 1;
-  let to = parseInt(rangeTo.value, 10) || total;
-  from = Math.max(1, Math.min(from, total));
-  to = Math.max(1, Math.min(to, total));
-  if (from > to) [from, to] = [to, from];
-  const skipSet = parseSkipList(skipPages.value, total);
-  const pages = [];
-  for (let i = from; i <= to; i++) if (!skipSet.has(i)) pages.push(i - 1);
-  return pages;
+function showImportPreview(json) {
+  const preview = document.getElementById('importPreview');
+  const casesCount = json.data.cases?.length || 0;
+  const clientsCount = json.data.clients?.length || 0;
+  const docsCount = json.data.documents?.length || 0;
+  const date = json.exportedAt ? new Date(json.exportedAt).toLocaleString('km-KH') : 'មិនស្គាល់';
+  preview.innerHTML = `
+    <p class="font-semibold text-slate-700 dark:text-slate-300 mb-2">📋 ទិន្នន័យក្នុង File:</p>
+    <div class="flex justify-between"><span>📁 រឿងក្ដី:</span><span class="font-semibold">${casesCount}</span></div>
+    <div class="flex justify-between"><span>👥 អតិថិជន:</span><span class="font-semibold">${clientsCount}</span></div>
+    <div class="flex justify-between"><span>📄 ឯកសារ:</span><span class="font-semibold">${docsCount}</span></div>
+    <div class="flex justify-between pt-2 border-t border-slate-200 dark:border-slate-700 mt-2">
+      <span>📅 Export ថ្ងៃ:</span><span class="font-semibold text-[10px]">${date}</span>
+    </div>`;
+  preview.classList.remove('hidden');
+  const btn = document.getElementById('confirmImportBtn');
+  btn.disabled = false;
+  btn.className = 'btn-primary w-full text-white py-3 rounded-xl font-medium flex items-center justify-center gap-2';
 }
 
-splitBtn.addEventListener('click', async () => {
-  if (!splitDoc || !splitFile) return;
-  const pages = getSplitPages();
-  if (pages.length === 0) {
-    splitStatus.textContent = '❌ No pages';
-    splitStatus.classList.add('error');
-    return;
+function confirmImport() {
+  if (!pendingImportData) return;
+  const mode = document.querySelector('input[name="importMode"]:checked').value;
+  const incoming = pendingImportData.data;
+  if (mode === 'replace') {
+    if (!confirm('⚠️ ការជំនួសទាំងអស់ នឹងលុបទិន្នន័យបច្ចុប្បន្នចោល! តើបន្តទេ?')) return;
+    DB.set('cases', incoming.cases || []);
+    DB.set('clients', incoming.clients || []);
+    DB.set('documents', incoming.documents || []);
+    toast('✅ បានជំនួសទិន្នន័យជោគជ័យ!');
+  } else {
+    const result = mergeData(incoming);
+    toast(`✅ បញ្ចូល: +${result.addedCases} រឿងក្ដី, +${result.addedClients} អតិថិជន, +${result.addedDocs} ឯកសារ`);
   }
-  splitBtn.disabled = true;
-  splitStatus.textContent = '';
-  splitStatus.classList.remove('success', 'error');
-  hideResultCard('split');
-  clearResult('split');
-  splitProgressWrap.classList.add('active', 'split-active');
-  updateSplitProgress(0);
+  pendingImportData = null;
+  document.getElementById('importFile').value = '';
+  document.getElementById('importPreview').classList.add('hidden');
+  const btn = document.getElementById('confirmImportBtn');
+  btn.disabled = true;
+  btn.className = 'w-full py-3 rounded-xl font-medium flex items-center justify-center gap-2 bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed';
+  renderSettingsStats();
+  const activePage = document.querySelector('.page:not(.hidden)')?.id;
+  if (activePage === 'page-dashboard') renderDashboard();
+  if (activePage === 'page-cases') renderCases();
+  if (activePage === 'page-clients') renderClients();
+}
 
-  try {
-    if (splitMode === 'each') {
-      await splitEachPage();
+function mergeData(incoming) {
+  const existingCases = DB.get('cases');
+  const existingClients = DB.get('clients');
+  const existingDocs = DB.get('documents');
+  let addedClients = 0;
+  const clientIdMap = {};
+  (incoming.clients || []).forEach(c => {
+    const key = `${c.name}|${c.phone||''}`;
+    const existing = existingClients.find(x => `${x.name}|${x.phone||''}` === key);
+    if (existing) {
+      clientIdMap[c.id] = existing.id;
     } else {
-      await splitRange(pages);
+      const newId = Date.now() + Math.floor(Math.random() * 10000);
+      existingClients.push({ ...c, id: newId });
+      clientIdMap[c.id] = newId;
+      addedClients++;
     }
-  } catch (err) {
-    splitStatus.textContent = '❌ ' + (err.message || 'Error');
-    splitStatus.classList.add('error');
-  } finally {
-    splitBtn.disabled = false;
-    setTimeout(() => {
-      splitProgressWrap.classList.remove('active', 'split-active');
-      updateSplitProgress(0);
-    }, 1500);
+  });
+  let addedCases = 0;
+  const caseIdMap = {};
+  const existingCaseNumbers = new Set(existingCases.map(c => c.caseNumber));
+  (incoming.cases || []).forEach(c => {
+    if (existingCaseNumbers.has(c.caseNumber)) {
+      const existing = existingCases.find(x => x.caseNumber === c.caseNumber);
+      caseIdMap[c.id] = existing.id;
+    } else {
+      const newId = Date.now() + Math.floor(Math.random() * 10000);
+      const newClientId = clientIdMap[c.clientId] || c.clientId;
+      existingCases.push({ ...c, id: newId, clientId: newClientId });
+      caseIdMap[c.id] = newId;
+      addedCases++;
+    }
+  });
+  let addedDocs = 0;
+  const docKeys = new Set(existingDocs.map(d => `${d.name}|${d.caseId}`));
+  (incoming.documents || []).forEach(d => {
+    const newCaseId = caseIdMap[d.caseId] || d.caseId;
+    const key = `${d.name}|${newCaseId}`;
+    if (!docKeys.has(key)) {
+      existingDocs.push({ ...d, id: Date.now() + Math.floor(Math.random() * 10000), caseId: newCaseId });
+      addedDocs++;
+    }
+  });
+  DB.set('cases', existingCases);
+  DB.set('clients', existingClients);
+  DB.set('documents', existingDocs);
+  return { addedCases, addedClients, addedDocs };
+}
+
+function clearAllData() {
+  if (!confirm('⚠️ តើអ្នកពិតជាចង់លុបទិន្នន័យទាំងអស់?\n\nសកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ!')) return;
+  if (!confirm('បញ្ជាក់ម្ដងទៀត: លុបទិន្នន័យទាំងអស់?')) return;
+  DB.set('cases', []);
+  DB.set('clients', []);
+  DB.set('documents', []);
+  toast('🗑️ បានលុបទិន្នន័យទាំងអស់');
+  renderSettingsStats();
+  showPage('dashboard');
+}
+
+function resetDemo() {
+  if (!confirm('ត្រឡប់ទៅទិន្នន័យ Demo?\n\nទិន្នន័យបច្ចុប្បន្ននឹងត្រូវលុប!')) return;
+  localStorage.removeItem('cases');
+  localStorage.removeItem('clients');
+  localStorage.removeItem('documents');
+  seedData();
+  toast('✅ បានត្រឡប់ទៅ Demo');
+  renderSettingsStats();
+  showPage('dashboard');
+}
+
+function renderSettingsStats() {
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  set('backupCaseCount', DB.get('cases').length);
+  set('backupClientCount', DB.get('clients').length);
+  set('backupDocCount', DB.get('documents').length);
+}
+
+// ============ UTILITIES ============
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.remove('hidden');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.add('hidden'), 2500);
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeCaseModal();
+    closeClientModal();
+    closeSidebarOnMobile();
   }
 });
 
-async function splitRange(pages) {
-  const name = splitNameInput.value.trim() || 'split-document';
-  updateSplitProgress(15);
-  const newDoc = await PDFDocument.create();
-  const copiedPages = await newDoc.copyPages(splitDoc, pages);
-  copiedPages.forEach(p => newDoc.addPage(p));
-  updateSplitProgress(80);
-  const bytes = await newDoc.save();
-  updateSplitProgress(100);
-  const blob = new Blob([bytes], { type: 'application/pdf' });
-  const fileName = `${name}.pdf`;
-  setResult('split', blob, fileName);
-  showResultCard('split', fileName);
-  resetSplitBtn.classList.add('show');
-  await addToHistory({ type: 'split', name: fileName, pages: pages.length, blob });
-}
-
-async function splitEachPage() {
-  const name = splitNameInput.value.trim() || 'split-document';
-  const total = splitPageCount;
-  await loadJSZip();
-  const zip = new JSZip();
-  const folder = zip.folder(name);
-  for (let i = 0; i < total; i++) {
-    const newDoc = await PDFDocument.create();
-    const [page] = await newDoc.copyPages(splitDoc, [i]);
-    newDoc.addPage(page);
-    const bytes = await newDoc.save();
-    folder.file(`${name}-page-${String(i + 1).padStart(3, '0')}.pdf`, bytes);
-    updateSplitProgress(Math.round(((i + 1) / total) * 90));
-    if (i % 5 === 0) await new Promise(r => setTimeout(r, 0));
+window.addEventListener('resize', () => {
+  if (window.innerWidth >= 1024) {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.add('hidden');
   }
-  updateSplitProgress(95);
-  const zipBlob = await zip.generateAsync({ type: 'blob' });
-  updateSplitProgress(100);
-  const fileName = `${name}.zip`;
-  setResult('split', zipBlob, fileName);
-  showResultCard('split', fileName);
-  resetSplitBtn.classList.add('show');
-  await addToHistory({ type: 'split', name: fileName, pages: total, blob: zipBlob });
-}
-
-let jszipLoaded = false;
-function loadJSZip() {
-  return new Promise((resolve, reject) => {
-    if (jszipLoaded && window.JSZip) return resolve();
-    const s = document.createElement('script');
-    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
-    s.onload = () => { jszipLoaded = true; resolve(); };
-    s.onerror = reject;
-    document.head.appendChild(s);
-  });
-}
-
-resetSplitBtn.addEventListener('click', () => {
-  splitFile = null; splitDoc = null; splitPageCount = 0;
-  splitInput.value = '';
-  rangeFrom.value = 1; rangeTo.value = 1; skipPages.value = '';
-  splitNameInput.value = 'split-document';
-  splitInfo.style.display = 'none';
-  splitOptions.style.display = 'none';
-  clearResult('split');
-  hideResultCard('split');
-  splitProgressWrap.classList.remove('active', 'split-active');
-  updateSplitProgress(0);
-  splitStatus.textContent = '';
-  splitStatus.classList.remove('success', 'error');
-  splitBtn.disabled = true;
-  resetSplitBtn.classList.remove('show');
-  document.querySelectorAll('.mode-btn').forEach(b => {
-    b.classList.remove('active');
-    b.style.background = 'var(--bg-card)';
-    b.style.color = 'var(--text-mid)';
-  });
-  const first = document.querySelector('.mode-btn[data-mode="range"]');
-  first.classList.add('active');
-  first.style.background = 'linear-gradient(135deg,#ecfeff,#cffafe)';
-  first.style.color = 'var(--split-dark)';
-  splitMode = 'range';
-  rangeModeOptions.style.display = 'block';
-  eachModeOptions.style.display = 'none';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
-function updateSplitProgress(p) {
-  splitProgressFill.style.width = p + '%';
-  splitProgressText.textContent = p + '%';
+
+// ============ INIT ============
+function initApp() {
+  seedData();
+  showPage('dashboard');
 }
 
-/* ==================== INIT ==================== */
-applyLang();
-applyTheme();
-renderHistory();
-
-if (window.pdfjsLib) {
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-}
+window.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  if (sessionStorage.getItem('loggedIn')) {
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    initApp();
+  }
+});
 </script>
 </body>
- </html>
+</html>
