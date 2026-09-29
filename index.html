@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<title>⚖️ Case Manager Pro</title>
+<title>⚖️ ប្រព័ន្ធគ្រប់គ្រងរឿងក្ដី</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -20,10 +20,7 @@ tailwind.config = {
   darkMode: 'class',
   theme: {
     extend: {
-      fontFamily: {
-        khmer: ['"Kantumruy Pro"', 'sans-serif'],
-        sans: ['Inter', 'sans-serif']
-      },
+      fontFamily: { khmer: ['"Kantumruy Pro"', 'sans-serif'] },
       colors: {
         brand: {
           50: '#eef4ff', 100: '#d9e5ff', 200: '#bcd1ff', 300: '#8eb4ff',
@@ -122,7 +119,6 @@ tailwind.config = {
   
   .stat-card { position: relative; overflow: hidden; }
   
-  /* Custom select style */
   select {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
@@ -139,25 +135,80 @@ tailwind.config = {
     background: #f1f5f9;
     padding: 4px 0;
   }
-  .dark select optgroup {
-    color: #8eb4ff;
-    background: #1e293b;
+  .dark select optgroup { color: #8eb4ff; background: #1e293b; }
+  select option { padding: 8px; font-size: 14px; color: #0f172a; }
+  .dark select option { background: #0f172a; color: #e2e8f0; }
+  
+  /* Password strength */
+  .strength-bar { transition: all 0.3s ease; }
+  
+  /* Loading spinner */
+  .spinner {
+    border: 3px solid rgba(255,255,255,0.3);
+    border-top: 3px solid white;
+    border-radius: 50%;
+    width: 20px; height: 20px;
+    animation: spin 0.8s linear infinite;
+    display: inline-block;
   }
-  select option {
-    padding: 8px;
-    font-size: 14px;
-    color: #0f172a;
-  }
-  .dark select option {
-    background: #0f172a;
-    color: #e2e8f0;
-  }
+  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
 
+<!-- ============ SETUP SCREEN (First Time Only) ============ -->
+<div id="setupScreen" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4 safe-top safe-bottom overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-br from-brand-950 via-brand-900 to-brand-800"></div>
+  <div class="absolute inset-0 opacity-30" style="background-image: radial-gradient(circle at 20% 30%, rgba(139,92,246,0.4), transparent 40%), radial-gradient(circle at 80% 70%, rgba(53,99,255,0.5), transparent 40%);"></div>
+  <div class="absolute top-10 left-10 w-72 h-72 bg-brand-500/30 rounded-full blur-3xl animate-pulse-soft"></div>
+  <div class="absolute bottom-10 right-10 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse-soft" style="animation-delay: 1s;"></div>
+
+  <div class="relative bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl p-8 rounded-3xl shadow-2xl w-full max-w-md border border-white/20 animate-slide-up max-h-[95vh] overflow-y-auto">
+    <div class="text-center mb-6">
+      <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-brand-500 to-brand-700 rounded-2xl shadow-lg shadow-brand-500/30 mb-4">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v18M5 8h14M5 8l-3 8a3 3 0 0 0 6 0L5 8zM19 8l-3 8a3 3 0 0 0 6 0l-3-8z"/>
+        </svg>
+      </div>
+      <h1 class="text-xl font-bold text-slate-900 dark:text-white">ការដំឡើងដំបូង</h1>
+      <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">បង្កើតគណនីអ្នកគ្រប់គ្រង (Admin)</p>
+    </div>
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">ឈ្មោះពេញ <span class="text-red-500">*</span></label>
+        <input id="setupName" type="text" placeholder="ឧ. លោក សុខ វិបុល" class="w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">ឈ្មោះអ្នកប្រើ <span class="text-red-500">*</span></label>
+        <input id="setupUser" type="text" placeholder="admin" autocomplete="username" class="w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">លេខសម្ងាត់ <span class="text-red-500">*</span></label>
+        <input id="setupPass" type="password" placeholder="យ៉ាងតិច ៦ តួ" autocomplete="new-password" oninput="checkSetupStrength()" class="w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
+        <div class="mt-2 flex gap-1">
+          <div class="strength-bar flex-1 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full" id="sbar1"></div>
+          <div class="strength-bar flex-1 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full" id="sbar2"></div>
+          <div class="strength-bar flex-1 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full" id="sbar3"></div>
+          <div class="strength-bar flex-1 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full" id="sbar4"></div>
+        </div>
+        <p id="strengthText" class="text-xs text-slate-500 dark:text-slate-400 mt-1">សូមបញ្ចូលលេខសម្ងាត់</p>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">បញ្ជាក់លេខសម្ងាត់ <span class="text-red-500">*</span></label>
+        <input id="setupPass2" type="password" placeholder="បញ្ចូលម្ដងទៀត" autocomplete="new-password" class="w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
+      </div>
+      <button onclick="handleSetup()" class="btn-primary w-full text-white py-3.5 rounded-xl font-semibold text-base">
+        បង្កើតគណនី និងចាប់ផ្ដើម
+      </button>
+      <p class="text-xs text-slate-500 dark:text-slate-400 text-center">
+        ព័ត៌មាននេះត្រូវបានរក្សាទុកក្នុងឧបករណ៍របស់អ្នកតែប៉ុណ្ណោះ
+      </p>
+    </div>
+  </div>
+</div>
+
 <!-- ============ LOGIN ============ -->
-<div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center p-4 safe-top safe-bottom overflow-hidden">
+<div id="loginScreen" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 safe-top safe-bottom overflow-hidden">
   <div class="absolute inset-0 bg-gradient-to-br from-brand-950 via-brand-900 to-brand-800"></div>
   <div class="absolute inset-0 opacity-30" style="background-image: radial-gradient(circle at 20% 30%, rgba(139,92,246,0.4), transparent 40%), radial-gradient(circle at 80% 70%, rgba(53,99,255,0.5), transparent 40%);"></div>
   <div class="absolute top-10 left-10 w-72 h-72 bg-brand-500/30 rounded-full blur-3xl animate-pulse-soft"></div>
@@ -170,31 +221,34 @@ tailwind.config = {
           <path d="M12 3v18M5 8h14M5 8l-3 8a3 3 0 0 0 6 0L5 8zM19 8l-3 8a3 3 0 0 0 6 0l-3-8z"/>
         </svg>
       </div>
-      <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Case Manager Pro</h1>
-      <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">ប្រព័ន្ធគ្រប់គ្រងរឿងក្ដី</p>
+      <h1 class="text-2xl font-bold text-slate-900 dark:text-white">ប្រព័ន្ធគ្រប់គ្រងរឿងក្ដី</h1>
+      <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">សូមចូលប្រើប្រាស់ដើម្បីបន្ត</p>
     </div>
     <div class="space-y-4">
       <div>
         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">ឈ្មោះអ្នកប្រើ</label>
         <div class="relative">
           <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          <input id="loginUser" type="text" value="admin" autocomplete="username" class="w-full pl-11 pr-4 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 focus:bg-white dark:focus:bg-slate-900 rounded-xl outline-none text-base transition-all">
+          <input id="loginUser" type="text" autocomplete="username" class="w-full pl-11 pr-4 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 focus:bg-white dark:focus:bg-slate-900 rounded-xl outline-none text-base transition-all">
         </div>
       </div>
       <div>
         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">លេខសម្ងាត់</label>
         <div class="relative">
           <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <input id="loginPass" type="password" value="1234" autocomplete="current-password" class="w-full pl-11 pr-4 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 focus:bg-white dark:focus:bg-slate-900 rounded-xl outline-none text-base transition-all">
+          <input id="loginPass" type="password" autocomplete="current-password" onkeypress="if(event.key==='Enter') login()" class="w-full pl-11 pr-4 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 focus:bg-white dark:focus:bg-slate-900 rounded-xl outline-none text-base transition-all">
         </div>
       </div>
-      <button onclick="login()" class="btn-primary w-full text-white py-3.5 rounded-xl font-semibold text-base">
-        ចូលប្រើប្រាស់ →
-      </button>
-      <div class="flex items-center gap-2 justify-center pt-2">
-        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-        <p class="text-xs text-slate-500 dark:text-slate-400">Demo: admin / 1234</p>
+      <div class="flex items-center justify-between">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input id="rememberMe" type="checkbox" class="w-4 h-4 rounded">
+          <span class="text-sm text-slate-600 dark:text-slate-400">ចងចាំខ្ញុំ</span>
+        </label>
       </div>
+      <div id="loginError" class="hidden text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/50 p-3 rounded-xl"></div>
+      <button id="loginBtn" onclick="login()" class="btn-primary w-full text-white py-3.5 rounded-xl font-semibold text-base flex items-center justify-center gap-2">
+        <span id="loginBtnText">ចូលប្រើប្រាស់ →</span>
+      </button>
     </div>
   </div>
 </div>
@@ -204,7 +258,6 @@ tailwind.config = {
 
   <div id="overlay" onclick="toggleSidebar()" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-30 lg:hidden animate-fade-in"></div>
 
-  <!-- SIDEBAR -->
   <aside id="sidebar" class="w-72 bg-brand-950 text-white flex flex-col fixed lg:relative h-full z-40 safe-top shadow-2xl">
     <div class="p-5 border-b border-white/10 flex justify-between items-center">
       <div class="flex items-center gap-3">
@@ -215,7 +268,7 @@ tailwind.config = {
         </div>
         <div>
           <h1 class="text-base font-bold tracking-tight">Case Manager</h1>
-          <p class="text-[10px] text-brand-300 uppercase tracking-widest">Pro Edition</p>
+          <p class="text-[10px] text-brand-300 uppercase tracking-widest">Professional</p>
         </div>
       </div>
       <button onclick="toggleSidebar()" class="lg:hidden text-brand-300 p-2 hover:text-white">
@@ -272,6 +325,13 @@ tailwind.config = {
     </nav>
 
     <div class="p-4 border-t border-white/10 safe-bottom space-y-2">
+      <div class="flex items-center gap-3 px-3 py-2 mb-2">
+        <div id="userAvatar" class="w-9 h-9 bg-gradient-to-br from-brand-500 to-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm shrink-0">A</div>
+        <div class="min-w-0 flex-1">
+          <p id="userName" class="text-sm font-medium truncate">Admin</p>
+          <p id="userRole" class="text-[10px] text-brand-300">អ្នកគ្រប់គ្រង</p>
+        </div>
+      </div>
       <button onclick="installApp()" id="installBtn" class="hidden w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white py-2.5 rounded-xl text-sm font-medium shadow-lg transition-all">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M6 15l6 6 6-6M5 21h14"/></svg>
         ដំឡើង App
@@ -287,7 +347,6 @@ tailwind.config = {
     </div>
   </aside>
 
-  <!-- MAIN -->
   <main class="flex-1 overflow-y-auto scroll-smooth bg-slate-50 dark:bg-slate-950">
     
     <header class="glass sticky top-0 z-20 border-b border-slate-200/60 dark:border-slate-800/60 safe-top">
@@ -303,8 +362,8 @@ tailwind.config = {
         </div>
         <div class="flex items-center gap-2">
           <div class="flex items-center gap-2 pl-2 pr-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full">
-            <div class="w-7 h-7 bg-gradient-to-br from-brand-500 to-purple-600 text-white rounded-full flex items-center justify-center font-bold text-xs">A</div>
-            <span class="hidden md:inline text-sm font-medium">Admin</span>
+            <div id="headerAvatar" class="w-7 h-7 bg-gradient-to-br from-brand-500 to-purple-600 text-white rounded-full flex items-center justify-center font-bold text-xs">A</div>
+            <span id="headerName" class="hidden md:inline text-sm font-medium">Admin</span>
           </div>
         </div>
       </div>
@@ -584,6 +643,31 @@ tailwind.config = {
           </div>
         </div>
 
+        <!-- Account -->
+        <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 mb-5">
+          <div class="flex items-start gap-3 mb-4">
+            <div class="w-11 h-11 bg-purple-50 dark:bg-purple-950 rounded-xl flex items-center justify-center shrink-0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-bold">គណនីរបស់អ្នក</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">គ្រប់គ្រងព័ត៌មានគណនី</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <div class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">ឈ្មោះ</p>
+              <p id="settingsName" class="font-semibold">-</p>
+            </div>
+            <div class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">ឈ្មោះអ្នកប្រើ</p>
+              <p id="settingsUsername" class="font-semibold">-</p>
+            </div>
+          </div>
+          <button onclick="openPasswordModal()" class="mt-3 w-full sm:w-auto px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl text-sm font-medium">
+            🔐 ផ្លាស់ប្ដូរលេខសម្ងាត់          </button>
+        </div>
+
         <div class="bg-red-50 dark:bg-red-950/30 p-5 rounded-2xl border border-red-200 dark:border-red-900">
           <div class="flex items-start gap-3">
             <div class="w-11 h-11 bg-red-100 dark:bg-red-950 rounded-xl flex items-center justify-center shrink-0">
@@ -592,10 +676,9 @@ tailwind.config = {
             <div class="flex-1">
               <h3 class="font-bold text-red-700 dark:text-red-400">តំបន់គ្រោះថ្នាក់</h3>
               <p class="text-xs text-red-600 dark:text-red-400/80 mt-1">សកម្មភាពទាំងនេះមិនអាចត្រឡប់វិញបានទេ</p>
-              <div class="mt-3 flex flex-wrap gap-2">
-                <button onclick="clearAllData()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium">🗑️ លុបទិន្នន័យទាំងអស់</button>
-                <button onclick="resetDemo()" class="px-4 py-2 bg-white dark:bg-slate-800 border border-red-300 dark:border-red-900 text-red-600 dark:text-red-400 rounded-lg text-sm font-medium">🔄 ត្រឡប់ទៅ Demo</button>
-              </div>
+              <button onclick="clearAllData()" class="mt-3 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium">
+                🗑️ លុបទិន្នន័យទាំងអស់
+              </button>
             </div>
           </div>
         </div>
@@ -638,7 +721,6 @@ tailwind.config = {
         <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">តុលាការ <span class="text-red-500">*</span></label>
         <select id="caseCourt" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base transition-all">
           <option value="">— សូមជ្រើសរើសតុលាការ —</option>
-          
           <optgroup label="🏛️ សាលាដំបូង">
             <option value="សាលាដំបូងរាជធានីភ្នំពេញ">សាលាដំបូងរាជធានីភ្នំពេញ</option>
             <option value="សាលាដំបូងខេត្តកណ្ដាល">សាលាដំបូងខេត្តកណ្ដាល</option>
@@ -666,14 +748,12 @@ tailwind.config = {
             <option value="សាលាដំបូងខេត្តមណ្ឌលគិរី">សាលាដំបូងខេត្តមណ្ឌលគិរី</option>
             <option value="សាលាដំបូងខេត្តឧត្តរមានជ័យ">សាលាដំបូងខេត្តឧត្តរមានជ័យ</option>
           </optgroup>
-          
           <optgroup label="⚖️ សាលាឧទ្ធរណ៍">
             <option value="សាលាឧទ្ធរណ៍ភ្នំពេញ">សាលាឧទ្ធរណ៍ភ្នំពេញ</option>
             <option value="សាលាឧទ្ធរណ៍បាត់ដំបង">សាលាឧទ្ធរណ៍បាត់ដំបង</option>
             <option value="សាលាឧទ្ធរណ៍ព្រះសីហនុ">សាលាឧទ្ធរណ៍ព្រះសីហនុ</option>
             <option value="សាលាឧទ្ធរណ៍ត្បូងឃ្មុំ">សាលាឧទ្ធរណ៍ត្បូងឃ្មុំ</option>
           </optgroup>
-          
           <optgroup label="👑 តុលាការកំពូល">
             <option value="តុលាការកំពូលភ្នំពេញ">តុលាការកំពូលភ្នំពេញ</option>
           </optgroup>
@@ -758,8 +838,62 @@ tailwind.config = {
   </div>
 </div>
 
+<!-- PASSWORD MODAL -->
+<div id="passwordModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 modal-wrap flex items-end sm:items-center justify-center animate-fade-in">
+  <div class="modal-content bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl shadow-2xl w-full sm:max-w-md max-h-[95vh] overflow-y-auto animate-slide-up">
+    <div class="sticky top-0 bg-white dark:bg-slate-900 px-5 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center z-10 rounded-t-3xl">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 bg-purple-50 dark:bg-purple-950 rounded-xl flex items-center justify-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h3 class="font-bold">ផ្លាស់ប្ដូរលេខសម្ងាត់</h3>
+      </div>
+      <button onclick="closePasswordModal()" class="w-9 h-9 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="p-5 space-y-4">
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">លេខសម្ងាត់បច្ចុប្បន្ន</label>
+        <input id="oldPass" type="password" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">លេខសម្ងាត់ថ្មី</label>
+        <input id="newPass" type="password" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">បញ្ជាក់លេខសម្ងាត់ថ្មី</label>
+        <input id="newPass2" type="password" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
+      </div>
+    </div>
+    <div class="sticky bottom-0 bg-white dark:bg-slate-900 px-5 py-4 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3 safe-bottom">
+      <button onclick="closePasswordModal()" class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 font-medium">បោះបង់</button>
+      <button onclick="savePassword()" class="btn-primary text-white px-6 py-2.5 rounded-xl font-medium">រក្សាទុក</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div id="confirmModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[70] flex items-center justify-center p-4 animate-fade-in">
+  <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-sm p-6 animate-slide-up">
+    <div class="flex items-start gap-3 mb-4">
+      <div class="w-10 h-10 bg-red-100 dark:bg-red-950 rounded-full flex items-center justify-center shrink-0">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>
+      </div>
+      <div>
+        <h3 id="confirmTitle" class="font-bold">បញ្ជាក់</h3>
+        <p id="confirmMsg" class="text-sm text-slate-600 dark:text-slate-400 mt-1">តើអ្នកប្រាកដទេ?</p>
+      </div>
+    </div>
+    <div class="flex gap-3 justify-end">
+      <button onclick="closeConfirm()" class="px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 font-medium text-sm">បោះបង់</button>
+      <button id="confirmOkBtn" class="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-medium text-sm">យល់ព្រម</button>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
-<div id="toast" class="hidden fixed bottom-24 md:bottom-6 left-1/2 -translate-x-1/2 md:left-auto md:right-6 md:translate-x-0 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-3 rounded-2xl shadow-2xl z-[60] max-w-[90vw] text-center text-sm font-medium animate-slide-up"></div>
+<div id="toast" class="hidden fixed bottom-24 md:bottom-6 left-1/2 -translate-x-1/2 md:left-auto md:right-6 md:translate-x-0 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-3 rounded-2xl shadow-2xl z-[80] max-w-[90vw] text-center text-sm font-medium animate-slide-up"></div>
 
 <script>
 // ============ THEME ============
@@ -782,14 +916,14 @@ let deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  document.getElementById('installBtn').classList.remove('hidden');
+  document.getElementById('installBtn')?.classList.remove('hidden');
 });
 function installApp() {
   if (!deferredPrompt) return;
   deferredPrompt.prompt();
   deferredPrompt.userChoice.then((c) => {
     if (c.outcome === 'accepted') {
-      document.getElementById('installBtn').classList.add('hidden');
+      document.getElementById('installBtn')?.classList.add('hidden');
       toast('✅ បានដំឡើង App!');
     }
     deferredPrompt = null;
@@ -801,34 +935,233 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+// ============ CRYPTO ============
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password + '|case-manager-salt-2026');
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 // ============ DATA ============
 const DB = {
   get(key, def=[]) {
     try { return JSON.parse(localStorage.getItem(key)) ?? def; }
     catch { return def; }
   },
-  set(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
+  set(key, val) { localStorage.setItem(key, JSON.stringify(val)); },
+  remove(key) { localStorage.removeItem(key); }
 };
 
-function seedData() {
-  if (!localStorage.getItem('cases')) {
-    DB.set('clients', [
-      {id:1, name:'លោក សុខ វិបុល', phone:'012345678', email:'sok@mail.com', address:'ភ្នំពេញ'},
-      {id:2, name:'អ្នកស្រី ចាន់ ធីតា', phone:'098765432', email:'chan@mail.com', address:'សៀមរាប'},
-    ]);
-    DB.set('cases', [
-      {id:1, caseNumber:'C-2024-001', title:'រឿងក្ដីដីធ្លី', court:'សាលាដំបូងរាជធានីភ្នំពេញ', caseType:'ដីធ្លី', clientId:1, status:'active', nextHearing:'2026-10-15', note:'ត្រូវរៀបចំឯកសារបន្ថែម'},
-      {id:2, caseNumber:'C-2024-002', title:'រឿងក្ដីព្រហ្មទណ្ឌ', court:'សាលាដំបូងខេត្តសៀមរាប', caseType:'ព្រហ្មទណ្ឌ', clientId:2, status:'pending', nextHearing:'2026-10-20', note:''},
-      {id:3, caseNumber:'C-2024-003', title:'រឿងក្ដីគ្រួសារ', court:'សាលាឧទ្ធរណ៍ភ្នំពេញ', caseType:'គ្រួសារ', clientId:1, status:'closed', nextHearing:'', note:'បានបញ្ចប់ដោយជោគជ័យ'},
-    ]);
-    DB.set('documents', [
-      {id:1, caseId:1, name:'ចុងបញ្ចប់កិច្ចសន្យា.pdf', date:'2026-09-01'},
-      {id:2, caseId:2, name:'របាយការណ៍ប៉ូលិស.docx', date:'2026-09-10'},
-    ]);
+let statusChart = null;
+let currentUser = null;
+
+// ============ SETUP (First Time) ============
+function checkSetupStrength() {
+  const pass = document.getElementById('setupPass').value;
+  const bars = ['sbar1','sbar2','sbar3','sbar4'].map(id => document.getElementById(id));
+  const text = document.getElementById('strengthText');
+  bars.forEach(b => b.className = 'strength-bar flex-1 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full');
+  
+  if (!pass) { text.textContent = 'សូមបញ្ចូលលេខសម្ងាត់'; text.className = 'text-xs text-slate-500 dark:text-slate-400 mt-1'; return; }
+  
+  let score = 0;
+  if (pass.length >= 6) score++;
+  if (pass.length >= 10) score++;
+  if (/[A-Z]/.test(pass) && /[a-z]/.test(pass)) score++;
+  if (/[0-9]/.test(pass)) score++;
+  if (/[^A-Za-z0-9]/.test(pass)) score++;
+  score = Math.min(score, 4);
+  
+  const colors = ['bg-red-500','bg-orange-500','bg-yellow-500','bg-green-500'];
+  const labels = ['ខ្សោយ','មធ្យម','ល្អ','រឹងមាំ'];
+  const textColors = ['text-red-600','text-orange-600','text-yellow-600','text-green-600'];
+  
+  for (let i = 0; i < score; i++) {
+    bars[i].className = `strength-bar flex-1 h-1.5 rounded-full ${colors[score-1]}`;
+  }
+  if (score > 0) {
+    text.textContent = 'កម្រិត: ' + labels[score-1];
+    text.className = `text-xs mt-1 ${textColors[score-1]}`;
   }
 }
 
-let statusChart = null;
+async function handleSetup() {
+  const name = document.getElementById('setupName').value.trim();
+  const username = document.getElementById('setupUser').value.trim();
+  const pass = document.getElementById('setupPass').value;
+  const pass2 = document.getElementById('setupPass2').value;
+  
+  if (!name) return toast('⚠️ សូមបំពេញឈ្មោះពេញ');
+  if (!username) return toast('⚠️ សូមបំពេញឈ្មោះអ្នកប្រើ');
+  if (username.length < 3) return toast('⚠️ ឈ្មោះអ្នកប្រើត្រូវមានយ៉ាងតិច ៣ តួ');
+  if (!/^[a-zA-Z0-9_]+$/.test(username)) return toast('⚠️ ឈ្មោះអ្នកប្រើអាចប្រើតែ a-z, A-Z, 0-9, _');
+  if (!pass) return toast('⚠️ សូមបញ្ចូលលេខសម្ងាត់');
+  if (pass.length < 6) return toast('⚠️ លេខសម្ងាត់ត្រូវមានយ៉ាងតិច ៦ តួ');
+  if (pass !== pass2) return toast('❌ លេខសម្ងាត់មិនដូចគ្នា');
+  
+  const hashedPass = await hashPassword(pass);
+  DB.set('auth', {
+    name,
+    username,
+    password: hashedPass,
+    role: 'admin',
+    createdAt: new Date().toISOString()
+  });
+  
+  toast('✅ បង្កើតគណនីជោគជ័យ!');
+  document.getElementById('setupScreen').classList.add('hidden');
+  showLogin();
+}
+
+function showLogin() {
+  document.getElementById('loginScreen').classList.remove('hidden');
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+  document.getElementById('loginError').classList.add('hidden');
+  setTimeout(() => document.getElementById('loginUser').focus(), 100);
+}
+
+// ============ LOGIN ATTEMPTS ============
+function checkLoginLock() {
+  const lock = DB.get('loginLock', null);
+  if (lock && lock.until > Date.now()) {
+    const mins = Math.ceil((lock.until - Date.now()) / 60000);
+    return { locked: true, mins };
+  }
+  if (lock && lock.until <= Date.now()) {
+    DB.remove('loginLock');
+  }
+  return { locked: false };
+}
+
+function recordFailedLogin() {
+  const attempts = DB.get('loginAttempts', { count: 0, firstAt: Date.now() });
+  if (Date.now() - attempts.firstAt > 15 * 60 * 1000) {
+    attempts.count = 0;
+    attempts.firstAt = Date.now();
+  }
+  attempts.count++;
+  DB.set('loginAttempts', attempts);
+  
+  if (attempts.count >= 5) {
+    DB.set('loginLock', { until: Date.now() + 15 * 60 * 1000 });
+    DB.remove('loginAttempts');
+    return { locked: true, mins: 15 };
+  }
+  return { locked: false, remaining: 5 - attempts.count };
+}
+
+function resetLoginAttempts() {
+  DB.remove('loginAttempts');
+  DB.remove('loginLock');
+}
+
+// ============ LOGIN ============
+async function login() {
+  const lock = checkLoginLock();
+  if (lock.locked) {
+    showLoginError(`🔒 គណនីត្រូវបានចាក់សោ។ សូមព្យាយាមម្ដងទៀតក្នុងរយៈពេល ${lock.mins} នាទីទៀត។`);
+    return;
+  }
+  
+  const username = document.getElementById('loginUser').value.trim();
+  const password = document.getElementById('loginPass').value;
+  const remember = document.getElementById('rememberMe').checked;
+  
+  if (!username || !password) {
+    return showLoginError('⚠️ សូមបំពេញឈ្មោះអ្នកប្រើ និងលេខសម្ងាត់');
+  }
+  
+  const btn = document.getElementById('loginBtn');
+  const btnText = document.getElementById('loginBtnText');
+  btn.disabled = true;
+  btnText.innerHTML = '<span class="spinner"></span> កំពុងពិនិត្យ...';
+  
+  const auth = DB.get('auth', null);
+  const hashedPass = await hashPassword(password);
+  
+  await new Promise(r => setTimeout(r, 300));
+  
+  if (!auth || auth.username !== username || auth.password !== hashedPass) {
+    const result = recordFailedLogin();
+    btn.disabled = false;
+    btnText.textContent = 'ចូលប្រើប្រាស់ →';
+    if (result.locked) {
+      showLoginError('🔒 ព្យាយាមច្រើនដងពេក។ គណនីត្រូវបានចាក់សោ ១៥ នាទី។');
+    } else {
+      showLoginError(`❌ ឈ្មោះអ្នកប្រើ ឬលេខសម្ងាត់មិនត្រឹមត្រូវ (នៅសល់ ${result.remaining} ដង)`);
+    }
+    return;
+  }
+  
+  // Success
+  resetLoginAttempts();
+  currentUser = { name: auth.name, username: auth.username, role: auth.role };
+  
+  const storage = remember ? localStorage : sessionStorage;
+  storage.setItem('loggedIn', '1');
+  storage.setItem('sessionStart', Date.now().toString());
+  storage.setItem('user', JSON.stringify(currentUser));
+  
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  initApp();
+}
+
+function showLoginError(msg) {
+  const err = document.getElementById('loginError');
+  err.textContent = msg;
+  err.classList.remove('hidden');
+  setTimeout(() => err.classList.add('hidden'), 5000);
+}
+
+function logout() {
+  showConfirm('ចាកចេញ', 'តើអ្នកប្រាកដជាចង់ចាកចេញមែនទេ?', () => {
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('sessionStart');
+    localStorage.removeItem('user');
+    sessionStorage.removeItem('loggedIn');
+    sessionStorage.removeItem('sessionStart');
+    sessionStorage.removeItem('user');
+    location.reload();
+  }, 'ចាកចេញ');
+}
+
+// ============ SESSION CHECK ============
+function checkSession() {
+  const loggedIn = localStorage.getItem('loggedIn') || sessionStorage.getItem('loggedIn');
+  if (!loggedIn) return false;
+  
+  const start = parseInt(localStorage.getItem('sessionStart') || sessionStorage.getItem('sessionStart') || '0');
+  const SESSION_TIMEOUT = 8 * 60 * 60 * 1000; // 8 hours
+  if (Date.now() - start > SESSION_TIMEOUT) {
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('sessionStart');
+    localStorage.removeItem('user');
+    sessionStorage.removeItem('loggedIn');
+    sessionStorage.removeItem('sessionStart');
+    sessionStorage.removeItem('user');
+    return false;
+  }
+  return true;
+}
+
+function loadUser() {
+  try {
+    const stored = localStorage.getItem('user') || sessionStorage.getItem('user');
+    if (stored) {
+      currentUser = JSON.parse(stored);
+      const initial = currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'A';
+      document.getElementById('userAvatar').textContent = initial;
+      document.getElementById('userName').textContent = currentUser.name;
+      document.getElementById('headerAvatar').textContent = initial;
+      document.getElementById('headerName').textContent = currentUser.name.split(' ').slice(-1)[0] || currentUser.name;
+      document.getElementById('settingsName').textContent = currentUser.name;
+      document.getElementById('settingsUsername').textContent = currentUser.username;
+    }
+  } catch (e) {}
+}
 
 // ============ SIDEBAR ============
 function toggleSidebar() {
@@ -840,23 +1173,6 @@ function closeSidebarOnMobile() {
     document.getElementById('sidebar').classList.remove('open');
     document.getElementById('overlay').classList.add('hidden');
   }
-}
-
-// ============ AUTH ============
-function login() {
-  const u = document.getElementById('loginUser').value.trim();
-  const p = document.getElementById('loginPass').value;
-  if (u === 'admin' && p === '1234') {
-    sessionStorage.setItem('loggedIn', '1');
-    document.getElementById('loginScreen').classList.add('hidden');
-    document.getElementById('app').classList.remove('hidden');
-    initApp();
-  } else toast('❌ ឈ្មោះអ្នកប្រើ ឬលេខសម្ងាត់មិនត្រឹមត្រូវ');
-}
-function logout() {
-  if (!confirm('តើអ្នកចង់ចាកចេញមែនទេ?')) return;
-  sessionStorage.removeItem('loggedIn');
-  location.reload();
 }
 
 // ============ NAVIGATION ============
@@ -1037,17 +1353,14 @@ function openCaseModal(id=null) {
     document.getElementById('caseNumber').value = c.caseNumber;
     document.getElementById('caseTitle').value = c.title;
     
-    // Handle court value — check if exists
     const savedCourt = c.court || '';
     const exists = Array.from(courtSelect.options).some(opt => opt.value === savedCourt);
-    // Remove old custom option if any
     Array.from(courtSelect.options).forEach(opt => {
       if (opt.dataset.custom === '1') opt.remove();
     });
     if (exists) {
       courtSelect.value = savedCourt;
     } else if (savedCourt) {
-      // Add custom option for legacy value
       const opt = document.createElement('option');
       opt.value = savedCourt;
       opt.textContent = savedCourt + ' (ចាស់)';
@@ -1066,7 +1379,6 @@ function openCaseModal(id=null) {
   } else {
     document.getElementById('caseModalTitle').textContent = 'បន្ថែមរឿងក្ដីថ្មី';
     ['caseId','caseNumber','caseTitle','caseHearing','caseNote'].forEach(i => document.getElementById(i).value = '');
-    // Remove custom options
     Array.from(courtSelect.options).forEach(opt => {
       if (opt.dataset.custom === '1') opt.remove();
     });
@@ -1113,10 +1425,11 @@ function saveCase() {
 }
 function editCase(id) { openCaseModal(id); }
 function deleteCase(id) {
-  if (!confirm('តើអ្នកពិតជាចង់លុបរឿងក្ដីនេះ?')) return;
-  DB.set('cases', DB.get('cases').filter(c => c.id !== id));
-  toast('🗑️ បានលុបរឿងក្ដី');
-  renderCases();
+  showConfirm('លុបរឿងក្ដី', 'តើអ្នកប្រាកដជាចង់លុបរឿងក្ដីនេះ? សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។', () => {
+    DB.set('cases', DB.get('cases').filter(c => c.id !== id));
+    toast('🗑️ បានលុបរឿងក្ដី');
+    renderCases();
+  });
 }
 
 // ============ CLIENTS ============
@@ -1193,10 +1506,11 @@ function saveClient() {
 }
 function editClient(id) { openClientModal(id); }
 function deleteClient(id) {
-  if (!confirm('តើអ្នកពិតជាចង់លុបអតិថិជននេះ?')) return;
-  DB.set('clients', DB.get('clients').filter(c => c.id !== id));
-  toast('🗑️ បានលុបអតិថិជន');
-  renderClients();
+  showConfirm('លុបអតិថិជន', 'តើអ្នកប្រាកដជាចង់លុបអតិថិជននេះ? សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។', () => {
+    DB.set('clients', DB.get('clients').filter(c => c.id !== id));
+    toast('🗑️ បានលុបអតិថិជន');
+    renderClients();
+  });
 }
 
 // ============ CALENDAR ============
@@ -1254,18 +1568,51 @@ function renderDocs() {
     : '<div class="text-center py-8"><div class="empty-icon">📄</div><p class="text-slate-400 text-sm">មិនមានឯកសារ</p></div>';
 }
 function deleteDoc(id) {
-  if (!confirm('លុបឯកសារនេះ?')) return;
-  DB.set('documents', DB.get('documents').filter(d => d.id !== id));
-  renderDocs();
+  showConfirm('លុបឯកសារ', 'តើអ្នកប្រាកដជាចង់លុបឯកសារនេះ?', () => {
+    DB.set('documents', DB.get('documents').filter(d => d.id !== id));
+    renderDocs();
+  });
+}
+
+// ============ PASSWORD MODAL ============
+function openPasswordModal() {
+  ['oldPass','newPass','newPass2'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('passwordModal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+function closePasswordModal() {
+  document.getElementById('passwordModal').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+async function savePassword() {
+  const oldPass = document.getElementById('oldPass').value;
+  const newPass = document.getElementById('newPass').value;
+  const newPass2 = document.getElementById('newPass2').value;
+  
+  if (!oldPass || !newPass || !newPass2) return toast('⚠️ សូមបំពេញគ្រប់ប្រអប់');
+  if (newPass.length < 6) return toast('⚠️ លេខសម្ងាត់ថ្មីត្រូវមានយ៉ាងតិច ៦ តួ');
+  if (newPass !== newPass2) return toast('❌ លេខសម្ងាត់ថ្មីមិនដូចគ្នា');
+  
+  const auth = DB.get('auth', null);
+  const oldHash = await hashPassword(oldPass);
+  if (!auth || auth.password !== oldHash) return toast('❌ លេខសម្ងាត់បច្ចុប្បន្នមិនត្រឹមត្រូវ');
+  
+  const newHash = await hashPassword(newPass);
+  auth.password = newHash;
+  auth.updatedAt = new Date().toISOString();
+  DB.set('auth', auth);
+  
+  closePasswordModal();
+  toast('✅ បានផ្លាស់ប្ដូរលេខសម្ងាត់');
 }
 
 // ============ BACKUP / RESTORE ============
 function exportData() {
   const data = {
     version: '1.0',
-    appName: 'Case Manager Pro',
+    appName: 'Case Manager Professional',
     exportedAt: new Date().toISOString(),
-    exportedBy: 'admin',
+    exportedBy: currentUser?.username || 'unknown',
     data: {
       cases: DB.get('cases'),
       clients: DB.get('clients'),
@@ -1345,27 +1692,31 @@ function confirmImport() {
   if (!pendingImportData) return;
   const mode = document.querySelector('input[name="importMode"]:checked').value;
   const incoming = pendingImportData.data;
+  
+  const proceed = () => {
+    if (mode === 'replace') {
+      DB.set('cases', incoming.cases || []);
+      DB.set('clients', incoming.clients || []);
+      DB.set('documents', incoming.documents || []);
+      toast('✅ បានជំនួសទិន្នន័យជោគជ័យ!');
+    } else {
+      const result = mergeData(incoming);
+      toast(`✅ បញ្ចូល: +${result.addedCases} រឿងក្ដី, +${result.addedClients} អតិថិជន, +${result.addedDocs} ឯកសារ`);
+    }
+    pendingImportData = null;
+    document.getElementById('importFile').value = '';
+    document.getElementById('importPreview').classList.add('hidden');
+    const btn = document.getElementById('confirmImportBtn');
+    btn.disabled = true;
+    btn.className = 'w-full py-3 rounded-xl font-medium flex items-center justify-center gap-2 bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed';
+    renderSettingsStats();
+  };
+  
   if (mode === 'replace') {
-    if (!confirm('⚠️ ការជំនួសទាំងអស់ នឹងលុបទិន្នន័យបច្ចុប្បន្នចោល! តើបន្តទេ?')) return;
-    DB.set('cases', incoming.cases || []);
-    DB.set('clients', incoming.clients || []);
-    DB.set('documents', incoming.documents || []);
-    toast('✅ បានជំនួសទិន្នន័យជោគជ័យ!');
+    showConfirm('ជំនួសទិន្នន័យទាំងអស់', 'ការជំនួសនឹងលុបទិន្នន័យបច្ចុប្បន្នចោលទាំងអស់។ តើអ្នកប្រាកដទេ?', proceed, 'ជំនួស');
   } else {
-    const result = mergeData(incoming);
-    toast(`✅ បញ្ចូល: +${result.addedCases} រឿងក្ដី, +${result.addedClients} អតិថិជន, +${result.addedDocs} ឯកសារ`);
+    proceed();
   }
-  pendingImportData = null;
-  document.getElementById('importFile').value = '';
-  document.getElementById('importPreview').classList.add('hidden');
-  const btn = document.getElementById('confirmImportBtn');
-  btn.disabled = true;
-  btn.className = 'w-full py-3 rounded-xl font-medium flex items-center justify-center gap-2 bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed';
-  renderSettingsStats();
-  const activePage = document.querySelector('.page:not(.hidden)')?.id;
-  if (activePage === 'page-dashboard') renderDashboard();
-  if (activePage === 'page-cases') renderCases();
-  if (activePage === 'page-clients') renderClients();
 }
 
 function mergeData(incoming) {
@@ -1418,25 +1769,14 @@ function mergeData(incoming) {
 }
 
 function clearAllData() {
-  if (!confirm('⚠️ តើអ្នកពិតជាចង់លុបទិន្នន័យទាំងអស់?\n\nសកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ!')) return;
-  if (!confirm('បញ្ជាក់ម្ដងទៀត: លុបទិន្នន័យទាំងអស់?')) return;
-  DB.set('cases', []);
-  DB.set('clients', []);
-  DB.set('documents', []);
-  toast('🗑️ បានលុបទិន្នន័យទាំងអស់');
-  renderSettingsStats();
-  showPage('dashboard');
-}
-
-function resetDemo() {
-  if (!confirm('ត្រឡប់ទៅទិន្នន័យ Demo?\n\nទិន្នន័យបច្ចុប្បន្ននឹងត្រូវលុប!')) return;
-  localStorage.removeItem('cases');
-  localStorage.removeItem('clients');
-  localStorage.removeItem('documents');
-  seedData();
-  toast('✅ បានត្រឡប់ទៅ Demo');
-  renderSettingsStats();
-  showPage('dashboard');
+  showConfirm('លុបទិន្នន័យទាំងអស់', 'តើអ្នកប្រាកដជាចង់លុបទិន្នន័យទាំងអស់? សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។', () => {
+    DB.set('cases', []);
+    DB.set('clients', []);
+    DB.set('documents', []);
+    toast('🗑️ បានលុបទិន្នន័យទាំងអស់');
+    renderSettingsStats();
+    showPage('dashboard');
+  }, 'លុបទាំងអស់');
 }
 
 function renderSettingsStats() {
@@ -1445,6 +1785,25 @@ function renderSettingsStats() {
   set('backupClientCount', DB.get('clients').length);
   set('backupDocCount', DB.get('documents').length);
 }
+
+// ============ CONFIRM MODAL ============
+let confirmCallback = null;
+function showConfirm(title, msg, callback, okText = 'យល់ព្រម') {
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmMsg').textContent = msg;
+  const btn = document.getElementById('confirmOkBtn');
+  btn.textContent = okText;
+  confirmCallback = callback;
+  document.getElementById('confirmModal').classList.remove('hidden');
+}
+function closeConfirm() {
+  document.getElementById('confirmModal').classList.add('hidden');
+  confirmCallback = null;
+}
+document.getElementById('confirmOkBtn')?.addEventListener('click', () => {
+  if (confirmCallback) confirmCallback();
+  closeConfirm();
+});
 
 // ============ UTILITIES ============
 function toast(msg) {
@@ -1459,6 +1818,8 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     closeCaseModal();
     closeClientModal();
+    closePasswordModal();
+    closeConfirm();
     closeSidebarOnMobile();
   }
 });
@@ -1472,16 +1833,24 @@ window.addEventListener('resize', () => {
 
 // ============ INIT ============
 function initApp() {
-  seedData();
+  loadUser();
   showPage('dashboard');
 }
 
 window.addEventListener('DOMContentLoaded', () => {
   initTheme();
-  if (sessionStorage.getItem('loggedIn')) {
-    document.getElementById('loginScreen').classList.add('hidden');
+  const auth = DB.get('auth', null);
+  
+  if (!auth) {
+    // First time — Setup
+    document.getElementById('setupScreen').classList.remove('hidden');
+  } else if (checkSession()) {
+    // Session valid
     document.getElementById('app').classList.remove('hidden');
     initApp();
+  } else {
+    // Show login
+    showLogin();
   }
 });
 </script>
