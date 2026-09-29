@@ -1,4 +1,4 @@
-const CACHE_NAME = 'case-manager-v4';
+const CACHE_NAME = 'case-manager-v5';
 const ASSETS = [
   './', './index.html', './manifest.json',
   'https://cdn.tailwindcss.com',
