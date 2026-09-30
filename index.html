@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<title>⚖️ ប្រព័ន្ធគ្រប់គ្រងរឿងក្ដី</title>
+<title>⚖️</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
@@ -201,7 +201,7 @@ tailwind.config = {
       <img src="icon-512.png" 
            alt="Case Manager Logo" 
            class="w-24 h-24 mx-auto mb-4 rounded-3xl shadow-lg shadow-brand-500/30 object-cover">
-      <h1 class="text-2xl font-bold text-slate-900 dark:text-white">ប្រព័ន្ធគ្រប់គ្រងរឿងក្ដី</h1>
+      <h1 class="text-2xl font-bold text-slate-900 dark:text-white">ប្រព័ន្ធគ្រប់គ្រងសំណុំរឿងក្ដី</h1>
       <p id="loginGreeting" class="text-slate-500 dark:text-slate-400 text-sm mt-1">សូមបញ្ចូលលេខសម្ងាត់ដើម្បីបន្ត</p>
     </div>
     <div class="space-y-4">
@@ -240,7 +240,7 @@ tailwind.config = {
              class="w-10 h-10 rounded-xl object-cover shadow-lg shrink-0">
         <div>
           <h1 class="text-base font-bold tracking-tight">Case Manager</h1>
-          <p class="text-[10px] text-brand-300 uppercase tracking-widest">Professional</p>
+          <p class="text-[10px] text-brand-300 uppercase tracking-widest">Pro-2026</p>
         </div>
       </div>
       <button onclick="toggleSidebar()" class="lg:hidden text-brand-300 p-2 hover:text-white">
@@ -249,7 +249,7 @@ tailwind.config = {
     </div>
 
     <nav class="flex-1 p-3 space-y-1 overflow-y-auto no-scrollbar">
-      <p class="px-4 pt-3 pb-1 text-[10px] uppercase tracking-widest text-brand-400 font-semibold">ម៉ឺនុយមេ</p>
+      <p class="px-4 pt-3 pb-1 text-[10px] uppercase tracking-widest text-brand-400 font-semibold">ម៉ឺនុយ</p>
       <a href="#" onclick="showPage('dashboard'); closeSidebarOnMobile()" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-brand-100" data-page="dashboard">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
         <span class="font-medium">ផ្ទាំងគ្រប់គ្រង</span>
@@ -364,7 +364,7 @@ tailwind.config = {
               <span class="w-8 h-8 bg-purple-50 dark:bg-purple-950 rounded-lg flex items-center justify-center">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg>
               </span>
-              ស្ថិតិ
+              គំនូរស្ថិតិ
             </h3>
             <div class="max-w-xs mx-auto"><canvas id="statusChart"></canvas></div>
           </div>
@@ -376,7 +376,7 @@ tailwind.config = {
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-5">
           <div class="relative sm:col-span-2 lg:col-span-2">
             <svg class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-            <input id="caseSearch" oninput="renderCases()" placeholder="ស្វែងរករឿងក្ដី..." class="w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:border-brand-500 rounded-xl outline-none text-base">
+            <input id="caseSearch" oninput="renderCases()" placeholder="ស្វែងរករឿងក្ដី (ឧ.លេខសំណុំរឿង ឬចំណងជើង)" class="w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:border-brand-500 rounded-xl outline-none text-base">
           </div>
           <div class="relative">
             <select id="caseFilterCourt" onchange="renderCases()" class="w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:border-brand-500 rounded-xl outline-none text-sm">
