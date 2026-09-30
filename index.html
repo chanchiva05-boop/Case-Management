@@ -511,7 +511,7 @@ tailwind.config = {
                   <th class="px-5 py-4 font-semibold">តុលាការមានសម្ថកិច្ច</th>
                   <th class="px-5 py-4 font-semibold">អតិថិជន</th>
                   <th class="px-5 py-4 font-semibold">ស្ថានភាព</th>
-                  <th class="px-5 py-4 font-semibold">ថ្ងៃកាត់ក្ដី</th>
+                  <th class="px-5 py-4 font-semibold">ថ្ងៃកាលបរិតុលាការ</th>
                   <th class="px-5 py-4 font-semibold text-right">សកម្មភាព</th>
                 </tr>
               </thead>
@@ -763,7 +763,7 @@ tailwind.config = {
     <div class="p-5 grid grid-cols-1 md:grid-cols-2 gap-4">
       <input type="hidden" id="caseId">
       <div>
-        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">លេខក្ដី <span class="text-red-500">*</span></label>
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">លេខសំណុំរឿងក្ដី <span class="text-red-500">*</span></label>
         <input id="caseNumber" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base transition-all">
       </div>
       <div>
@@ -771,7 +771,7 @@ tailwind.config = {
         <input id="caseTitle" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base transition-all">
       </div>
       <div class="md:col-span-2">
-        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">តុលាការ <span class="text-red-500">*</span></label>
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">តុលាការមានសម្ថកិច្ច <span class="text-red-500">*</span></label>
         <select id="caseCourt" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base transition-all">
           <option value="">— សូមជ្រើសរើសតុលាការ —</option>
           <optgroup label="🏛️ សាលាដំបូង">
@@ -813,7 +813,7 @@ tailwind.config = {
         </select>
       </div>
       <div>
-        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">ប្រភេទសំណុំក្ដី</label>
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">ប្រភេទសំណុំរឿងក្ដី</label>
         <select id="caseType" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
           <option>រដ្ឋប្បវេណី</option>
           <option>ព្រហ្មទណ្ឌ</option>
@@ -836,7 +836,7 @@ tailwind.config = {
         </select>
       </div>
       <div>
-        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">ថ្ងៃកាត់ក្ដីបន្ទាប់</label>
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">កំណត់កាលបរិច្ឆេទតុលាការ</label>
         <input id="caseHearing" type="date" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
       </div>
       <div class="md:col-span-2">
