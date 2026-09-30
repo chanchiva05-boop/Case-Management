@@ -389,7 +389,7 @@ tailwind.config = {
           </div>
           <div class="stat-card bg-white dark:bg-slate-900 p-4 md:p-5 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 card-hover">
             <div class="w-10 h-10 bg-green-50 dark:bg-green-950 rounded-xl flex items-center justify-center mb-3">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
             </div>
             <p class="text-slate-500 dark:text-slate-400 text-xs font-medium">កំពុងដំណើរការ</p>
             <p id="statActive" class="text-2xl md:text-3xl font-bold mt-1 tracking-tight">0</p>
@@ -575,7 +575,7 @@ tailwind.config = {
               </div>
               <div>
                 <h3 class="font-bold">Backup ទិន្នន័យ</h3>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">ទាញយកទិន្នន័យទាំងអស់ជា File JSON</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">ទាញយក ឬ ចែករំលែកទិន្នន័យ</p>
               </div>
             </div>
             
@@ -596,7 +596,7 @@ tailwind.config = {
             
             <button onclick="exportData()" class="btn-primary w-full text-white py-3 rounded-xl font-medium flex items-center justify-center gap-2">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-              ទាញយក Backup
+              Backup & Share
             </button>
           </div>
 
@@ -680,38 +680,6 @@ tailwind.config = {
             </button>
             <button onclick="openNameModal()" class="flex-1 px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl text-sm font-medium">
               ✏️ កែឈ្មោះ
-            </button>
-          </div>
-        </div>
-
-        <!-- App Update -->
-        <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 mb-5">
-          <div class="flex items-start gap-3 mb-4">
-            <div class="w-11 h-11 bg-emerald-50 dark:bg-emerald-950 rounded-xl flex items-center justify-center shrink-0">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9m9 9H3m9 9a9 9 0 0 1-9-9m9 9c1.66 0 3-4 3-9s-1.34-9-3-9m0 18c-1.66 0-3-4-3-9s1.34-9 3-9m-9 9a9 9 0 0 1 9-9"/>
-              </svg>
-            </div>
-            <div class="flex-1">
-              <h3 class="font-bold">ព័ត៌មាន App</h3>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">ពិនិត្យ និងធ្វើបច្ចុប្បន្នភាព</p>
-            </div>
-          </div>
-          <div class="grid grid-cols-1 gap-3 text-sm mb-3">
-            <div class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg flex justify-between items-center">
-              <div>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">កំណែបច្ចុប្បន្ន</p>
-                <p id="appVersion" class="font-semibold">v8.0</p>
-              </div>
-              <div id="updateStatus" class="text-xs"></div>
-            </div>
-          </div>
-          <div class="flex flex-col sm:flex-row gap-2">
-            <button onclick="checkAndUpdate()" id="checkUpdateBtn" class="flex-1 px-4 py-2.5 bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 rounded-xl text-sm font-medium flex items-center justify-center gap-2">
-              🔄 ពិនិត្យ Update
-            </button>
-            <button onclick="forceUpdate()" class="flex-1 px-4 py-2.5 bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-400 hover:bg-amber-100 rounded-xl text-sm font-medium">
-              ⚡ Force Update
             </button>
           </div>
         </div>
@@ -972,6 +940,127 @@ tailwind.config = {
   </div>
 </div>
 
+<!-- SHARE BACKUP MODAL -->
+<div id="shareModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[75] modal-wrap flex items-end sm:items-center justify-center">
+  <div class="modal-content bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl shadow-2xl w-full sm:max-w-md max-h-[95vh] overflow-y-auto">
+    <div class="sticky top-0 bg-white dark:bg-slate-900 px-5 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center z-10 rounded-t-3xl">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 bg-gradient-to-br from-brand-500 to-purple-600 rounded-xl flex items-center justify-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="font-bold">ចែករំលែក Backup</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400">ជ្រើសរបៀបចែករំលែក</p>
+        </div>
+      </div>
+      <button onclick="closeShareModal()" class="w-9 h-9 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="p-5 space-y-3">
+      
+      <!-- File Info -->
+      <div class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl text-sm">
+        <div class="flex items-center gap-2 mb-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3563ff" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+          <p id="shareFileName" class="font-semibold text-brand-600 dark:text-brand-400 truncate">backup.json</p>
+        </div>
+        <div class="grid grid-cols-3 gap-2 text-xs">
+          <div>
+            <p class="text-slate-500 dark:text-slate-400">ទំហំ</p>
+            <p id="shareFileSize" class="font-semibold">0 KB</p>
+          </div>
+          <div>
+            <p class="text-slate-500 dark:text-slate-400">រឿងក្ដី</p>
+            <p id="shareCaseCount" class="font-semibold">0</p>
+          </div>
+          <div>
+            <p class="text-slate-500 dark:text-slate-400">អតិថិជន</p>
+            <p id="shareClientCount" class="font-semibold">0</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Share Options -->
+      <p class="text-xs font-semibold text-slate-600 dark:text-slate-400 px-1">ជ្រើសរបៀប</p>
+      
+      <!-- Native Share (Recommended) -->
+      <button onclick="shareNative()" id="nativeShareBtn" class="w-full flex items-center gap-3 p-3.5 bg-gradient-to-r from-brand-50 to-purple-50 dark:from-brand-950/50 dark:to-purple-950/50 hover:from-brand-100 hover:to-purple-100 dark:hover:from-brand-900/50 dark:hover:to-purple-900/50 rounded-xl transition-all border border-brand-100 dark:border-brand-900">
+        <div class="w-11 h-11 bg-gradient-to-br from-brand-500 to-purple-600 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-brand-500/30">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+        </div>
+        <div class="flex-1 text-left min-w-0">
+          <p class="font-bold text-sm">ចែករំលែក (ណែនាំ)</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 truncate">Telegram, WhatsApp, Email...</p>
+        </div>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-400"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+
+      <!-- Telegram Direct -->
+      <button onclick="shareToTelegram()" class="w-full flex items-center gap-3 p-3.5 bg-gradient-to-r from-sky-50 to-blue-50 dark:from-sky-950/50 dark:to-blue-950/50 hover:from-sky-100 hover:to-blue-100 dark:hover:from-sky-900/50 dark:hover:to-blue-900/50 rounded-xl transition-all border border-sky-100 dark:border-sky-900">
+        <div class="w-11 h-11 bg-gradient-to-br from-sky-400 to-blue-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-sky-500/30">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
+            <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
+          </svg>
+        </div>
+        <div class="flex-1 text-left min-w-0">
+          <p class="font-bold text-sm">ផ្ញើតាម Telegram</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 truncate">បើក Telegram ផ្ញើ File</p>
+        </div>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-400"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+
+      <!-- Download -->
+      <button onclick="downloadBackup()" class="w-full flex items-center gap-3 p-3.5 bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all border border-slate-100 dark:border-slate-800">
+        <div class="w-11 h-11 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/30">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+        </div>
+        <div class="flex-1 text-left min-w-0">
+          <p class="font-bold text-sm">ទាញយក File</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 truncate">Save ជា File .json</p>
+        </div>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-400"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+
+      <!-- Copy Text -->
+      <button onclick="copyBackupText()" class="w-full flex items-center gap-3 p-3.5 bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all border border-slate-100 dark:border-slate-800">
+        <div class="w-11 h-11 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-amber-500/30">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+        </div>
+        <div class="flex-1 text-left min-w-0">
+          <p class="font-bold text-sm">Copy អត្ថបទសង្ខេប</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 truncate">Copy ព័ត៌មាន Backup</p>
+        </div>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-400"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+
+      <!-- Note -->
+      <div class="p-3 bg-amber-50 dark:bg-amber-950/50 rounded-xl border border-amber-200 dark:border-amber-900 mt-2">
+        <p class="text-xs text-amber-700 dark:text-amber-400 flex items-start gap-2">
+          <span class="text-base leading-none">💡</span>
+          <span>ចុច <b>"ចែករំលែក (ណែនាំ)"</b> → ជ្រើស <b>Telegram</b> → ផ្ញើ File ទៅ Chat ដែលចង់</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- CONFIRM MODAL -->
 <div id="confirmModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[70] flex items-center justify-center p-4">
   <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-sm p-6">
@@ -1054,31 +1143,23 @@ const DB = {
 let statusChart = null;
 let currentUser = null;
 
-// ============ STATUS HELPERS (សំខាន់!) ============
-// កំណត់ប្រភេទស្ថានភាព
+// ============ STATUS HELPERS ============
 function getStatusCategory(status) {
   if (!status) return 'unknown';
   const s = status.toLowerCase();
   
-  // បានបញ្ចប់
   if (s.includes('បញ្ចប់') || s.includes('ស្ថាពរ') || s.includes('បណ្ដឹងបានដក') || s.includes('ស្រុះស្រួល')) {
     return 'closed';
   }
-  
-  // រង់ចាំ
   if (s.includes('រង់ចាំ')) {
     return 'pending';
   }
-  
-  // កំពុងដំណើរការ
   if (s.includes('ដាក់ពាក្យ') || s.includes('នីតិវិធី') || s.includes('ដំណាក់កាល')) {
     return 'active';
   }
-  
   return 'unknown';
 }
 
-// បង្ហាញ Status ជាមួយ Style
 function statusInfo(status) {
   const cat = getStatusCategory(status);
   
@@ -1332,7 +1413,6 @@ function renderDashboard() {
   document.getElementById('statPending').textContent = pendingCount;
   document.getElementById('statClosed').textContent = closedCount;
 
-  // Upcoming hearings
   const upcoming = cases
     .filter(c => c.nextHearing)
     .sort((a,b) => new Date(a.nextHearing) - new Date(b.nextHearing))
@@ -1358,7 +1438,6 @@ function renderDashboard() {
       }).join('')
     : `<div class="text-center py-8"><div class="empty-icon">📅</div><p class="text-slate-400 text-sm">មិនមានកាលវិភាគខាងមុខ</p></div>`;
 
-  // Chart
   const ctx = document.getElementById('statusChart').getContext('2d');
   if (statusChart) statusChart.destroy();
   const isDark = document.documentElement.classList.contains('dark');
@@ -1404,7 +1483,6 @@ function renderCases() {
     return matchSearch && matchCourt && matchStatus;
   });
 
-  // Desktop
   document.getElementById('casesTable').innerHTML = filtered.length
     ? filtered.map(c => {
         const client = clients.find(x => x.id === c.clientId);
@@ -1415,9 +1493,9 @@ function renderCases() {
           <td class="px-5 py-4 text-slate-600 dark:text-slate-400 text-xs">${c.court||'-'}</td>
           <td class="px-5 py-4 text-slate-600 dark:text-slate-400">${client?.name||'-'}</td>
           <td class="px-5 py-4">
-            <span class="badge ${s.cls}" style="max-width:200px">
-              <span class="w-1.5 h-1.5 rounded-full ${s.dot} flex-shrink-0"></span>
-              <span class="truncate" title="${s.label}">${s.label}</span>
+            <span class="badge ${s.cls}">
+              <span class="w-1.5 h-1.5 rounded-full ${s.dot}"></span>
+              ${s.label}
             </span>
           </td>
           <td class="px-5 py-4 text-slate-600 dark:text-slate-400">${c.nextHearing||'-'}</td>
@@ -1433,7 +1511,6 @@ function renderCases() {
       }).join('')
     : '<tr><td colspan="7" class="px-5 py-12 text-center"><div class="empty-icon">📁</div><p class="text-slate-400 text-sm">មិនមានរឿងក្ដី</p></td></tr>';
 
-  // Mobile
   document.getElementById('casesCards').innerHTML = filtered.length
     ? filtered.map(c => {
         const client = clients.find(x => x.id === c.clientId);
@@ -1460,7 +1537,7 @@ function renderCases() {
           </div>
         </div>`;
       }).join('')
-    : '<div class="text-center py-12"><div class="icon">📁</div><p class="text-slate-400 text-sm">មិនមានរឿងក្ដី</p></div>';
+    : '<div class="text-center py-12"><div class="empty-icon">📁</div><p class="text-slate-400 text-sm">មិនមានរឿងក្ដី</p></div>';
 }
 
 function openCaseModal(id=null) {
@@ -1472,7 +1549,6 @@ function openCaseModal(id=null) {
   const courtSelect = document.getElementById('caseCourt');
   const statusSelect = document.getElementById('caseStatus');
   
-  // Cleanup old custom options
   const cleanCustom = (select) => {
     Array.from(select.options).forEach(opt => {
       if (opt.dataset.custom === '1') opt.remove();
@@ -1486,7 +1562,6 @@ function openCaseModal(id=null) {
     document.getElementById('caseNumber').value = c.caseNumber;
     document.getElementById('caseTitle').value = c.title;
     
-    // Court
     const savedCourt = c.court || '';
     cleanCustom(courtSelect);
     const courtExists = Array.from(courtSelect.options).some(opt => opt.value === savedCourt);
@@ -1503,7 +1578,6 @@ function openCaseModal(id=null) {
       courtSelect.value = '';
     }
     
-    // Status
     const savedStatus = c.status || '';
     cleanCustom(statusSelect);
     const statusExists = Array.from(statusSelect.options).some(opt => opt.value === savedStatus);
@@ -1792,8 +1866,12 @@ function saveName() {
   toast('✅ បានកែឈ្មោះ');
 }
 
-// ============ BACKUP / RESTORE ============
-function exportData() {
+// ============ BACKUP / SHARE ============
+let currentBackupBlob = null;
+let currentBackupFileName = null;
+let currentBackupJSON = null;
+
+function generateBackupData() {
   const data = {
     version: '1.0',
     appName: 'Case Manager Professional',
@@ -1805,22 +1883,201 @@ function exportData() {
       documents: DB.get('documents')
     }
   };
+  
   const json = JSON.stringify(data, null, 2);
   const blob = new Blob([json], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
+  
   const now = new Date();
   const dateStr = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`;
   const timeStr = `${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}`;
+  const fileName = `case-manager-backup-${dateStr}-${timeStr}.json`;
+  
+  return { data, json, blob, fileName };
+}
+
+function exportData() {
+  const backup = generateBackupData();
+  currentBackupBlob = backup.blob;
+  currentBackupFileName = backup.fileName;
+  currentBackupJSON = backup.json;
+  openShareModal(backup);
+}
+
+function openShareModal(backup) {
+  const { data, blob, fileName } = backup;
+  
+  document.getElementById('shareFileName').textContent = fileName;
+  document.getElementById('shareFileSize').textContent = formatSize(blob.size);
+  document.getElementById('shareCaseCount').textContent = data.data.cases.length;
+  document.getElementById('shareClientCount').textContent = data.data.clients.length;
+  
+  // Check Web Share API
+  const nativeBtn = document.getElementById('nativeShareBtn');
+  if (navigator.share && navigator.canShare) {
+    try {
+      const testFile = new File([blob], fileName, { type: 'application/json' });
+      if (navigator.canShare({ files: [testFile] })) {
+        nativeBtn.querySelector('p:first-child').textContent = 'ចែករំលែក (ណែនាំ) ✅';
+      }
+    } catch (e) {}
+  }
+  
+  document.getElementById('shareModal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeShareModal() {
+  document.getElementById('shareModal').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+}
+
+// ============ SHARE TO TELEGRAM ============
+async function shareToTelegram() {
+  if (!currentBackupBlob) {
+    toast('❌ គ្មាន Backup');
+    return;
+  }
+  
+  try {
+    // Try Web Share API first
+    if (navigator.share && navigator.canShare) {
+      const file = new File([currentBackupBlob], currentBackupFileName, { type: 'application/json' });
+      
+      if (navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: 'Backup ទិន្នន័យរឿងក្ដី',
+          text: `📁 Backup ប្រព័ន្ធគ្រប់គ្រងរឿងក្ដី\n📅 ${new Date().toLocaleString('km-KH')}`
+        });
+        toast('✅ បានចែករំលែក');
+        return;
+      }
+    }
+    
+    // Fallback — Download + open Telegram
+    downloadBackupSilent();
+    setTimeout(() => {
+      window.open('https://t.me', '_blank');
+      toast('📲 សូមផ្ញើ File ដែលបាន Download តាម Telegram');
+    }, 500);
+    
+  } catch (err) {
+    if (err.name !== 'AbortError') {
+      console.log('Share error:', err);
+      downloadBackupSilent();
+      setTimeout(() => window.open('https://t.me', '_blank'), 500);
+      toast('📲 សូមផ្ញើ File តាម Telegram');
+    }
+  }
+}
+
+// ============ NATIVE SHARE ============
+async function shareNative() {
+  if (!currentBackupBlob) {
+    toast('❌ គ្មាន Backup');
+    return;
+  }
+  
+  try {
+    const file = new File([currentBackupBlob], currentBackupFileName, { type: 'application/json' });
+    
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        files: [file],
+        title: 'Backup ទិន្នន័យរឿងក្ដី',
+        text: `📁 Backup ប្រព័ន្ធគ្រប់គ្រងរឿងក្ដី\n📅 ${new Date().toLocaleString('km-KH')}`
+      });
+      toast('✅ បានចែករំលែក');
+    } else {
+      toast('⚠️ Browser មិនគាំទ្រ — សូមប្រើ "ទាញយក File"');
+      downloadBackupSilent();
+    }
+  } catch (err) {
+    if (err.name !== 'AbortError') {
+      console.log('Share error:', err);
+      toast('❌ មិនអាចចែករំលែកបានទេ');
+    }
+  }
+}
+
+// ============ DOWNLOAD ============
+function downloadBackup() {
+  if (!currentBackupBlob) {
+    toast('❌ គ្មាន Backup');
+    return;
+  }
+  
+  const url = URL.createObjectURL(currentBackupBlob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `case-manager-backup-${dateStr}-${timeStr}.json`;
+  a.download = currentBackupFileName;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
+  
   toast('✅ បានទាញយក Backup!');
 }
 
+function downloadBackupSilent() {
+  if (!currentBackupBlob) return;
+  
+  const url = URL.createObjectURL(currentBackupBlob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = currentBackupFileName;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ============ COPY TEXT ============
+async function copyBackupText() {
+  if (!currentBackupJSON) {
+    toast('❌ គ្មាន Backup');
+    return;
+  }
+  
+  try {
+    const data = JSON.parse(currentBackupJSON);
+    const text = `📁 *Backup ប្រព័ន្ធគ្រប់គ្រងរឿងក្ដី*
+
+📅 កាលបរិច្ឆេទ: ${new Date(data.exportedAt).toLocaleString('km-KH')}
+👤 បង្កើតដោយ: ${data.exportedBy}
+
+📊 *ស្ថិតិ:*
+• រឿងក្ដី: ${data.data.cases.length}
+• អតិថិជន: ${data.data.clients.length}
+• ឯកសារ: ${data.data.documents.length}
+
+📎 *ឯកសារ:* ${currentBackupFileName}
+📦 *ទំហំ:* ${formatSize(currentBackupBlob.size)}
+
+⚠️ សូមរក្សាទុក File នេះឲ្យបានល្អ`;
+    
+    await navigator.clipboard.writeText(text);
+    toast('✅ បាន Copy!');
+  } catch (err) {
+    // Fallback
+    const textarea = document.createElement('textarea');
+    const data = JSON.parse(currentBackupJSON);
+    textarea.value = `📁 Backup ប្រព័ន្ធគ្រប់គ្រងរឿងក្ដី\n\n📅 ${new Date(data.exportedAt).toLocaleString('km-KH')}\n👤 ${data.exportedBy}\n\n📊 រឿងក្ដី: ${data.data.cases.length}\n👥 អតិថិជន: ${data.data.clients.length}\n📄 ឯកសារ: ${data.data.documents.length}`;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    toast('✅ បាន Copy!');
+  }
+}
+
+// ============ IMPORT ============
 let pendingImportData = null;
 
 function handleDrop(event) {
@@ -1969,7 +2226,6 @@ function renderSettingsStats() {
   set('backupCaseCount', DB.get('cases').length);
   set('backupClientCount', DB.get('clients').length);
   set('backupDocCount', DB.get('documents').length);
-  set('appVersion', 'v8.0');
 }
 
 // ============ CONFIRM MODAL ============
@@ -2007,6 +2263,7 @@ document.addEventListener('keydown', (e) => {
     closePasswordModal();
     closeNameModal();
     closeConfirm();
+    closeShareModal();
     closeSidebarOnMobile();
   }
 });
