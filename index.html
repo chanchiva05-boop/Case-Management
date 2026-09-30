@@ -11,15 +11,11 @@
 <meta name="application-name" content="Case Manager">
 <meta name="description" content="ប្រព័ន្ធគ្រប់គ្រងរឿងក្ដីសម្រាប់មេធាវី">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
-<link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -162,10 +158,6 @@ tailwind.config = {
     #pageTitle { font-size: 15px !important; }
     #pageSubtitle { font-size: 10.5px !important; }
   }
-  @media (max-width: 340px) {
-    #pageTitle { font-size: 14px !important; }
-    #headerName { max-width: 70px !important; }
-  }
 </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
@@ -192,14 +184,14 @@ tailwind.config = {
         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">ឈ្មោះពេញ <span class="text-red-500">*</span></label>
         <div class="relative">
           <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          <input id="setupName" type="text" placeholder="ឧ. លោក សុខ វិបុល" autocomplete="name" class="w-full pl-11 pr-4 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
+          <input id="setupName" type="text" placeholder="ឧ. លោក សុខ វិបុល" class="w-full pl-11 pr-4 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
         </div>
       </div>
       <div>
         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">លេខសម្ងាត់ <span class="text-red-500">*</span></label>
         <div class="relative">
           <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <input id="setupPass" type="password" placeholder="បញ្ចូលលេខសម្ងាត់" autocomplete="new-password" class="w-full pl-11 pr-12 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
+          <input id="setupPass" type="password" placeholder="បញ្ចូលលេខសម្ងាត់" class="w-full pl-11 pr-12 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
           <button type="button" onclick="togglePass('setupPass', this)" class="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center text-slate-400" tabindex="-1">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
@@ -209,7 +201,7 @@ tailwind.config = {
         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">បញ្ជាក់លេខសម្ងាត់ <span class="text-red-500">*</span></label>
         <div class="relative">
           <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <input id="setupPass2" type="password" placeholder="បញ្ចូលម្ដងទៀត" autocomplete="new-password" onkeypress="if(event.key==='Enter') handleSetup()" class="w-full pl-11 pr-12 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
+          <input id="setupPass2" type="password" placeholder="បញ្ចូលម្ដងទៀត" onkeypress="if(event.key==='Enter') handleSetup()" class="w-full pl-11 pr-12 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
           <button type="button" onclick="togglePass('setupPass2', this)" class="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center text-slate-400" tabindex="-1">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
@@ -248,7 +240,7 @@ tailwind.config = {
         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">លេខសម្ងាត់</label>
         <div class="relative">
           <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <input id="loginPass" type="password" autocomplete="current-password" onkeypress="if(event.key==='Enter') login()" class="w-full pl-11 pr-12 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 focus:bg-white dark:focus:bg-slate-900 rounded-xl outline-none text-base transition-all">
+          <input id="loginPass" type="password" onkeypress="if(event.key==='Enter') login()" class="w-full pl-11 pr-12 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
           <button type="button" onclick="togglePass('loginPass', this)" class="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center text-slate-400" tabindex="-1">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
@@ -271,7 +263,7 @@ tailwind.config = {
 <!-- ============ APP ============ -->
 <div id="app" class="hidden flex h-screen overflow-hidden">
 
-  <div id="overlay" onclick="toggleSidebar()" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-30 lg:hidden animate-fade-in"></div>
+  <div id="overlay" onclick="toggleSidebar()" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-30 lg:hidden"></div>
 
   <aside id="sidebar" class="w-72 bg-brand-950 text-white flex flex-col fixed lg:relative h-full z-40 safe-top shadow-2xl">
     <div class="p-5 border-b border-white/10 flex justify-between items-center">
@@ -340,7 +332,7 @@ tailwind.config = {
     </nav>
 
     <div class="p-4 border-t border-white/10 safe-bottom space-y-2">
-      <button onclick="installApp()" id="installBtn" class="hidden w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 active:scale-95 text-white py-3 rounded-xl text-sm font-semibold shadow-lg shadow-green-500/30 transition-all">
+      <button onclick="installApp()" id="installBtn" class="hidden w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white py-3 rounded-xl text-sm font-semibold shadow-lg transition-all">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
           <polyline points="7 10 12 15 17 10"/>
@@ -377,9 +369,7 @@ tailwind.config = {
                        bg-gradient-to-r from-brand-50 to-purple-50 
                        dark:from-brand-950 dark:to-purple-950
                        border border-brand-100 dark:border-brand-900/50
-                       hover:shadow-md hover:shadow-brand-500/10
-                       active:scale-95
-                       transition-all duration-200">
+                       hover:shadow-md active:scale-95 transition-all duration-200">
           <span id="headerName" class="block text-xs md:text-sm font-semibold bg-gradient-to-r from-brand-600 to-purple-600 bg-clip-text text-transparent truncate">Admin</span>
         </button>
       </div>
@@ -399,7 +389,7 @@ tailwind.config = {
           </div>
           <div class="stat-card bg-white dark:bg-slate-900 p-4 md:p-5 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 card-hover">
             <div class="w-10 h-10 bg-green-50 dark:bg-green-950 rounded-xl flex items-center justify-center mb-3">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
             </div>
             <p class="text-slate-500 dark:text-slate-400 text-xs font-medium">កំពុងដំណើរការ</p>
             <p id="statActive" class="text-2xl md:text-3xl font-bold mt-1 tracking-tight">0</p>
@@ -427,7 +417,7 @@ tailwind.config = {
                 <span class="w-8 h-8 bg-brand-50 dark:bg-brand-950 rounded-lg flex items-center justify-center">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3563ff" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
                 </span>
-               កាលបរិច្ឆេទតុលាការខាងមុខ
+                កាលបរិច្ឆេទតុលាការខាងមុខ
               </h3>
               <button onclick="showPage('calendar')" class="text-xs text-brand-600 hover:text-brand-700 font-medium">មើលទាំងអស់ →</button>
             </div>
@@ -449,13 +439,13 @@ tailwind.config = {
 
       <!-- CASES -->
       <section id="page-cases" class="page hidden animate-fade-in">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-5">
           <div class="relative sm:col-span-2 lg:col-span-2">
             <svg class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-            <input id="caseSearch" oninput="renderCases()" placeholder="ស្វែងរករឿងក្ដី..." class="w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:border-brand-500 rounded-xl outline-none text-base transition-all">
+            <input id="caseSearch" oninput="renderCases()" placeholder="ស្វែងរករឿងក្ដី..." class="w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:border-brand-500 rounded-xl outline-none text-base">
           </div>
           <div class="relative">
-            <select id="caseFilterCourt" onchange="renderCases()" class="w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:border-brand-500 rounded-xl outline-none text-sm transition-all">
+            <select id="caseFilterCourt" onchange="renderCases()" class="w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:border-brand-500 rounded-xl outline-none text-sm">
               <option value="">🏛️ តុលាការទាំងអស់</option>
               <optgroup label="សាលាដំបូង">
                 <option value="សាលាដំបូងរាជធានីភ្នំពេញ">ភ្នំពេញ</option>
@@ -495,9 +485,17 @@ tailwind.config = {
               </optgroup>
             </select>
           </div>
+          <div class="relative">
+            <select id="caseFilterStatus" onchange="renderCases()" class="w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:border-brand-500 rounded-xl outline-none text-sm">
+              <option value="">⚖️ ស្ថានភាពទាំងអស់</option>
+              <option value="active">កំពុងដំណើរការ</option>
+              <option value="pending">រង់ចាំ</option>
+              <option value="closed">បានបញ្ចប់</option>
+            </select>
+          </div>
           <button onclick="openCaseModal()" class="btn-primary text-white px-5 py-3 rounded-xl font-medium flex items-center justify-center gap-2">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-            បន្ថែមសំណុំរឿងក្ដីថ្មី
+            បន្ថែម
           </button>
         </div>
 
@@ -652,7 +650,7 @@ tailwind.config = {
 
             <div id="importPreview" class="hidden p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl mb-4 text-xs space-y-1"></div>
 
-            <button id="confirmImportBtn" onclick="confirmImport()" disabled class="w-full py-3 rounded-xl font-medium flex items-center justify-center gap-2 bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed transition-all">
+            <button id="confirmImportBtn" onclick="confirmImport()" disabled class="w-full py-3 rounded-xl font-medium flex items-center justify-center gap-2 bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
               ដាក់បញ្ចូល
             </button>
@@ -709,16 +707,13 @@ tailwind.config = {
             </div>
           </div>
           <div class="flex flex-col sm:flex-row gap-2">
-            <button onclick="checkAndUpdate()" id="checkUpdateBtn" class="flex-1 px-4 py-2.5 bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900 rounded-xl text-sm font-medium flex items-center justify-center gap-2">
+            <button onclick="checkAndUpdate()" id="checkUpdateBtn" class="flex-1 px-4 py-2.5 bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 rounded-xl text-sm font-medium flex items-center justify-center gap-2">
               🔄 ពិនិត្យ Update
             </button>
-            <button onclick="forceUpdate()" class="flex-1 px-4 py-2.5 bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900 rounded-xl text-sm font-medium">
+            <button onclick="forceUpdate()" class="flex-1 px-4 py-2.5 bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-400 hover:bg-amber-100 rounded-xl text-sm font-medium">
               ⚡ Force Update
             </button>
           </div>
-          <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-3 text-center">
-            💾 ទិន្នន័យរបស់អ្នកនឹងរក្សាទុកជាប់ពេល Update
-          </p>
         </div>
 
         <div class="bg-red-50 dark:bg-red-950/30 p-5 rounded-2xl border border-red-200 dark:border-red-900">
@@ -747,14 +742,14 @@ tailwind.config = {
 </div>
 
 <!-- CASE MODAL -->
-<div id="caseModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 modal-wrap flex items-end sm:items-center justify-center animate-fade-in">
-  <div class="modal-content bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl shadow-2xl w-full sm:max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto animate-slide-up">
+<div id="caseModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 modal-wrap flex items-end sm:items-center justify-center">
+  <div class="modal-content bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl shadow-2xl w-full sm:max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
     <div class="sticky top-0 bg-white dark:bg-slate-900 px-5 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center z-10 rounded-t-3xl">
       <div class="flex items-center gap-3">
         <div class="w-9 h-9 bg-brand-50 dark:bg-brand-950 rounded-xl flex items-center justify-center">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3563ff" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
         </div>
-        <h3 id="caseModalTitle" class="font-bold">បន្ថែមរឿងក្ដីថ្មី</h3>
+        <h3 id="caseModalTitle" class="font-bold">បន្ថែមសំណុំរឿងក្ដីថ្មី</h3>
       </div>
       <button onclick="closeCaseModal()" class="w-9 h-9 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -764,15 +759,15 @@ tailwind.config = {
       <input type="hidden" id="caseId">
       <div>
         <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">លេខសំណុំរឿងក្ដី <span class="text-red-500">*</span></label>
-        <input id="caseNumber" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base transition-all">
+        <input id="caseNumber" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
       </div>
       <div>
         <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">ចំណងជើង <span class="text-red-500">*</span></label>
-        <input id="caseTitle" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base transition-all">
+        <input id="caseTitle" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
       </div>
       <div class="md:col-span-2">
         <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">តុលាការមានសម្ថកិច្ច <span class="text-red-500">*</span></label>
-        <select id="caseCourt" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base transition-all">
+        <select id="caseCourt" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
           <option value="">— សូមជ្រើសរើសតុលាការ —</option>
           <optgroup label="🏛️ សាលាដំបូង">
             <option value="សាលាដំបូងរាជធានីភ្នំពេញ">សាលាដំបូងរាជធានីភ្នំពេញ</option>
@@ -827,28 +822,39 @@ tailwind.config = {
         <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">អតិថិជន</label>
         <select id="caseClient" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base"></select>
       </div>
-      <div>
-        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">ស្ថានភាព</label>
+      <div class="md:col-span-2">
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">ស្ថានភាព <span class="text-red-500">*</span></label>
         <select id="caseStatus" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
-          <option value="">— ស្ថានភាពសំណុំរឿងក្ដី —</option>
-          <optgroup label="នីតិវិធីរដ្ឋប្បវេណី">
+          <option value="">— សូមជ្រើសរើសស្ថានភាព —</option>
+          
+          <optgroup label="📋 នីតិវិធីរដ្ឋប្បវេណី">
             <option value="ដាក់ពាក្យបណ្ដឹង">ដាក់ពាក្យបណ្ដឹង</option>
             <option value="នីតិវិធីត្រៀមទាញហេតុផល">នីតិវិធីត្រៀមទាញហេតុផល</option>
             <option value="នីតិវិធីទាញហេតុផលដោយផ្ទាល់មាត់">នីតិវិធីទាញហេតុផលដោយផ្ទាល់មាត់</option>
             <option value="រង់ចាំប្រកាសសេចក្ដីសម្រេច">រង់ចាំប្រកាសសេចក្ដីសម្រេច</option>
             <option value="រង់ចាំសេចក្ដីសម្រេចចូលជាស្ថាពរ">រង់ចាំសេចក្ដីសម្រេចចូលជាស្ថាពរ</option>
             <option value="សេចក្ដីសម្រេចចូលជាស្ថាពរ">សេចក្ដីសម្រេចចូលជាស្ថាពរ</option>
-          <optgroup label="នីតិវិធីព្រហ្មទណ្ឌ">
+            <option value="បណ្ដឹងបានដក">បណ្ដឹងបានដក</option>
+            <option value="ស្រុះស្រួលគ្នា">ស្រុះស្រួលគ្នា</option>
+          </optgroup>
+          
+          <optgroup label="⚖️ នីតិវិធីព្រហ្មទណ្ឌ">
             <option value="ដាក់ពាក្យបណ្ដឹង">ដាក់ពាក្យបណ្ដឹង</option>
-            <option value="ដំណាក់កាលមន្រ្តីនគរបាល">ដំណាក់កាលមន្រ្តីនគរបាល</option>
-            <option value="តំណាក់កាលព្រះរាជអាជ្ញ">តំណាក់កាលព្រះរាជអាជ្ញា</option>
+            <option value="ដំណាក់កាលមន្ត្រីនគរបាល">ដំណាក់កាលមន្ត្រីនគរបាល</option>
+            <option value="ដំណាក់កាលព្រះរាជអាជ្ញា">ដំណាក់កាលព្រះរាជអាជ្ញា</option>
             <option value="ដំណាក់កាលចៅក្រមស៊ើបសួរ">ដំណាក់កាលចៅក្រមស៊ើបសួរ</option>
             <option value="ដំណាក់កាលជំនុំជម្រះ">ដំណាក់កាលជំនុំជម្រះ</option>
             <option value="រង់ចាំប្រកាសសេចក្ដីសម្រេច">រង់ចាំប្រកាសសេចក្ដីសម្រេច</option>
             <option value="សេចក្ដីសម្រេចចូលជាស្ថាពរ">សេចក្ដីសម្រេចចូលជាស្ថាពរ</option>
+            <option value="បណ្ដឹងបានដក">បណ្ដឹងបានដក</option>
+          </optgroup>
+          
+          <optgroup label="✅ បានបញ្ចប់">
+            <option value="បានបញ្ចប់">បានបញ្ចប់</option>
+          </optgroup>
         </select>
       </div>
-      <div>
+      <div class="md:col-span-2">
         <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">កំណត់កាលបរិច្ឆេទតុលាការ</label>
         <input id="caseHearing" type="date" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
       </div>
@@ -865,8 +871,8 @@ tailwind.config = {
 </div>
 
 <!-- CLIENT MODAL -->
-<div id="clientModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 modal-wrap flex items-end sm:items-center justify-center animate-fade-in">
-  <div class="modal-content bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl shadow-2xl w-full sm:max-w-md max-h-[95vh] overflow-y-auto animate-slide-up">
+<div id="clientModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 modal-wrap flex items-end sm:items-center justify-center">
+  <div class="modal-content bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl shadow-2xl w-full sm:max-w-md max-h-[95vh] overflow-y-auto">
     <div class="sticky top-0 bg-white dark:bg-slate-900 px-5 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center z-10 rounded-t-3xl">
       <div class="flex items-center gap-3">
         <div class="w-9 h-9 bg-brand-50 dark:bg-brand-950 rounded-xl flex items-center justify-center">
@@ -905,8 +911,8 @@ tailwind.config = {
 </div>
 
 <!-- PASSWORD MODAL -->
-<div id="passwordModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 modal-wrap flex items-end sm:items-center justify-center animate-fade-in">
-  <div class="modal-content bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl shadow-2xl w-full sm:max-w-md max-h-[95vh] overflow-y-auto animate-slide-up">
+<div id="passwordModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 modal-wrap flex items-end sm:items-center justify-center">
+  <div class="modal-content bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl shadow-2xl w-full sm:max-w-md">
     <div class="sticky top-0 bg-white dark:bg-slate-900 px-5 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center z-10 rounded-t-3xl">
       <div class="flex items-center gap-3">
         <div class="w-9 h-9 bg-purple-50 dark:bg-purple-950 rounded-xl flex items-center justify-center">
@@ -940,8 +946,8 @@ tailwind.config = {
 </div>
 
 <!-- NAME MODAL -->
-<div id="nameModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 modal-wrap flex items-end sm:items-center justify-center animate-fade-in">
-  <div class="modal-content bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl shadow-2xl w-full sm:max-w-md max-h-[95vh] overflow-y-auto animate-slide-up">
+<div id="nameModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 modal-wrap flex items-end sm:items-center justify-center">
+  <div class="modal-content bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl shadow-2xl w-full sm:max-w-md">
     <div class="sticky top-0 bg-white dark:bg-slate-900 px-5 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center z-10 rounded-t-3xl">
       <div class="flex items-center gap-3">
         <div class="w-9 h-9 bg-brand-50 dark:bg-brand-950 rounded-xl flex items-center justify-center">
@@ -967,8 +973,8 @@ tailwind.config = {
 </div>
 
 <!-- CONFIRM MODAL -->
-<div id="confirmModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[70] flex items-center justify-center p-4 animate-fade-in">
-  <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-sm p-6 animate-slide-up">
+<div id="confirmModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[70] flex items-center justify-center p-4">
+  <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-sm p-6">
     <div class="flex items-start gap-3 mb-4">
       <div class="w-10 h-10 bg-red-100 dark:bg-red-950 rounded-full flex items-center justify-center shrink-0">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>
@@ -985,45 +991,8 @@ tailwind.config = {
   </div>
 </div>
 
-<!-- PWA INSTALL BANNER -->
-<div id="installBanner" class="hidden fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 md:left-auto md:right-6 md:translate-x-0 z-40 max-w-[92vw] md:max-w-sm animate-slide-up">
-  <div class="bg-gradient-to-br from-brand-600 to-purple-600 text-white rounded-2xl shadow-2xl p-4 flex items-center gap-3 border border-white/20">
-    <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shrink-0">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 3v18M5 8h14M5 8l-3 8a3 3 0 0 0 6 0L5 8zM19 8l-3 8a3 3 0 0 0 6 0l-3-8z"/>
-      </svg>
-    </div>
-    <div class="flex-1 min-w-0">
-      <p class="font-bold text-sm">ដំឡើង App</p>
-      <p class="text-xs opacity-90 truncate">ប្រើប្រាស់លឿន និងងាយស្រួល</p>
-    </div>
-    <div class="flex flex-col gap-1">
-      <button onclick="installApp(); hideBanner();" class="px-3 py-1.5 bg-white text-brand-700 rounded-lg text-xs font-bold">ដំឡើង</button>
-      <button onclick="hideBanner()" class="px-3 py-1.5 text-white/70 text-xs">បិទ</button>
-    </div>
-  </div>
-</div>
-
-<!-- UPDATE BANNER -->
-<div id="updateBanner" class="hidden fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 md:left-auto md:right-6 md:translate-x-0 z-40 max-w-[92vw] md:max-w-sm animate-slide-up">
-  <div class="bg-gradient-to-br from-emerald-500 to-teal-600 text-white rounded-2xl shadow-2xl p-4 flex items-center gap-3 border border-white/20">
-    <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shrink-0">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9m9 9H3m9 9a9 9 0 0 1-9-9m9 9c1.66 0 3-4 3-9s-1.34-9-3-9m0 18c-1.66 0-3-4-3-9s1.34-9 3-9m-9 9a9 9 0 0 1 9-9"/>
-      </svg>
-    </div>
-    <div class="flex-1 min-w-0">
-      <p class="font-bold text-sm">មានកំណែថ្មី!</p>
-      <p class="text-xs opacity-90">ចុចដើម្បី Update</p>
-    </div>
-    <button onclick="applyUpdate()" class="px-3 py-1.5 bg-white text-emerald-600 rounded-lg text-xs font-bold">
-      Update
-    </button>
-  </div>
-</div>
-
 <!-- TOAST -->
-<div id="toast" class="hidden fixed bottom-24 md:bottom-6 left-1/2 -translate-x-1/2 md:left-auto md:right-6 md:translate-x-0 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-3 rounded-2xl shadow-2xl z-[80] max-w-[90vw] text-center text-sm font-medium animate-slide-up"></div>
+<div id="toast" class="hidden fixed bottom-24 md:bottom-6 left-1/2 -translate-x-1/2 md:left-auto md:right-6 md:translate-x-0 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-3 rounded-2xl shadow-2xl z-[80] max-w-[90vw] text-center text-sm font-medium"></div>
 
 <script>
 // ============ THEME ============
@@ -1041,206 +1010,26 @@ function initTheme() {
   }
 }
 
-// ============ PWA + AUTO UPDATE ============
+// ============ PWA ============
 let deferredPrompt = null;
-let swRegistration = null;
-
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  showInstallButton();
-  
-  if (!sessionStorage.getItem('bannerHidden') && !isPWA()) {
-    setTimeout(() => {
-      document.getElementById('installBanner')?.classList.remove('hidden');
-    }, 3000);
-  }
-});
-
-window.addEventListener('appinstalled', () => {
-  deferredPrompt = null;
-  hideInstallButton();
-  toast('✅ បានដំឡើង App ជោគជ័យ!');
-});
-
-function isPWA() {
-  return window.matchMedia('(display-mode: standalone)').matches ||
-         window.navigator.standalone === true ||
-         document.referrer.includes('android-app://');
-}
-
-function showInstallButton() {
   const btn = document.getElementById('installBtn');
   if (btn && !isPWA()) btn.classList.remove('hidden');
-}
-
-function hideInstallButton() {
-  const btn = document.getElementById('installBtn');
-  if (btn) btn.classList.add('hidden');
-}
-
-function hideBanner() {
-  document.getElementById('installBanner')?.classList.add('hidden');
-  sessionStorage.setItem('bannerHidden', '1');
-}
-
+});
+window.addEventListener('appinstalled', () => { deferredPrompt = null; toast('✅ បានដំឡើង!'); });
+function isPWA() { return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true; }
 async function installApp() {
-  if (isPWA()) {
-    toast('✅ App បានដំឡើងរួចហើយ');
-    return;
-  }
-  
-  if (!deferredPrompt) {
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const isAndroid = /Android/.test(navigator.userAgent);
-    
-    if (isIOS) {
-      alert('📲 របៀបដំឡើងលើ iPhone/iPad:\n\n1. ចុចប៊ូតុង Share (□↑)\n2. ជ្រើស "Add to Home Screen"\n3. ចុច "Add"');
-    } else if (isAndroid) {
-      alert('📲 របៀបដំឡើងលើ Android:\n\n1. ចុច Menu (⋮) នៅជ្រុងខាងលើ\n2. ជ្រើស "Install app" ឬ "Add to Home screen"\n3. ចុច "Install"');
-    } else {
-      alert('📲 របៀបដំឡើង:\n\n• Chrome/Edge: ចុច Icon ដំឡើង (⊕) នៅខាងស្ដាំ URL bar\n• ឬ Menu → "Install Case Manager"');
-    }
-    return;
-  }
-  
-  try {
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      toast('✅ កំពុងដំឡើង...');
-    }
-    deferredPrompt = null;
-  } catch (err) {
-    toast('❌ មិនអាចដំឡើងបានទេ');
-  }
+  if (!deferredPrompt) { alert('📲 សូមចុច Menu → "Install App"'); return; }
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  deferredPrompt = null;
 }
 
-// ============ SERVICE WORKER + AUTO UPDATE ============
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', async () => {
-    try {
-      swRegistration = await navigator.serviceWorker.register('sw.js');
-      
-      // ពិនិត្យភ្លាមៗ
-      checkForUpdates();
-      
-      // ពិនិត្យរាល់ ៥ នាទី
-      setInterval(checkForUpdates, 5 * 60 * 1000);
-      
-      // ពិនិត្យពេល User ត្រឡប់មកវិញ
-      document.addEventListener('visibilitychange', () => {
-        if (!document.hidden) checkForUpdates();
-      });
-      
-      // ពិនិត្យពេល Online
-      window.addEventListener('online', checkForUpdates);
-      
-      swRegistration.addEventListener('updatefound', () => {
-        const newWorker = swRegistration.installing;
-        if (!newWorker) return;
-        
-        newWorker.addEventListener('statechange', () => {
-          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-            showUpdateBanner();
-            updateStatusIndicator('ថ្មី');
-          }
-        });
-      });
-      
-    } catch (err) {
-      console.log('SW error:', err);
-    }
-  });
-  
-  let refreshing = false;
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (!refreshing) {
-      refreshing = true;
-      // localStorage នៅដដែល → ទិន្នន័យមិនបាត់
-      location.reload();
-    }
-  });
-}
-
-async function checkForUpdates() {
-  if (!swRegistration) return;
-  try {
-    await swRegistration.update();
-    updateStatusIndicator('រួចរាល់');
-  } catch (err) {
-    updateStatusIndicator('គ្មានបណ្តាញ');
-  }
-}
-
-function updateStatusIndicator(status) {
-  const el = document.getElementById('updateStatus');
-  if (!el) return;
-  const colors = {
-    'រួចរាល់': 'text-emerald-600 dark:text-emerald-400',
-    'ថ្មី': 'text-amber-600 dark:text-amber-400',
-    'គ្មានបណ្តាញ': 'text-red-600 dark:text-red-400'
-  };
-  el.className = `text-xs font-medium ${colors[status] || ''}`;
-  el.textContent = status === 'រួចរាល់' ? '✅ ' + status : status === 'ថ្មី' ? '⚠️ ' + status : '❌ ' + status;
-}
-
-function showUpdateBanner() {
-  document.getElementById('updateBanner')?.classList.remove('hidden');
-}
-
-function applyUpdate() {
-  if (!swRegistration || !swRegistration.waiting) {
-    location.reload();
-    return;
-  }
-  
-  swRegistration.waiting.postMessage('SKIP_WAITING');
-  setTimeout(() => location.reload(), 500);
-}
-
-// ============ FORCE UPDATE ============
-async function forceUpdate() {
-  if (!confirm('⚡ តើអ្នកចង់ Update App?\n\n💾 ទិន្នន័យរបស់អ្នកនឹងមិនបាត់ទេ។')) return;
-  
-  toast('🔄 កំពុង Update...');
-  
-  try {
-    // លុប Cache ទាំងអស់
-    if ('caches' in window) {
-      const keys = await caches.keys();
-      await Promise.all(keys.map(k => caches.delete(k)));
-    }
-    
-    // Unregister SW
-    if ('serviceWorker' in navigator) {
-      const regs = await navigator.serviceWorker.getRegistrations();
-      await Promise.all(regs.map(r => r.unregister()));
-    }
-  } catch (err) {
-    console.log(err);
-  }
-  
-  // Reload (localStorage នៅដដែល)
-  setTimeout(() => location.reload(true), 800);
-}
-
-function checkAndUpdate() {
-  const btn = document.getElementById('checkUpdateBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner" style="border-color: rgba(16,185,129,0.3); border-top-color: #10b981;"></span> កំពុងពិនិត្យ...';
-  
-  checkForUpdates().finally(() => {
-    setTimeout(() => {
-      btn.disabled = false;
-      btn.innerHTML = '🔄 ពិនិត្យ Update';
-      if (swRegistration && swRegistration.waiting) {
-        showUpdateBanner();
-        toast('⚠️ មានកំណែថ្មី!');
-      } else {
-        toast('✅ App គឺកំណែថ្មីបំផុត');
-      }
-    }, 800);
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
   });
 }
 
@@ -1265,6 +1054,62 @@ const DB = {
 let statusChart = null;
 let currentUser = null;
 
+// ============ STATUS HELPERS (សំខាន់!) ============
+// កំណត់ប្រភេទស្ថានភាព
+function getStatusCategory(status) {
+  if (!status) return 'unknown';
+  const s = status.toLowerCase();
+  
+  // បានបញ្ចប់
+  if (s.includes('បញ្ចប់') || s.includes('ស្ថាពរ') || s.includes('បណ្ដឹងបានដក') || s.includes('ស្រុះស្រួល')) {
+    return 'closed';
+  }
+  
+  // រង់ចាំ
+  if (s.includes('រង់ចាំ')) {
+    return 'pending';
+  }
+  
+  // កំពុងដំណើរការ
+  if (s.includes('ដាក់ពាក្យ') || s.includes('នីតិវិធី') || s.includes('ដំណាក់កាល')) {
+    return 'active';
+  }
+  
+  return 'unknown';
+}
+
+// បង្ហាញ Status ជាមួយ Style
+function statusInfo(status) {
+  const cat = getStatusCategory(status);
+  
+  if (cat === 'active') {
+    return {
+      label: status || 'កំពុងដំណើរការ',
+      cls: 'bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-400',
+      dot: 'bg-green-500'
+    };
+  }
+  if (cat === 'pending') {
+    return {
+      label: status || 'រង់ចាំ',
+      cls: 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-400',
+      dot: 'bg-amber-500'
+    };
+  }
+  if (cat === 'closed') {
+    return {
+      label: status || 'បានបញ្ចប់',
+      cls: 'bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-400',
+      dot: 'bg-purple-500'
+    };
+  }
+  return {
+    label: status || '—',
+    cls: 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400',
+    dot: 'bg-slate-400'
+  };
+}
+
 // ============ PASSWORD VISIBILITY ============
 function togglePass(inputId, btn) {
   const input = document.getElementById(inputId);
@@ -1284,18 +1129,16 @@ async function handleSetup() {
   const pass = document.getElementById('setupPass').value;
   const pass2 = document.getElementById('setupPass2').value;
   const err = document.getElementById('setupError');
-  
   err.classList.add('hidden');
   
   if (!name) { err.textContent = '⚠️ សូមបំពេញឈ្មោះពេញ'; err.classList.remove('hidden'); return; }
-  if (name.length < 2) { err.textContent = '⚠️ ឈ្មោះពេញត្រូវមានយ៉ាងតិច ២ តួ'; err.classList.remove('hidden'); return; }
+  if (name.length < 2) { err.textContent = '⚠️ ឈ្មោះត្រូវមាន ≥ ២ តួ'; err.classList.remove('hidden'); return; }
   if (!pass) { err.textContent = '⚠️ សូមបញ្ចូលលេខសម្ងាត់'; err.classList.remove('hidden'); return; }
-  if (pass.length < 4) { err.textContent = '⚠️ លេខសម្ងាត់ត្រូវមានយ៉ាងតិច ៤ តួ'; err.classList.remove('hidden'); return; }
+  if (pass.length < 4) { err.textContent = '⚠️ លេខសម្ងាត់ត្រូវមាន ≥ ៤ តួ'; err.classList.remove('hidden'); return; }
   if (pass !== pass2) { err.textContent = '❌ លេខសម្ងាត់មិនដូចគ្នា'; err.classList.remove('hidden'); return; }
   
   const hashedPass = await hashPassword(pass);
   DB.set('auth', { name, password: hashedPass, role: 'admin', createdAt: new Date().toISOString() });
-  
   document.getElementById('setupScreen').classList.add('hidden');
   toast('✅ បង្កើតគណនីជោគជ័យ!');
   showLogin();
@@ -1310,11 +1153,10 @@ function showLogin() {
   }
   document.getElementById('loginScreen').classList.remove('hidden');
   document.getElementById('loginPass').value = '';
-  document.getElementById('loginError').classList.add('hidden');
   setTimeout(() => document.getElementById('loginPass').focus(), 100);
 }
 
-// ============ LOGIN ATTEMPTS ============
+// ============ LOGIN ============
 function checkLoginLock() {
   const lock = DB.get('loginLock', null);
   if (lock && lock.until > Date.now()) {
@@ -1333,7 +1175,6 @@ function recordFailedLogin() {
   }
   attempts.count++;
   DB.set('loginAttempts', attempts);
-  
   if (attempts.count >= 5) {
     DB.set('loginLock', { until: Date.now() + 15 * 60 * 1000 });
     DB.remove('loginAttempts');
@@ -1347,17 +1188,15 @@ function resetLoginAttempts() {
   DB.remove('loginLock');
 }
 
-// ============ LOGIN ============
 async function login() {
   const lock = checkLoginLock();
   if (lock.locked) {
-    showLoginError(`🔒 គណនីត្រូវបានចាក់សោ។ សូមព្យាយាមម្ដងទៀតក្នុងរយៈពេល ${lock.mins} នាទីទៀត។`);
+    showLoginError(`🔒 ចាក់សោ ${lock.mins} នាទីទៀត`);
     return;
   }
   
   const password = document.getElementById('loginPass').value;
   const remember = document.getElementById('rememberMe').checked;
-  
   if (!password) return showLoginError('⚠️ សូមបញ្ចូលលេខសម្ងាត់');
   
   const btn = document.getElementById('loginBtn');
@@ -1367,24 +1206,19 @@ async function login() {
   
   const auth = DB.get('auth', null);
   const hashedPass = await hashPassword(password);
-  
   await new Promise(r => setTimeout(r, 300));
   
   if (!auth || auth.password !== hashedPass) {
     const result = recordFailedLogin();
     btn.disabled = false;
     btnText.textContent = 'ចូលប្រើប្រាស់ →';
-    if (result.locked) {
-      showLoginError('🔒 ព្យាយាមច្រើនដងពេក។ គណនីត្រូវបានចាក់សោ ១៥ នាទី។');
-    } else {
-      showLoginError(`❌ លេខសម្ងាត់មិនត្រឹមត្រូវ (នៅសល់ ${result.remaining} ដង)`);
-    }
+    if (result.locked) showLoginError('🔒 ព្យាយាមច្រើនដងពេក');
+    else showLoginError(`❌ លេខសម្ងាត់មិនត្រឹមត្រូវ (នៅសល់ ${result.remaining} ដង)`);
     return;
   }
   
   resetLoginAttempts();
   currentUser = { name: auth.name, role: auth.role };
-  
   const storage = remember ? localStorage : sessionStorage;
   storage.setItem('loggedIn', '1');
   storage.setItem('sessionStart', Date.now().toString());
@@ -1403,7 +1237,7 @@ function showLoginError(msg) {
 }
 
 function logout() {
-  showConfirm('ចាកចេញ', 'តើអ្នកប្រាកដជាចង់ចាកចេញមែនទេ?', () => {
+  showConfirm('ចាកចេញ', 'តើអ្នកចង់ចាកចេញ?', () => {
     ['loggedIn','sessionStart','user'].forEach(k => {
       localStorage.removeItem(k);
       sessionStorage.removeItem(k);
@@ -1455,7 +1289,7 @@ function closeSidebarOnMobile() {
 // ============ NAVIGATION ============
 const pageInfo = {
   dashboard: { title: 'ផ្ទាំងគ្រប់គ្រង', subtitle: 'ទិដ្ឋភាពទូទៅនៃរឿងក្ដីរបស់អ្នក' },
-  cases: { title: 'រឿងក្ដី', subtitle: 'គ្រប់គ្រងរឿងក្ដីទាំងអស់' },
+  cases: { title: 'សំណុំរឿងក្ដី', subtitle: 'គ្រប់គ្រងរឿងក្ដីទាំងអស់' },
   clients: { title: 'អតិថិជន', subtitle: 'ព័ត៌មានអតិថិជន' },
   calendar: { title: 'កាលវិភាគ', subtitle: 'ថ្ងៃកាត់ក្ដីខាងមុខ' },
   documents: { title: 'ឯកសារ', subtitle: 'ឯកសាររឿងក្ដី' },
@@ -1488,12 +1322,22 @@ function handleFAB() {
 // ============ DASHBOARD ============
 function renderDashboard() {
   const cases = DB.get('cases');
+  
+  const activeCount = cases.filter(c => getStatusCategory(c.status) === 'active').length;
+  const pendingCount = cases.filter(c => getStatusCategory(c.status) === 'pending').length;
+  const closedCount = cases.filter(c => getStatusCategory(c.status) === 'closed').length;
+  
   document.getElementById('statTotal').textContent = cases.length;
-  document.getElementById('statActive').textContent = cases.filter(c => c.status === 'active').length;
-  document.getElementById('statPending').textContent = cases.filter(c => c.status === 'pending').length;
-  document.getElementById('statClosed').textContent = cases.filter(c => c.status === 'closed').length;
+  document.getElementById('statActive').textContent = activeCount;
+  document.getElementById('statPending').textContent = pendingCount;
+  document.getElementById('statClosed').textContent = closedCount;
 
-  const upcoming = cases.filter(c => c.nextHearing).sort((a,b) => new Date(a.nextHearing) - new Date(b.nextHearing)).slice(0, 4);
+  // Upcoming hearings
+  const upcoming = cases
+    .filter(c => c.nextHearing)
+    .sort((a,b) => new Date(a.nextHearing) - new Date(b.nextHearing))
+    .slice(0, 4);
+  
   document.getElementById('upcomingHearings').innerHTML = upcoming.length
     ? upcoming.map(c => {
         const days = Math.ceil((new Date(c.nextHearing) - new Date()) / 86400000);
@@ -1514,6 +1358,7 @@ function renderDashboard() {
       }).join('')
     : `<div class="text-center py-8"><div class="empty-icon">📅</div><p class="text-slate-400 text-sm">មិនមានកាលវិភាគខាងមុខ</p></div>`;
 
+  // Chart
   const ctx = document.getElementById('statusChart').getContext('2d');
   if (statusChart) statusChart.destroy();
   const isDark = document.documentElement.classList.contains('dark');
@@ -1522,11 +1367,7 @@ function renderDashboard() {
     data: {
       labels: ['កំពុងដំណើរការ','រង់ចាំ','បានបញ្ចប់'],
       datasets: [{
-        data: [
-          cases.filter(c=>c.status==='active').length,
-          cases.filter(c=>c.status==='pending').length,
-          cases.filter(c=>c.status==='closed').length
-        ],
+        data: [activeCount, pendingCount, closedCount],
         backgroundColor: ['#22c55e','#f59e0b','#8b5cf6'],
         borderWidth: 0, spacing: 3, borderRadius: 8
       }]
@@ -1545,27 +1386,25 @@ function renderDashboard() {
 }
 
 // ============ CASES ============
-function statusInfo(status) {
-  return {
-    active: { label:'កំពុងដំណើរការ', cls:'bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-400', dot:'bg-green-500' },
-    pending:{ label:'រង់ចាំ', cls:'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-400', dot:'bg-amber-500' },
-    closed: { label:'បានបញ្ចប់', cls:'bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-400', dot:'bg-purple-500' }
-  }[status] || { label:'?', cls:'bg-slate-100', dot:'bg-slate-400' };
-}
-
 function renderCases() {
   const search = (document.getElementById('caseSearch')?.value || '').toLowerCase();
   const courtFilter = document.getElementById('caseFilterCourt')?.value || '';
+  const statusFilter = document.getElementById('caseFilterStatus')?.value || '';
   const cases = DB.get('cases');
   const clients = DB.get('clients');
+  
   const filtered = cases.filter(c => {
-    const matchSearch = c.caseNumber.toLowerCase().includes(search) ||
+    const matchSearch = !search ||
+      c.caseNumber.toLowerCase().includes(search) ||
       c.title.toLowerCase().includes(search) ||
-      (c.court||'').toLowerCase().includes(search);
+      (c.court||'').toLowerCase().includes(search) ||
+      (c.status||'').toLowerCase().includes(search);
     const matchCourt = !courtFilter || c.court === courtFilter;
-    return matchSearch && matchCourt;
+    const matchStatus = !statusFilter || getStatusCategory(c.status) === statusFilter;
+    return matchSearch && matchCourt && matchStatus;
   });
 
+  // Desktop
   document.getElementById('casesTable').innerHTML = filtered.length
     ? filtered.map(c => {
         const client = clients.find(x => x.id === c.clientId);
@@ -1575,13 +1414,18 @@ function renderCases() {
           <td class="px-5 py-4">${c.title}</td>
           <td class="px-5 py-4 text-slate-600 dark:text-slate-400 text-xs">${c.court||'-'}</td>
           <td class="px-5 py-4 text-slate-600 dark:text-slate-400">${client?.name||'-'}</td>
-          <td class="px-5 py-4"><span class="badge ${s.cls}"><span class="w-1.5 h-1.5 rounded-full ${s.dot}"></span>${s.label}</span></td>
+          <td class="px-5 py-4">
+            <span class="badge ${s.cls}" style="max-width:200px">
+              <span class="w-1.5 h-1.5 rounded-full ${s.dot} flex-shrink-0"></span>
+              <span class="truncate" title="${s.label}">${s.label}</span>
+            </span>
+          </td>
           <td class="px-5 py-4 text-slate-600 dark:text-slate-400">${c.nextHearing||'-'}</td>
           <td class="px-5 py-4 text-right whitespace-nowrap">
-            <button onclick="editCase(${c.id})" class="w-8 h-8 rounded-lg hover:bg-brand-50 dark:hover:bg-brand-950 text-brand-600 dark:text-brand-400 mr-1" title="កែ">
+            <button onclick="editCase(${c.id})" class="w-8 h-8 rounded-lg hover:bg-brand-50 dark:hover:bg-brand-950 text-brand-600 dark:text-brand-400 mr-1">
               <svg class="inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
             </button>
-            <button onclick="deleteCase(${c.id})" class="w-8 h-8 rounded-lg hover:bg-red-50 dark:hover:bg-red-950 text-red-500" title="លុប">
+            <button onclick="deleteCase(${c.id})" class="w-8 h-8 rounded-lg hover:bg-red-50 dark:hover:bg-red-950 text-red-500">
               <svg class="inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
             </button>
           </td>
@@ -1589,17 +1433,21 @@ function renderCases() {
       }).join('')
     : '<tr><td colspan="7" class="px-5 py-12 text-center"><div class="empty-icon">📁</div><p class="text-slate-400 text-sm">មិនមានរឿងក្ដី</p></td></tr>';
 
+  // Mobile
   document.getElementById('casesCards').innerHTML = filtered.length
     ? filtered.map(c => {
         const client = clients.find(x => x.id === c.clientId);
         const s = statusInfo(c.status);
-        return `<div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 card-hover">
-          <div class="flex justify-between items-start mb-3 gap-2">
-            <div class="min-w-0 flex-1">
-              <p class="font-bold text-brand-600 dark:text-brand-400 text-sm">${c.caseNumber}</p>
-              <p class="font-semibold mt-0.5 truncate">${c.title}</p>
-            </div>
-            <span class="badge ${s.cls} whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full ${s.dot}"></span>${s.label}</span>
+        return `<div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800">
+          <div class="mb-3">
+            <p class="font-bold text-brand-600 dark:text-brand-400 text-sm">${c.caseNumber}</p>
+            <p class="font-semibold mt-0.5">${c.title}</p>
+          </div>
+          <div class="mb-3">
+            <span class="badge ${s.cls}">
+              <span class="w-1.5 h-1.5 rounded-full ${s.dot}"></span>
+              ${s.label}
+            </span>
           </div>
           <div class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
             <p class="flex items-start gap-2"><span class="shrink-0">🏛️</span><span class="text-xs">${c.court||'-'}</span></p>
@@ -1612,7 +1460,7 @@ function renderCases() {
           </div>
         </div>`;
       }).join('')
-    : '<div class="text-center py-12"><div class="empty-icon">📁</div><p class="text-slate-400 text-sm">មិនមានរឿងក្ដី</p></div>';
+    : '<div class="text-center py-12"><div class="icon">📁</div><p class="text-slate-400 text-sm">មិនមានរឿងក្ដី</p></div>';
 }
 
 function openCaseModal(id=null) {
@@ -1622,20 +1470,27 @@ function openCaseModal(id=null) {
     : '<option value="">— គ្មានអតិថិជន —</option>';
   
   const courtSelect = document.getElementById('caseCourt');
+  const statusSelect = document.getElementById('caseStatus');
+  
+  // Cleanup old custom options
+  const cleanCustom = (select) => {
+    Array.from(select.options).forEach(opt => {
+      if (opt.dataset.custom === '1') opt.remove();
+    });
+  };
   
   if (id) {
     const c = DB.get('cases').find(x => x.id === id);
-    document.getElementById('caseModalTitle').textContent = 'កែរឿងក្ដី';
+    document.getElementById('caseModalTitle').textContent = 'កែសំណុំរឿងក្ដី';
     document.getElementById('caseId').value = c.id;
     document.getElementById('caseNumber').value = c.caseNumber;
     document.getElementById('caseTitle').value = c.title;
     
+    // Court
     const savedCourt = c.court || '';
-    const exists = Array.from(courtSelect.options).some(opt => opt.value === savedCourt);
-    Array.from(courtSelect.options).forEach(opt => {
-      if (opt.dataset.custom === '1') opt.remove();
-    });
-    if (exists) {
+    cleanCustom(courtSelect);
+    const courtExists = Array.from(courtSelect.options).some(opt => opt.value === savedCourt);
+    if (courtExists) {
       courtSelect.value = savedCourt;
     } else if (savedCourt) {
       const opt = document.createElement('option');
@@ -1648,63 +1503,85 @@ function openCaseModal(id=null) {
       courtSelect.value = '';
     }
     
+    // Status
+    const savedStatus = c.status || '';
+    cleanCustom(statusSelect);
+    const statusExists = Array.from(statusSelect.options).some(opt => opt.value === savedStatus);
+    if (statusExists) {
+      statusSelect.value = savedStatus;
+    } else if (savedStatus) {
+      const opt = document.createElement('option');
+      opt.value = savedStatus;
+      opt.textContent = savedStatus + ' (ចាស់)';
+      opt.dataset.custom = '1';
+      statusSelect.appendChild(opt);
+      statusSelect.value = savedStatus;
+    } else {
+      statusSelect.value = '';
+    }
+    
     document.getElementById('caseType').value = c.caseType||'រដ្ឋប្បវេណី';
     document.getElementById('caseClient').value = c.clientId;
-    document.getElementById('caseStatus').value = c.status;
     document.getElementById('caseHearing').value = c.nextHearing||'';
     document.getElementById('caseNote').value = c.note||'';
   } else {
-    document.getElementById('caseModalTitle').textContent = 'បន្ថែមរឿងក្ដីថ្មី';
+    document.getElementById('caseModalTitle').textContent = 'បន្ថែមសំណុំរឿងក្ដីថ្មី';
     ['caseId','caseNumber','caseTitle','caseHearing','caseNote'].forEach(i => document.getElementById(i).value = '');
-    Array.from(courtSelect.options).forEach(opt => {
-      if (opt.dataset.custom === '1') opt.remove();
-    });
+    cleanCustom(courtSelect);
+    cleanCustom(statusSelect);
     courtSelect.value = '';
-    document.getElementById('caseStatus').value = 'active';
+    statusSelect.value = 'ដាក់ពាក្យបណ្ដឹង';
   }
   document.getElementById('caseModal').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
 }
+
 function closeCaseModal() { 
   document.getElementById('caseModal').classList.add('hidden'); 
   document.body.style.overflow = '';
 }
+
 function saveCase() {
   const id = document.getElementById('caseId').value;
   const clientVal = document.getElementById('caseClient').value;
   const courtVal = document.getElementById('caseCourt').value;
+  const statusVal = document.getElementById('caseStatus').value;
+  
   const data = {
     caseNumber: document.getElementById('caseNumber').value.trim(),
     title: document.getElementById('caseTitle').value.trim(),
     court: courtVal,
     caseType: document.getElementById('caseType').value,
     clientId: clientVal ? parseInt(clientVal) : null,
-    status: document.getElementById('caseStatus').value,
+    status: statusVal,
     nextHearing: document.getElementById('caseHearing').value,
     note: document.getElementById('caseNote').value.trim()
   };
+  
   if (!data.caseNumber || !data.title) return toast('⚠️ សូមបំពេញលេខក្ដី និងចំណងជើង');
   if (!data.court) return toast('⚠️ សូមជ្រើសរើសតុលាការ');
+  if (!data.status) return toast('⚠️ សូមជ្រើសរើសស្ថានភាព');
   
   const cases = DB.get('cases');
   if (id) {
     const idx = cases.findIndex(c => c.id == id);
     cases[idx] = {...cases[idx], ...data};
-    toast('✅ បានកែប្រែរឿងក្ដី');
+    toast('✅ បានកែប្រែសំណុំរឿងក្ដី');
   } else {
     data.id = Date.now();
     cases.push(data);
-    toast('✅ បន្ថែមរឿងក្ដីថ្មីជោគជ័យ');
+    toast('✅ បន្ថែមសំណុំរឿងក្ដីថ្មី');
   }
   DB.set('cases', cases);
   closeCaseModal();
   renderCases();
 }
+
 function editCase(id) { openCaseModal(id); }
 function deleteCase(id) {
-  showConfirm('លុបរឿងក្ដី', 'តើអ្នកប្រាកដជាចង់លុបរឿងក្ដីនេះ? សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។', () => {
+  showConfirm('លុបរឿងក្ដី', 'តើអ្នកប្រាកដជាចង់លុប?', () => {
     DB.set('cases', DB.get('cases').filter(c => c.id !== id));
-    toast('🗑️ បានលុបរឿងក្ដី');
+    toast('🗑️ បានលុប');
     renderCases();
   });
 }
@@ -1717,7 +1594,7 @@ function renderClients() {
     ? clients.map(c => {
         const caseCount = cases.filter(x => x.clientId === c.id).length;
         const initials = c.name.split(' ').slice(-2).map(s => s.charAt(0)).join('');
-        return `<div class="bg-white dark:bg-slate-900 p-5 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 card-hover">
+        return `<div class="bg-white dark:bg-slate-900 p-5 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800">
           <div class="flex items-center gap-3 mb-4">
             <div class="w-12 h-12 bg-gradient-to-br from-brand-500 to-purple-600 text-white rounded-2xl flex items-center justify-center font-bold shrink-0">${initials}</div>
             <div class="min-w-0 flex-1">
@@ -1738,6 +1615,7 @@ function renderClients() {
       }).join('')
     : '<div class="col-span-full text-center py-12"><div class="empty-icon">👥</div><p class="text-slate-400 text-sm">មិនមានអតិថិជន</p></div>';
 }
+
 function openClientModal(id=null) {
   if (id) {
     const c = DB.get('clients').find(x => x.id === id);
@@ -1754,10 +1632,12 @@ function openClientModal(id=null) {
   document.getElementById('clientModal').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
 }
+
 function closeClientModal() { 
   document.getElementById('clientModal').classList.add('hidden'); 
   document.body.style.overflow = '';
 }
+
 function saveClient() {
   const id = document.getElementById('clientId').value;
   const data = {
@@ -1766,26 +1646,27 @@ function saveClient() {
     email: document.getElementById('clientEmail').value.trim(),
     address: document.getElementById('clientAddress').value.trim()
   };
-  if (!data.name) return toast('⚠️ សូមបំពេញឈ្មោះអតិថិជន');
+  if (!data.name) return toast('⚠️ សូមបំពេញឈ្មោះ');
   const clients = DB.get('clients');
   if (id) {
     const idx = clients.findIndex(c => c.id == id);
     clients[idx] = {...clients[idx], ...data};
-    toast('✅ បានកែប្រែអតិថិជន');
+    toast('✅ បានកែប្រែ');
   } else {
     data.id = Date.now();
     clients.push(data);
-    toast('✅ បានបន្ថែមអតិថិជនថ្មី');
+    toast('✅ បន្ថែមថ្មី');
   }
   DB.set('clients', clients);
   closeClientModal();
   renderClients();
 }
+
 function editClient(id) { openClientModal(id); }
 function deleteClient(id) {
-  showConfirm('លុបអតិថិជន', 'តើអ្នកប្រាកដជាចង់លុបអតិថិជននេះ? សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។', () => {
+  showConfirm('លុបអតិថិជន', 'តើអ្នកប្រាកដ?', () => {
     DB.set('clients', DB.get('clients').filter(c => c.id !== id));
-    toast('🗑️ បានលុបអតិថិជន');
+    toast('🗑️ បានលុប');
     renderClients();
   });
 }
@@ -1799,7 +1680,7 @@ function renderCalendar() {
         const badge = days <= 3 ? 'bg-red-50 text-red-600 dark:bg-red-950 dark:text-red-400' :
                      days <= 7 ? 'bg-amber-50 text-amber-600 dark:bg-amber-950 dark:text-amber-400' :
                      'bg-brand-50 text-brand-600 dark:bg-brand-950 dark:text-brand-400';
-        return `<div class="flex items-center gap-3 p-4 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border-l-4 border-brand-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+        return `<div class="flex items-center gap-3 p-4 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border-l-4 border-brand-500">
           <div class="text-center bg-gradient-to-br from-brand-500 to-brand-700 text-white rounded-xl px-3 py-2 min-w-[64px] shrink-0 shadow-sm">
             <p class="text-xl font-bold leading-none">${c.nextHearing.slice(8,10)}</p>
             <p class="text-[10px] mt-1 opacity-90">${c.nextHearing.slice(0,7)}</p>
@@ -1823,12 +1704,13 @@ function renderDocSelect() {
     : '<option>មិនមានរឿងក្ដី</option>';
   renderDocs();
 }
+
 function renderDocs() {
   const caseId = parseInt(document.getElementById('docCaseSelect').value);
   const docs = DB.get('documents').filter(d => d.caseId === caseId);
   document.getElementById('docsList').innerHTML = docs.length
     ? docs.map(d => `
-      <div class="flex justify-between items-center p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-xl gap-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+      <div class="flex justify-between items-center p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-xl gap-2">
         <div class="flex items-center gap-3 min-w-0">
           <div class="w-10 h-10 bg-red-50 dark:bg-red-950 rounded-xl flex items-center justify-center shrink-0">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
@@ -1844,8 +1726,9 @@ function renderDocs() {
       </div>`).join('')
     : '<div class="text-center py-8"><div class="empty-icon">📄</div><p class="text-slate-400 text-sm">មិនមានឯកសារ</p></div>';
 }
+
 function deleteDoc(id) {
-  showConfirm('លុបឯកសារ', 'តើអ្នកប្រាកដជាចង់លុបឯកសារនេះ?', () => {
+  showConfirm('លុបឯកសារ', 'តើអ្នកប្រាកដ?', () => {
     DB.set('documents', DB.get('documents').filter(d => d.id !== id));
     renderDocs();
   });
@@ -1867,20 +1750,18 @@ async function savePassword() {
   const newPass2 = document.getElementById('newPass2').value;
   
   if (!oldPass || !newPass || !newPass2) return toast('⚠️ សូមបំពេញគ្រប់ប្រអប់');
-  if (newPass.length < 4) return toast('⚠️ លេខសម្ងាត់ថ្មីត្រូវមានយ៉ាងតិច ៤ តួ');
-  if (newPass !== newPass2) return toast('❌ លេខសម្ងាត់ថ្មីមិនដូចគ្នា');
+  if (newPass.length < 4) return toast('⚠️ លេខសម្ងាត់ ≥ ៤ តួ');
+  if (newPass !== newPass2) return toast('❌ មិនដូចគ្នា');
   
   const auth = DB.get('auth', null);
   const oldHash = await hashPassword(oldPass);
-  if (!auth || auth.password !== oldHash) return toast('❌ លេខសម្ងាត់បច្ចុប្បន្នមិនត្រឹមត្រូវ');
+  if (!auth || auth.password !== oldHash) return toast('❌ លេខសម្ងាត់មិនត្រឹមត្រូវ');
   
   const newHash = await hashPassword(newPass);
   auth.password = newHash;
-  auth.updatedAt = new Date().toISOString();
   DB.set('auth', auth);
-  
   closePasswordModal();
-  toast('✅ បានផ្លាស់ប្ដូរលេខសម្ងាត់');
+  toast('✅ បានផ្លាស់ប្ដូរ');
 }
 
 // ============ NAME MODAL ============
@@ -1896,7 +1777,7 @@ function closeNameModal() {
 function saveName() {
   const newName = document.getElementById('newName').value.trim();
   if (!newName) return toast('⚠️ សូមបំពេញឈ្មោះ');
-  if (newName.length < 2) return toast('⚠️ ឈ្មោះត្រូវមានយ៉ាងតិច ២ តួ');
+  if (newName.length < 2) return toast('⚠️ ≥ ២ តួ');
   
   const auth = DB.get('auth', null);
   if (!auth) return;
@@ -1906,7 +1787,6 @@ function saveName() {
   currentUser.name = newName;
   const storage = localStorage.getItem('user') ? localStorage : sessionStorage;
   storage.setItem('user', JSON.stringify(currentUser));
-  
   loadUser();
   closeNameModal();
   toast('✅ បានកែឈ្មោះ');
@@ -1938,7 +1818,7 @@ function exportData() {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  toast('✅ បានទាញយក Backup ជោគជ័យ!');
+  toast('✅ បានទាញយក Backup!');
 }
 
 let pendingImportData = null;
@@ -1956,19 +1836,19 @@ function handleImport(event) {
 }
 
 function processImportFile(file) {
-  if (!file.name.endsWith('.json')) return toast('❌ សូមជ្រើស File .json ប៉ុណ្ណោះ');
-  if (file.size > 10 * 1024 * 1024) return toast('❌ File ធំពេក (ត្រូវ < 10MB)');
+  if (!file.name.endsWith('.json')) return toast('❌ សូមជ្រើស .json');
+  if (file.size > 10 * 1024 * 1024) return toast('❌ File ធំពេក');
   const reader = new FileReader();
   reader.onload = (e) => {
     try {
       const json = JSON.parse(e.target.result);
       if (!json.data || (!Array.isArray(json.data.cases) && !Array.isArray(json.data.clients))) {
-        return toast('❌ File មិនត្រឹមត្រូវ ឬខូច');
+        return toast('❌ File មិនត្រឹមត្រូវ');
       }
       pendingImportData = json;
       showImportPreview(json);
     } catch (err) {
-      toast('❌ File មិនមែនជា JSON ត្រឹមត្រូវ');
+      toast('❌ File មិនត្រឹមត្រូវ');
     }
   };
   reader.readAsText(file);
@@ -1981,12 +1861,12 @@ function showImportPreview(json) {
   const docsCount = json.data.documents?.length || 0;
   const date = json.exportedAt ? new Date(json.exportedAt).toLocaleString('km-KH') : 'មិនស្គាល់';
   preview.innerHTML = `
-    <p class="font-semibold text-slate-700 dark:text-slate-300 mb-2">📋 ទិន្នន័យក្នុង File:</p>
+    <p class="font-semibold mb-2">📋 ទិន្នន័យ:</p>
     <div class="flex justify-between"><span>📁 រឿងក្ដី:</span><span class="font-semibold">${casesCount}</span></div>
     <div class="flex justify-between"><span>👥 អតិថិជន:</span><span class="font-semibold">${clientsCount}</span></div>
     <div class="flex justify-between"><span>📄 ឯកសារ:</span><span class="font-semibold">${docsCount}</span></div>
     <div class="flex justify-between pt-2 border-t border-slate-200 dark:border-slate-700 mt-2">
-      <span>📅 Export ថ្ងៃ:</span><span class="font-semibold text-[10px]">${date}</span>
+      <span>📅 Export:</span><span class="font-semibold text-[10px]">${date}</span>
     </div>`;
   preview.classList.remove('hidden');
   const btn = document.getElementById('confirmImportBtn');
@@ -2004,10 +1884,10 @@ function confirmImport() {
       DB.set('cases', incoming.cases || []);
       DB.set('clients', incoming.clients || []);
       DB.set('documents', incoming.documents || []);
-      toast('✅ បានជំនួសទិន្នន័យជោគជ័យ!');
+      toast('✅ បានជំនួស!');
     } else {
       const result = mergeData(incoming);
-      toast(`✅ បញ្ចូល: +${result.addedCases} រឿងក្ដី, +${result.addedClients} អតិថិជន, +${result.addedDocs} ឯកសារ`);
+      toast(`✅ បញ្ចូល: +${result.addedCases}, +${result.addedClients}, +${result.addedDocs}`);
     }
     pendingImportData = null;
     document.getElementById('importFile').value = '';
@@ -2019,7 +1899,7 @@ function confirmImport() {
   };
   
   if (mode === 'replace') {
-    showConfirm('ជំនួសទិន្នន័យទាំងអស់', 'ការជំនួសនឹងលុបទិន្នន័យបច្ចុប្បន្នចោលទាំងអស់។ តើអ្នកប្រាកដទេ?', proceed, 'ជំនួស');
+    showConfirm('ជំនួសទាំងអស់', 'លុបទិន្នន័យចាស់ចោល?', proceed, 'ជំនួស');
   } else {
     proceed();
   }
@@ -2034,9 +1914,8 @@ function mergeData(incoming) {
   (incoming.clients || []).forEach(c => {
     const key = `${c.name}|${c.phone||''}`;
     const existing = existingClients.find(x => `${x.name}|${x.phone||''}` === key);
-    if (existing) {
-      clientIdMap[c.id] = existing.id;
-    } else {
+    if (existing) clientIdMap[c.id] = existing.id;
+    else {
       const newId = Date.now() + Math.floor(Math.random() * 10000);
       existingClients.push({ ...c, id: newId });
       clientIdMap[c.id] = newId;
@@ -2075,14 +1954,14 @@ function mergeData(incoming) {
 }
 
 function clearAllData() {
-  showConfirm('លុបទិន្នន័យទាំងអស់', 'តើអ្នកប្រាកដជាចង់លុបទិន្នន័យទាំងអស់? សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។', () => {
+  showConfirm('លុបទាំងអស់', 'តើអ្នកប្រាកដ?', () => {
     DB.set('cases', []);
     DB.set('clients', []);
     DB.set('documents', []);
-    toast('🗑️ បានលុបទិន្នន័យទាំងអស់');
+    toast('🗑️ បានលុប');
     renderSettingsStats();
     showPage('dashboard');
-  }, 'លុបទាំងអស់');
+  }, 'លុប');
 }
 
 function renderSettingsStats() {
@@ -2143,7 +2022,6 @@ window.addEventListener('resize', () => {
 function initApp() {
   loadUser();
   showPage('dashboard');
-  if (deferredPrompt && !isPWA()) showInstallButton();
 }
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -2161,4 +2039,4 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 </body>
-  </html>
+</html>
