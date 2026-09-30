@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════
 // AUTO VERSION — ប្តូររាល់ពេល Deploy
 // ═══════════════════════════════════════════════════
-const BUILD_VERSION = '20260930-011'; // ← ប្ដូររាល់ពេល Deploy
+const BUILD_VERSION = '20260930-012'; // ← ប្ដូររាល់ពេល Deploy
 
 const CACHE_NAME = `case-manager-${BUILD_VERSION}`;
 const RUNTIME_CACHE = `case-manager-runtime-${BUILD_VERSION}`;
