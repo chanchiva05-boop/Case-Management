@@ -46,14 +46,12 @@ tailwind.config = {
       animation: {
         'fade-in': 'fadeIn 0.3s ease',
         'slide-up': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-        'pulse-soft': 'pulseSoft 2s ease-in-out infinite',
-        'bounce-in': 'bounceIn 0.5s cubic-bezier(0.16, 1, 0.3, 1)'
+        'pulse-soft': 'pulseSoft 2s ease-in-out infinite'
       },
       keyframes: {
         fadeIn: { '0%': { opacity: 0 }, '100%': { opacity: 1 } },
         slideUp: { '0%': { opacity: 0, transform: 'translateY(20px)' }, '100%': { opacity: 1, transform: 'translateY(0)' } },
-        pulseSoft: { '0%,100%': { opacity: 1 }, '50%': { opacity: 0.6 } },
-        bounceIn: { '0%': { opacity: 0, transform: 'scale(0.9)' }, '50%': { transform: 'scale(1.02)' }, '100%': { opacity: 1, transform: 'scale(1)' } }
+        pulseSoft: { '0%,100%': { opacity: 1 }, '50%': { opacity: 0.6 } }
       }
     }
   }
@@ -168,46 +166,9 @@ tailwind.config = {
     #pageTitle { font-size: 14px !important; }
     #headerName { max-width: 70px !important; }
   }
-  
-  .logo-glow {
-    animation: logoGlow 3s ease-in-out infinite;
-  }
-  @keyframes logoGlow {
-    0%, 100% { box-shadow: 0 0 20px rgba(53, 99, 255, 0.4), 0 0 40px rgba(139, 92, 246, 0.2); }
-    50% { box-shadow: 0 0 30px rgba(53, 99, 255, 0.6), 0 0 60px rgba(139, 92, 246, 0.3); }
-  }
-  
-  /* Update notification */
-  #updateBanner {
-    animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  @keyframes slideDown {
-    from { transform: translateY(-100%); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
 </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
-
-<!-- ============ UPDATE NOTIFICATION ============ -->
-<div id="updateBanner" class="hidden fixed top-0 left-0 right-0 z-[100] safe-top">
-  <div class="bg-gradient-to-r from-brand-600 to-purple-600 text-white px-4 py-3 shadow-2xl">
-    <div class="max-w-4xl mx-auto flex items-center gap-3">
-      <div class="w-9 h-9 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center shrink-0">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16"/>
-        </svg>
-      </div>
-      <div class="flex-1 min-w-0">
-        <p class="font-bold text-sm">🎉 មានកំណែថ្មី!</p>
-        <p class="text-xs opacity-90 truncate">ចុចដើម្បី Update ទៅកំណែចុងក្រោយ</p>
-      </div>
-      <button onclick="applyUpdate()" class="px-4 py-1.5 bg-white text-brand-700 rounded-lg text-xs font-bold active:scale-95 transition-transform shrink-0">
-        Update
-      </button>
-    </div>
-  </div>
-</div>
 
 <!-- ============ SETUP SCREEN ============ -->
 <div id="setupScreen" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4 safe-top safe-bottom overflow-hidden">
@@ -218,7 +179,7 @@ tailwind.config = {
 
   <div class="relative bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl p-8 rounded-3xl shadow-2xl w-full max-w-md border border-white/20 animate-slide-up max-h-[95vh] overflow-y-auto">
     <div class="text-center mb-6">
-      <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-brand-500 to-purple-600 rounded-2xl shadow-lg shadow-brand-500/30 mb-4 logo-glow">
+      <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-brand-500 to-brand-700 rounded-2xl shadow-lg shadow-brand-500/30 mb-4">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 3v18M5 8h14M5 8l-3 8a3 3 0 0 0 6 0L5 8zM19 8l-3 8a3 3 0 0 0 6 0l-3-8z"/>
         </svg>
@@ -274,7 +235,7 @@ tailwind.config = {
 
   <div class="relative bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl p-8 rounded-3xl shadow-2xl w-full max-w-md border border-white/20 animate-slide-up">
     <div class="text-center mb-8">
-      <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-brand-500 to-purple-600 rounded-2xl shadow-lg shadow-brand-500/30 mb-4 logo-glow">
+      <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-brand-500 to-brand-700 rounded-2xl shadow-lg shadow-brand-500/30 mb-4">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 3v18M5 8h14M5 8l-3 8a3 3 0 0 0 6 0L5 8zM19 8l-3 8a3 3 0 0 0 6 0l-3-8z"/>
         </svg>
@@ -545,7 +506,7 @@ tailwind.config = {
             <table class="w-full text-sm">
               <thead>
                 <tr class="text-left text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider border-b border-slate-100 dark:border-slate-800">
-                  <th class="px-5 py-4 font-semibold">លេខសំណុំរឿងក្ដី</th>
+                  <th class="px-5 py-4 font-semibold">លេខក្ដី</th>
                   <th class="px-5 py-4 font-semibold">ចំណងជើង</th>
                   <th class="px-5 py-4 font-semibold">តុលាការ</th>
                   <th class="px-5 py-4 font-semibold">អតិថិជន</th>
@@ -698,37 +659,6 @@ tailwind.config = {
           </div>
         </div>
 
-        <!-- App Info -->
-        <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 mb-5">
-          <div class="flex items-start gap-3 mb-4">
-            <div class="w-11 h-11 bg-brand-50 dark:bg-brand-950 rounded-xl flex items-center justify-center shrink-0">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3563ff" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            </div>
-            <div class="flex-1">
-              <h3 class="font-bold">ព័ត៌មាន App</h3>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">កំណែ និង Cache</p>
-            </div>
-          </div>
-          <div class="grid grid-cols-2 gap-3 text-sm mb-3">
-            <div class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-              <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">កំណែ</p>
-              <p id="appVersion" class="font-semibold">v1.0.0</p>
-            </div>
-            <div class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-              <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Cache</p>
-              <p id="cacheStatus" class="font-semibold">ធម្មតា</p>
-            </div>
-          </div>
-          <div class="flex flex-col sm:flex-row gap-2">
-            <button onclick="checkForUpdate()" class="flex-1 px-4 py-2.5 bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-400 hover:bg-brand-100 dark:hover:bg-brand-900 rounded-xl text-sm font-medium">
-              🔄 ពិនិត្យកំណែថ្មី
-            </button>
-            <button onclick="clearCacheReload()" class="flex-1 px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl text-sm font-medium">
-              🧹 សម្អាត Cache
-            </button>
-          </div>
-        </div>
-
         <!-- Account -->
         <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 mb-5">
           <div class="flex items-start gap-3 mb-4">
@@ -754,6 +684,41 @@ tailwind.config = {
               ✏️ កែឈ្មោះ
             </button>
           </div>
+        </div>
+
+        <!-- App Update -->
+        <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 mb-5">
+          <div class="flex items-start gap-3 mb-4">
+            <div class="w-11 h-11 bg-emerald-50 dark:bg-emerald-950 rounded-xl flex items-center justify-center shrink-0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9m9 9H3m9 9a9 9 0 0 1-9-9m9 9c1.66 0 3-4 3-9s-1.34-9-3-9m0 18c-1.66 0-3-4-3-9s1.34-9 3-9m-9 9a9 9 0 0 1 9-9"/>
+              </svg>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-bold">ព័ត៌មាន App</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">ពិនិត្យ និងធ្វើបច្ចុប្បន្នភាព</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 gap-3 text-sm mb-3">
+            <div class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg flex justify-between items-center">
+              <div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">កំណែបច្ចុប្បន្ន</p>
+                <p id="appVersion" class="font-semibold">v8.0</p>
+              </div>
+              <div id="updateStatus" class="text-xs"></div>
+            </div>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <button onclick="checkAndUpdate()" id="checkUpdateBtn" class="flex-1 px-4 py-2.5 bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900 rounded-xl text-sm font-medium flex items-center justify-center gap-2">
+              🔄 ពិនិត្យ Update
+            </button>
+            <button onclick="forceUpdate()" class="flex-1 px-4 py-2.5 bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900 rounded-xl text-sm font-medium">
+              ⚡ Force Update
+            </button>
+          </div>
+          <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-3 text-center">
+            💾 ទិន្នន័យរបស់អ្នកនឹងរក្សាទុកជាប់ពេល Update
+          </p>
         </div>
 
         <div class="bg-red-50 dark:bg-red-950/30 p-5 rounded-2xl border border-red-200 dark:border-red-900">
@@ -1026,50 +991,28 @@ tailwind.config = {
   </div>
 </div>
 
+<!-- UPDATE BANNER -->
+<div id="updateBanner" class="hidden fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 md:left-auto md:right-6 md:translate-x-0 z-40 max-w-[92vw] md:max-w-sm animate-slide-up">
+  <div class="bg-gradient-to-br from-emerald-500 to-teal-600 text-white rounded-2xl shadow-2xl p-4 flex items-center gap-3 border border-white/20">
+    <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shrink-0">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9m9 9H3m9 9a9 9 0 0 1-9-9m9 9c1.66 0 3-4 3-9s-1.34-9-3-9m0 18c-1.66 0-3-4-3-9s1.34-9 3-9m-9 9a9 9 0 0 1 9-9"/>
+      </svg>
+    </div>
+    <div class="flex-1 min-w-0">
+      <p class="font-bold text-sm">មានកំណែថ្មី!</p>
+      <p class="text-xs opacity-90">ចុចដើម្បី Update</p>
+    </div>
+    <button onclick="applyUpdate()" class="px-3 py-1.5 bg-white text-emerald-600 rounded-lg text-xs font-bold">
+      Update
+    </button>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div id="toast" class="hidden fixed bottom-24 md:bottom-6 left-1/2 -translate-x-1/2 md:left-auto md:right-6 md:translate-x-0 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-3 rounded-2xl shadow-2xl z-[80] max-w-[90vw] text-center text-sm font-medium animate-slide-up"></div>
 
 <script>
-// ═══════════════════════════════════════════════════
-// APP VERSION — កែរាល់ពេលមានការកែកូដ!
-// ═══════════════════════════════════════════════════
-const APP_VERSION = '1.12.0'; // ← ប្ដូរ Version នៅទីនេះ
-const APP_BUILD = '20260930-0112'; // ← ប្ដូរ Build ថ្ងៃ-ម៉ោង
-
-// ============ DEV MODE — Auto Clear Cache on localhost ============
-(function() {
-  const isLocalhost = location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === '';
-  const forceReset = new URLSearchParams(location.search).get('reset') === '1';
-  
-  if (forceReset) {
-    (async () => {
-      try {
-        if ('serviceWorker' in navigator) {
-          const regs = await navigator.serviceWorker.getRegistrations();
-          await Promise.all(regs.map(r => r.unregister()));
-        }
-        const cacheNames = await caches.keys();
-        await Promise.all(cacheNames.map(n => caches.delete(n)));
-        
-        // Clear URL parameter
-        const url = new URL(location.href);
-        url.searchParams.delete('reset');
-        location.replace(url.toString());
-      } catch (e) {
-        location.reload();
-      }
-    })();
-    return;
-  }
-  
-  if (isLocalhost && 'serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(regs => {
-      regs.forEach(reg => reg.unregister());
-      console.log('🔧 Dev Mode: Service Worker Unregistered');
-    });
-  }
-})();
-
 // ============ THEME ============
 function toggleDark() {
   const isDark = document.documentElement.classList.toggle('dark');
@@ -1085,10 +1028,9 @@ function initTheme() {
   }
 }
 
-// ============ PWA — SMART UPDATE ============
+// ============ PWA + AUTO UPDATE ============
 let deferredPrompt = null;
-let newWorker = null;
-let refreshing = false;
+let swRegistration = null;
 
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
@@ -1142,9 +1084,9 @@ async function installApp() {
     if (isIOS) {
       alert('📲 របៀបដំឡើងលើ iPhone/iPad:\n\n1. ចុចប៊ូតុង Share (□↑)\n2. ជ្រើស "Add to Home Screen"\n3. ចុច "Add"');
     } else if (isAndroid) {
-      alert('📲 របៀបដំឡើងលើ Android:\n\n1. ចុច Menu (⋮)\n2. ជ្រើស "Install app"\n3. ចុច "Install"');
+      alert('📲 របៀបដំឡើងលើ Android:\n\n1. ចុច Menu (⋮) នៅជ្រុងខាងលើ\n2. ជ្រើស "Install app" ឬ "Add to Home screen"\n3. ចុច "Install"');
     } else {
-      alert('📲 របៀបដំឡើង:\n\n• Chrome/Edge: ចុច Icon (⊕) នៅ URL bar\n• ឬ Menu → "Install Case Manager"');
+      alert('📲 របៀបដំឡើង:\n\n• Chrome/Edge: ចុច Icon ដំឡើង (⊕) នៅខាងស្ដាំ URL bar\n• ឬ Menu → "Install Case Manager"');
     }
     return;
   }
@@ -1152,45 +1094,82 @@ async function installApp() {
   try {
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') toast('✅ កំពុងដំឡើង...');
+    if (outcome === 'accepted') {
+      toast('✅ កំពុងដំឡើង...');
+    }
     deferredPrompt = null;
   } catch (err) {
     toast('❌ មិនអាចដំឡើងបានទេ');
   }
 }
 
-// ============ SERVICE WORKER — Auto Update ============
-if ('serviceWorker' in navigator && !location.hostname.match(/^(localhost|127\.0\.0\.1|)$/)) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' })
-      .then((reg) => {
-        console.log('✅ SW registered');
+// ============ SERVICE WORKER + AUTO UPDATE ============
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', async () => {
+    try {
+      swRegistration = await navigator.serviceWorker.register('sw.js');
+      
+      // ពិនិត្យភ្លាមៗ
+      checkForUpdates();
+      
+      // ពិនិត្យរាល់ ៥ នាទី
+      setInterval(checkForUpdates, 5 * 60 * 1000);
+      
+      // ពិនិត្យពេល User ត្រឡប់មកវិញ
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) checkForUpdates();
+      });
+      
+      // ពិនិត្យពេល Online
+      window.addEventListener('online', checkForUpdates);
+      
+      swRegistration.addEventListener('updatefound', () => {
+        const newWorker = swRegistration.installing;
+        if (!newWorker) return;
         
-        // Check for updates every 30 seconds
-        setInterval(() => reg.update().catch(() => {}), 30000);
-        
-        reg.addEventListener('updatefound', () => {
-          newWorker = reg.installing;
-          if (!newWorker) return;
-          
-          newWorker.addEventListener('statechange', () => {
-            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              // New version available
-              showUpdateBanner();
-            }
-          });
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            showUpdateBanner();
+            updateStatusIndicator('ថ្មី');
+          }
         });
-      })
-      .catch((err) => console.log('SW error:', err));
+      });
+      
+    } catch (err) {
+      console.log('SW error:', err);
+    }
   });
   
-  // Auto reload when SW changes
+  let refreshing = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     if (!refreshing) {
       refreshing = true;
+      // localStorage នៅដដែល → ទិន្នន័យមិនបាត់
       location.reload();
     }
   });
+}
+
+async function checkForUpdates() {
+  if (!swRegistration) return;
+  try {
+    await swRegistration.update();
+    updateStatusIndicator('រួចរាល់');
+  } catch (err) {
+    updateStatusIndicator('គ្មានបណ្តាញ');
+  }
+}
+
+function updateStatusIndicator(status) {
+  const el = document.getElementById('updateStatus');
+  if (!el) return;
+  const colors = {
+    'រួចរាល់': 'text-emerald-600 dark:text-emerald-400',
+    'ថ្មី': 'text-amber-600 dark:text-amber-400',
+    'គ្មានបណ្តាញ': 'text-red-600 dark:text-red-400'
+  };
+  el.className = `text-xs font-medium ${colors[status] || ''}`;
+  el.textContent = status === 'រួចរាល់' ? '✅ ' + status : status === 'ថ្មី' ? '⚠️ ' + status : '❌ ' + status;
 }
 
 function showUpdateBanner() {
@@ -1198,49 +1177,58 @@ function showUpdateBanner() {
 }
 
 function applyUpdate() {
-  if (newWorker) {
-    newWorker.postMessage('SKIP_WAITING');
-  } else {
+  if (!swRegistration || !swRegistration.waiting) {
     location.reload();
+    return;
   }
-  document.getElementById('updateBanner')?.classList.add('hidden');
+  
+  swRegistration.waiting.postMessage('SKIP_WAITING');
+  setTimeout(() => location.reload(), 500);
 }
 
-async function checkForUpdate() {
-  if (!('serviceWorker' in navigator)) {
-    return toast('⚠️ Browser មិនគាំទ្រ SW');
-  }
+// ============ FORCE UPDATE ============
+async function forceUpdate() {
+  if (!confirm('⚡ តើអ្នកចង់ Update App?\n\n💾 ទិន្នន័យរបស់អ្នកនឹងមិនបាត់ទេ។')) return;
   
-  const reg = await navigator.serviceWorker.getRegistration();
-  if (!reg) return toast('⚠️ គ្មាន SW');
+  toast('🔄 កំពុង Update...');
   
-  toast('🔄 កំពុងពិនិត្យ...');
   try {
-    await reg.update();
-    setTimeout(() => {
-      if (document.getElementById('updateBanner').classList.contains('hidden')) {
-        toast('✅ អ្នកប្រើកំណែចុងក្រោយរួចហើយ');
-      }
-    }, 1500);
-  } catch (e) {
-    toast('❌ មិនអាចពិនិត្យបានទេ');
+    // លុប Cache ទាំងអស់
+    if ('caches' in window) {
+      const keys = await caches.keys();
+      await Promise.all(keys.map(k => caches.delete(k)));
+    }
+    
+    // Unregister SW
+    if ('serviceWorker' in navigator) {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map(r => r.unregister()));
+    }
+  } catch (err) {
+    console.log(err);
   }
+  
+  // Reload (localStorage នៅដដែល)
+  setTimeout(() => location.reload(true), 800);
 }
 
-async function clearCacheReload() {
-  showConfirm('សម្អាត Cache', 'នឹង Reload App ឡើងវិញ។ ទិន្នន័យរបស់អ្នកមិនបាត់ទេ។', async () => {
-    try {
-      if ('serviceWorker' in navigator) {
-        const regs = await navigator.serviceWorker.getRegistrations();
-        await Promise.all(regs.map(r => r.unregister()));
+function checkAndUpdate() {
+  const btn = document.getElementById('checkUpdateBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner" style="border-color: rgba(16,185,129,0.3); border-top-color: #10b981;"></span> កំពុងពិនិត្យ...';
+  
+  checkForUpdates().finally(() => {
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.innerHTML = '🔄 ពិនិត្យ Update';
+      if (swRegistration && swRegistration.waiting) {
+        showUpdateBanner();
+        toast('⚠️ មានកំណែថ្មី!');
+      } else {
+        toast('✅ App គឺកំណែថ្មីបំផុត');
       }
-      const cacheNames = await caches.keys();
-      await Promise.all(cacheNames.map(n => caches.delete(n)));
-      location.reload();
-    } catch (e) {
-      location.reload();
-    }
-  }, 'សម្អាត');
+    }, 800);
+  });
 }
 
 // ============ CRYPTO ============
@@ -1914,8 +1902,7 @@ function saveName() {
 // ============ BACKUP / RESTORE ============
 function exportData() {
   const data = {
-    version: APP_VERSION,
-    build: APP_BUILD,
+    version: '1.0',
     appName: 'Case Manager Professional',
     exportedAt: new Date().toISOString(),
     exportedBy: currentUser?.name || 'unknown',
@@ -2090,16 +2077,7 @@ function renderSettingsStats() {
   set('backupCaseCount', DB.get('cases').length);
   set('backupClientCount', DB.get('clients').length);
   set('backupDocCount', DB.get('documents').length);
-  set('appVersion', `v${APP_VERSION}`);
-  
-  // Cache status
-  if (isPWA()) {
-    set('cacheStatus', 'App ដំឡើងរួច');
-  } else if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-    set('cacheStatus', 'សកម្ម');
-  } else {
-    set('cacheStatus', 'ធម្មតា');
-  }
+  set('appVersion', 'v8.0');
 }
 
 // ============ CONFIRM MODAL ============
@@ -2148,30 +2126,14 @@ window.addEventListener('resize', () => {
   }
 });
 
-// Check for update on load
-window.addEventListener('load', () => {
-  if (deferredPrompt && !isPWA()) showInstallButton();
-});
-
-// ═══════════════════════════════════════════════════
-// AUTO RELOAD when app comes back to focus (check updates)
-// ═══════════════════════════════════════════════════
-document.addEventListener('visibilitychange', () => {
-  if (!document.hidden && 'serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistration().then(reg => {
-      if (reg) reg.update().catch(() => {});
-    });
-  }
-});
-
 // ============ INIT ============
 function initApp() {
   loadUser();
   showPage('dashboard');
+  if (deferredPrompt && !isPWA()) showInstallButton();
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  console.log(`⚖️ Case Manager v${APP_VERSION} (${APP_BUILD})`);
   initTheme();
   const auth = DB.get('auth', null);
   
