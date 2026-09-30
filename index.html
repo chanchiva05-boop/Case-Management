@@ -22,6 +22,7 @@
 <title>⚖️ ប្រព័ន្ធគ្រប់គ្រងរឿងក្ដី</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 <script>
 tailwind.config = {
   darkMode: 'class',
@@ -35,9 +36,7 @@ tailwind.config = {
           800: '#1a2aae', 900: '#1c2b89', 950: '#141a4f'
         }
       },
-      boxShadow: {
-        'card': '0 1px 3px rgba(0,0,0,0.04), 0 4px 16px -4px rgba(0,0,0,0.06)'
-      },
+      boxShadow: { 'card': '0 1px 3px rgba(0,0,0,0.04), 0 4px 16px -4px rgba(0,0,0,0.06)' },
       animation: {
         'fade-in': 'fadeIn 0.3s ease',
         'slide-up': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -55,11 +54,7 @@ tailwind.config = {
 <style>
   * { -webkit-tap-highlight-color: transparent; }
   html { scroll-behavior: smooth; }
-  body { 
-    font-family: 'Kantumruy Pro', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    overscroll-behavior-y: contain;
-    -webkit-font-smoothing: antialiased;
-  }
+  body { font-family: 'Kantumruy Pro', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; overscroll-behavior-y: contain; -webkit-font-smoothing: antialiased; }
   .safe-top { padding-top: env(safe-area-inset-top); }
   .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
   ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -67,11 +62,7 @@ tailwind.config = {
   ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
   .dark ::-webkit-scrollbar-thumb { background: #475569; }
   
-  .glass {
-    background: rgba(255, 255, 255, 0.72);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-  }
+  .glass { background: rgba(255, 255, 255, 0.72); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); }
   .dark .glass { background: rgba(15, 23, 42, 0.72); }
   
   @media (max-width: 1023px) {
@@ -118,36 +109,21 @@ tailwind.config = {
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   
-  .badge { 
-    display: inline-flex; align-items: center; gap: 4px;
-    padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 600;
-  }
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; }
   .empty-icon { font-size: 48px; opacity: 0.4; margin-bottom: 8px; }
-  
   .stat-card { position: relative; overflow: hidden; }
   
   select {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    padding-right: 40px;
-    appearance: none;
-    -webkit-appearance: none;
-    cursor: pointer;
+    background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px;
+    appearance: none; -webkit-appearance: none; cursor: pointer;
   }
   select optgroup { font-weight: 700; font-size: 13px; color: #3563ff; background: #f1f5f9; padding: 4px 0; }
   .dark select optgroup { color: #8eb4ff; background: #1e293b; }
   select option { padding: 8px; font-size: 14px; color: #0f172a; }
   .dark select option { background: #0f172a; color: #e2e8f0; }
   
-  .spinner {
-    border: 3px solid rgba(255,255,255,0.3);
-    border-top: 3px solid white;
-    border-radius: 50%;
-    width: 20px; height: 20px;
-    animation: spin 0.8s linear infinite;
-    display: inline-block;
-  }
+  .spinner { border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid white; border-radius: 50%; width: 20px; height: 20px; animation: spin 0.8s linear infinite; display: inline-block; }
   @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   
   #pageTitle, #pageSubtitle { line-height: 1.3; word-break: break-word; }
@@ -157,6 +133,10 @@ tailwind.config = {
     #pageTitle { font-size: 15px !important; }
     #pageSubtitle { font-size: 10.5px !important; }
   }
+  
+  /* PDF.js Viewer */
+  #pdfViewerCanvas { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+  .pdf-loading { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; }
 </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
@@ -207,12 +187,8 @@ tailwind.config = {
         </div>
       </div>
       <div id="setupError" class="hidden text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/50 p-3 rounded-xl"></div>
-      <button onclick="handleSetup()" class="btn-primary w-full text-white py-3.5 rounded-xl font-semibold text-base">
-        ចាប់ផ្ដើមប្រើប្រាស់ →
-      </button>
-      <p class="text-xs text-slate-500 dark:text-slate-400 text-center leading-relaxed">
-        🔒 ព័ត៌មានរបស់អ្នកត្រូវបានរក្សាទុកក្នុងឧបករណ៍នេះតែប៉ុណ្ណោះ
-      </p>
+      <button onclick="handleSetup()" class="btn-primary w-full text-white py-3.5 rounded-xl font-semibold text-base">ចាប់ផ្ដើមប្រើប្រាស់ →</button>
+      <p class="text-xs text-slate-500 dark:text-slate-400 text-center leading-relaxed">🔒 ព័ត៌មានរបស់អ្នកត្រូវបានរក្សាទុកក្នុងឧបករណ៍នេះតែប៉ុណ្ណោះ</p>
     </div>
   </div>
 </div>
@@ -245,12 +221,10 @@ tailwind.config = {
           </button>
         </div>
       </div>
-      <div class="flex items-center justify-between">
-        <label class="flex items-center gap-2 cursor-pointer">
-          <input id="rememberMe" type="checkbox" class="w-4 h-4 rounded">
-          <span class="text-sm text-slate-600 dark:text-slate-400">ចងចាំខ្ញុំ</span>
-        </label>
-      </div>
+      <label class="flex items-center gap-2 cursor-pointer">
+        <input id="rememberMe" type="checkbox" class="w-4 h-4 rounded">
+        <span class="text-sm text-slate-600 dark:text-slate-400">ចងចាំខ្ញុំ</span>
+      </label>
       <div id="loginError" class="hidden text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/50 p-3 rounded-xl"></div>
       <button id="loginBtn" onclick="login()" class="btn-primary w-full text-white py-3.5 rounded-xl font-semibold text-base flex items-center justify-center gap-2">
         <span id="loginBtnText">ចូលប្រើប្រាស់ →</span>
@@ -261,7 +235,6 @@ tailwind.config = {
 
 <!-- ============ APP ============ -->
 <div id="app" class="hidden flex h-screen overflow-hidden">
-
   <div id="overlay" onclick="toggleSidebar()" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-30 lg:hidden"></div>
 
   <aside id="sidebar" class="w-72 bg-brand-950 text-white flex flex-col fixed lg:relative h-full z-40 safe-top shadow-2xl">
@@ -284,59 +257,36 @@ tailwind.config = {
 
     <nav class="flex-1 p-3 space-y-1 overflow-y-auto no-scrollbar">
       <p class="px-4 pt-3 pb-1 text-[10px] uppercase tracking-widest text-brand-400 font-semibold">ម៉ឺនុយមេ</p>
-      
       <a href="#" onclick="showPage('dashboard'); closeSidebarOnMobile()" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-brand-100" data-page="dashboard">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>
-        </svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
         <span class="font-medium">ផ្ទាំងគ្រប់គ្រង</span>
       </a>
-      
       <a href="#" onclick="showPage('cases'); closeSidebarOnMobile()" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-brand-100" data-page="cases">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/>
-        </svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
         <span class="font-medium">សំណុំរឿងក្ដី</span>
       </a>
-      
       <a href="#" onclick="showPage('clients'); closeSidebarOnMobile()" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-brand-100" data-page="clients">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
-        </svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         <span class="font-medium">អតិថិជន</span>
       </a>
-      
       <a href="#" onclick="showPage('calendar'); closeSidebarOnMobile()" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-brand-100" data-page="calendar">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
-        </svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
         <span class="font-medium">កាលវិភាគ</span>
       </a>
-      
       <a href="#" onclick="showPage('documents'); closeSidebarOnMobile()" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-brand-100" data-page="documents">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
-        </svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
         <span class="font-medium">ឯកសារ</span>
       </a>
-
       <p class="px-4 pt-5 pb-1 text-[10px] uppercase tracking-widest text-brand-400 font-semibold">ប្រព័ន្ធ</p>
-
       <a href="#" onclick="showPage('settings'); closeSidebarOnMobile()" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-brand-100" data-page="settings">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-        </svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         <span class="font-medium">ការកំណត់</span>
       </a>
     </nav>
 
     <div class="p-4 border-t border-white/10 safe-bottom space-y-2">
-      <button onclick="installApp()" id="installBtn" class="hidden w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white py-3 rounded-xl text-sm font-semibold shadow-lg transition-all">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-          <polyline points="7 10 12 15 17 10"/>
-          <line x1="12" y1="15" x2="12" y2="3"/>
-        </svg>
+      <button onclick="installApp()" id="installBtn" class="hidden w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 rounded-xl text-sm font-semibold shadow-lg">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         📲 ដំឡើង App
       </button>
       <button onclick="toggleDark()" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-brand-200 hover:bg-white/5 hover:text-white transition-colors text-sm">
@@ -351,7 +301,6 @@ tailwind.config = {
   </aside>
 
   <main class="flex-1 overflow-y-auto scroll-smooth bg-slate-50 dark:bg-slate-950 flex flex-col min-w-0">
-    
     <header class="glass sticky top-0 z-20 border-b border-slate-200/60 dark:border-slate-800/60 safe-top flex-shrink-0">
       <div class="px-3 md:px-6 py-2.5 md:py-3 flex justify-between items-center gap-3">
         <div class="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
@@ -363,12 +312,7 @@ tailwind.config = {
             <p id="pageSubtitle" class="text-[11px] md:text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">ទិដ្ឋភាពទូទៅនៃរឿងក្ដីរបស់អ្នក</p>
           </div>
         </div>
-        <button onclick="showPage('settings')" 
-                class="flex-shrink-0 max-w-[140px] md:max-w-[240px] px-3.5 md:px-5 py-2 rounded-full
-                       bg-gradient-to-r from-brand-50 to-purple-50 
-                       dark:from-brand-950 dark:to-purple-950
-                       border border-brand-100 dark:border-brand-900/50
-                       hover:shadow-md active:scale-95 transition-all duration-200">
+        <button onclick="showPage('settings')" class="flex-shrink-0 max-w-[140px] md:max-w-[240px] px-3.5 md:px-5 py-2 rounded-full bg-gradient-to-r from-brand-50 to-purple-50 dark:from-brand-950 dark:to-purple-950 border border-brand-100 dark:border-brand-900/50 hover:shadow-md active:scale-95 transition-all duration-200">
           <span id="headerName" class="block text-xs md:text-sm font-semibold bg-gradient-to-r from-brand-600 to-purple-600 bg-clip-text text-transparent truncate">Admin</span>
         </button>
       </div>
@@ -429,9 +373,7 @@ tailwind.config = {
               </span>
               ស្ថិតិ
             </h3>
-            <div class="max-w-xs mx-auto">
-              <canvas id="statusChart"></canvas>
-            </div>
+            <div class="max-w-xs mx-auto"><canvas id="statusChart"></canvas></div>
           </div>
         </div>
       </section>
@@ -547,19 +489,14 @@ tailwind.config = {
         </div>
       </section>
 
-      <!-- DOCUMENTS (UPLOAD) -->
+      <!-- DOCUMENTS -->
       <section id="page-documents" class="page hidden animate-fade-in">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-5">
-          
-          <!-- Upload Zone -->
           <div class="lg:col-span-1">
             <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 lg:sticky lg:top-24">
               <div class="flex items-center gap-2 mb-4">
                 <span class="w-9 h-9 bg-brand-50 dark:bg-brand-950 rounded-xl flex items-center justify-center">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3563ff" stroke-width="2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                    <path d="M14 2v6h6"/>
-                  </svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3563ff" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
                 </span>
                 <h3 class="font-bold">ឯកសាររឿងក្ដី</h3>
               </div>
@@ -567,26 +504,15 @@ tailwind.config = {
               <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">ជ្រើសរឿងក្ដី</label>
               <select id="docCaseSelect" onchange="renderDocs()" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl mb-3 text-sm outline-none"></select>
 
-              <div id="docDropZone" 
-                   ondragover="event.preventDefault(); this.classList.add('border-brand-500', 'bg-brand-50', 'dark:bg-brand-950')"
-                   ondragleave="this.classList.remove('border-brand-500', 'bg-brand-50', 'dark:bg-brand-950')"
-                   ondrop="handleDocDrop(event)"
-                   onclick="document.getElementById('docFileInput').click()"
-                   class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-6 text-center cursor-pointer transition-all hover:border-brand-500 hover:bg-brand-50 dark:hover:bg-brand-950 mb-3">
+              <div id="docDropZone" ondragover="event.preventDefault(); this.classList.add('border-brand-500', 'bg-brand-50', 'dark:bg-brand-950')" ondragleave="this.classList.remove('border-brand-500', 'bg-brand-50', 'dark:bg-brand-950')" ondrop="handleDocDrop(event)" onclick="document.getElementById('docFileInput').click()" class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-6 text-center cursor-pointer transition-all hover:border-brand-500 hover:bg-brand-50 dark:hover:bg-brand-950 mb-3">
                 <div class="w-14 h-14 mx-auto mb-3 bg-gradient-to-br from-brand-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                    <polyline points="17 8 12 3 7 8"/>
-                    <line x1="12" y1="3" x2="12" y2="15"/>
-                  </svg>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                 </div>
                 <p class="text-sm font-semibold mb-1">ចុច Upload</p>
                 <p class="text-xs text-slate-500 dark:text-slate-400">ឬ Drag & Drop នៅទីនេះ</p>
                 <p class="text-[10px] text-slate-400 mt-2">PDF • Word • Excel • Image</p>
                 <p class="text-[10px] text-slate-400">អតិបរមា 50MB</p>
-                <input type="file" id="docFileInput" 
-                       accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.webp,.txt,.pptx,.ppt" 
-                       onchange="handleDocUpload(event)" class="hidden" multiple>
+                <input type="file" id="docFileInput" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.webp,.txt,.pptx,.ppt" onchange="handleDocUpload(event)" class="hidden" multiple>
               </div>
 
               <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">ប្រភេទឯកសារ</label>
@@ -612,7 +538,6 @@ tailwind.config = {
             </div>
           </div>
 
-          <!-- Documents List -->
           <div class="lg:col-span-2">
             <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800">
               <div class="flex items-center justify-between mb-4">
@@ -628,20 +553,16 @@ tailwind.config = {
       <!-- SETTINGS -->
       <section id="page-settings" class="page hidden animate-fade-in">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-5 mb-5">
-          
           <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800">
             <div class="flex items-start gap-3 mb-4">
               <div class="w-11 h-11 bg-green-50 dark:bg-green-950 rounded-xl flex items-center justify-center shrink-0">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                </svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
               </div>
               <div>
                 <h3 class="font-bold">Backup ទិន្នន័យ</h3>
                 <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">ទាញយកទិន្នន័យទាំងអស់ជា File JSON</p>
               </div>
             </div>
-            
             <div class="space-y-2 mb-4 text-sm">
               <div class="flex justify-between p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
                 <span class="text-slate-600 dark:text-slate-400">📁 រឿងក្ដី</span>
@@ -656,7 +577,6 @@ tailwind.config = {
                 <span id="backupDocCount" class="font-semibold">0</span>
               </div>
             </div>
-            
             <button onclick="exportData()" class="btn-primary w-full text-white py-3 rounded-xl font-medium flex items-center justify-center gap-2">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
               ទាញយក Backup
@@ -666,30 +586,19 @@ tailwind.config = {
           <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800">
             <div class="flex items-start gap-3 mb-4">
               <div class="w-11 h-11 bg-brand-50 dark:bg-brand-950 rounded-xl flex items-center justify-center shrink-0">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3563ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
-                </svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3563ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
               </div>
               <div>
                 <h3 class="font-bold">ដាក់បញ្ចូលទិន្នន័យ</h3>
                 <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Upload File JSON ដែលធ្លាប់ Backup</p>
               </div>
             </div>
-            
-            <div id="dropZone" 
-                 ondragover="event.preventDefault(); this.classList.add('border-brand-500', 'bg-brand-50')"
-                 ondragleave="this.classList.remove('border-brand-500', 'bg-brand-50')"
-                 ondrop="handleDrop(event)"
-                 onclick="document.getElementById('importFile').click()"
-                 class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-6 text-center cursor-pointer transition-all hover:border-brand-500 hover:bg-brand-50 dark:hover:bg-brand-950 mb-4">
-              <svg class="mx-auto mb-2 text-slate-400" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
-              </svg>
+            <div id="dropZone" ondragover="event.preventDefault(); this.classList.add('border-brand-500', 'bg-brand-50')" ondragleave="this.classList.remove('border-brand-500', 'bg-brand-50')" ondrop="handleDrop(event)" onclick="document.getElementById('importFile').click()" class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-6 text-center cursor-pointer transition-all hover:border-brand-500 hover:bg-brand-50 dark:hover:bg-brand-950 mb-4">
+              <svg class="mx-auto mb-2 text-slate-400" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
               <p class="text-sm font-medium">ចុចដើម្បីជ្រើស File</p>
               <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">ឬ Drag & Drop នៅទីនេះ</p>
               <input type="file" id="importFile" accept=".json" onchange="handleImport(event)" class="hidden">
             </div>
-
             <div class="mb-4">
               <p class="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2">របៀបដាក់បញ្ចូល</p>
               <div class="grid grid-cols-2 gap-2">
@@ -697,28 +606,21 @@ tailwind.config = {
                   <input type="radio" name="importMode" value="merge" checked class="peer hidden">
                   <div class="p-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 peer-checked:border-brand-500 peer-checked:bg-brand-50 dark:peer-checked:bg-brand-950 transition-all text-center">
                     <p class="text-sm font-semibold">🔗 បញ្ចូលបន្ថែម</p>
-                    <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Merge ជាមួយទិន្នន័យចាស់</p>
                   </div>
                 </label>
                 <label class="cursor-pointer">
                   <input type="radio" name="importMode" value="replace" class="peer hidden">
                   <div class="p-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 peer-checked:border-red-500 peer-checked:bg-red-50 dark:peer-checked:bg-red-950 transition-all text-center">
                     <p class="text-sm font-semibold">♻️ ជំនួសទាំងអស់</p>
-                    <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">លុបទិន្នន័យចាស់ចោល</p>
                   </div>
                 </label>
               </div>
             </div>
-
             <div id="importPreview" class="hidden p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl mb-4 text-xs space-y-1"></div>
-
-            <button id="confirmImportBtn" onclick="confirmImport()" disabled class="w-full py-3 rounded-xl font-medium flex items-center justify-center gap-2 bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed">
-              ដាក់បញ្ចូល
-            </button>
+            <button id="confirmImportBtn" onclick="confirmImport()" disabled class="w-full py-3 rounded-xl font-medium flex items-center justify-center gap-2 bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed">ដាក់បញ្ចូល</button>
           </div>
         </div>
 
-        <!-- Account -->
         <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 mb-5">
           <div class="flex items-start gap-3 mb-4">
             <div class="w-11 h-11 bg-purple-50 dark:bg-purple-950 rounded-xl flex items-center justify-center shrink-0">
@@ -736,12 +638,8 @@ tailwind.config = {
             </div>
           </div>
           <div class="flex flex-col sm:flex-row gap-2">
-            <button onclick="openPasswordModal()" class="flex-1 px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl text-sm font-medium">
-              🔐 ផ្លាស់ប្ដូរលេខសម្ងាត់
-            </button>
-            <button onclick="openNameModal()" class="flex-1 px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl text-sm font-medium">
-              ✏️ កែឈ្មោះ
-            </button>
+            <button onclick="openPasswordModal()" class="flex-1 px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 rounded-xl text-sm font-medium">🔐 ផ្លាស់ប្ដូរលេខសម្ងាត់</button>
+            <button onclick="openNameModal()" class="flex-1 px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 rounded-xl text-sm font-medium">✏️ កែឈ្មោះ</button>
           </div>
         </div>
 
@@ -753,20 +651,16 @@ tailwind.config = {
             <div class="flex-1">
               <h3 class="font-bold text-red-700 dark:text-red-400">តំបន់គ្រោះថ្នាក់</h3>
               <p class="text-xs text-red-600 dark:text-red-400/80 mt-1">សកម្មភាពទាំងនេះមិនអាចត្រឡប់វិញបានទេ</p>
-              <button onclick="clearAllData()" class="mt-3 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium">
-                🗑️ លុបទិន្នន័យទាំងអស់
-              </button>
+              <button onclick="clearAllData()" class="mt-3 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium">🗑️ លុបទិន្នន័យទាំងអស់</button>
             </div>
           </div>
         </div>
       </section>
-
     </div>
 
     <button onclick="handleFAB()" class="fixed bottom-6 right-6 md:hidden w-14 h-14 btn-primary text-white rounded-2xl shadow-xl flex items-center justify-center z-20 safe-bottom">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
     </button>
-
   </main>
 </div>
 
@@ -855,7 +749,6 @@ tailwind.config = {
         <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">ស្ថានភាព <span class="text-red-500">*</span></label>
         <select id="caseStatus" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
           <option value="">— សូមជ្រើសរើសស្ថានភាព —</option>
-          
           <optgroup label="📋 នីតិវិធីរដ្ឋប្បវេណី">
             <option value="ដាក់ពាក្យបណ្ដឹង">ដាក់ពាក្យបណ្ដឹង</option>
             <option value="នីតិវិធីត្រៀមទាញហេតុផល">នីតិវិធីត្រៀមទាញហេតុផល</option>
@@ -866,7 +759,6 @@ tailwind.config = {
             <option value="បណ្ដឹងបានដក">បណ្ដឹងបានដក</option>
             <option value="ស្រុះស្រួលគ្នា">ស្រុះស្រួលគ្នា</option>
           </optgroup>
-          
           <optgroup label="⚖️ នីតិវិធីព្រហ្មទណ្ឌ">
             <option value="ដាក់ពាក្យបណ្ដឹង">ដាក់ពាក្យបណ្ដឹង</option>
             <option value="ដំណាក់កាលមន្ត្រីនគរបាល">ដំណាក់កាលមន្ត្រីនគរបាល</option>
@@ -877,7 +769,6 @@ tailwind.config = {
             <option value="សេចក្ដីសម្រេចចូលជាស្ថាពរ">សេចក្ដីសម្រេចចូលជាស្ថាពរ</option>
             <option value="បណ្ដឹងបានដក">បណ្ដឹងបានដក</option>
           </optgroup>
-          
           <optgroup label="✅ បានបញ្ចប់">
             <option value="បានបញ្ចប់">បានបញ្ចប់</option>
           </optgroup>
@@ -893,7 +784,7 @@ tailwind.config = {
       </div>
     </div>
     <div class="sticky bottom-0 bg-white dark:bg-slate-900 px-5 py-4 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3 safe-bottom">
-      <button onclick="closeCaseModal()" class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 font-medium">បោះបង់</button>
+      <button onclick="closeCaseModal()" class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 font-medium">បោះបង់</button>
       <button onclick="saveCase()" class="btn-primary text-white px-6 py-2.5 rounded-xl font-medium">រក្សាទុក</button>
     </div>
   </div>
@@ -933,7 +824,7 @@ tailwind.config = {
       </div>
     </div>
     <div class="sticky bottom-0 bg-white dark:bg-slate-900 px-5 py-4 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3 safe-bottom">
-      <button onclick="closeClientModal()" class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 font-medium">បោះបង់</button>
+      <button onclick="closeClientModal()" class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 font-medium">បោះបង់</button>
       <button onclick="saveClient()" class="btn-primary text-white px-6 py-2.5 rounded-xl font-medium">រក្សាទុក</button>
     </div>
   </div>
@@ -968,7 +859,7 @@ tailwind.config = {
       </div>
     </div>
     <div class="sticky bottom-0 bg-white dark:bg-slate-900 px-5 py-4 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3 safe-bottom">
-      <button onclick="closePasswordModal()" class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 font-medium">បោះបង់</button>
+      <button onclick="closePasswordModal()" class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 font-medium">បោះបង់</button>
       <button onclick="savePassword()" class="btn-primary text-white px-6 py-2.5 rounded-xl font-medium">រក្សាទុក</button>
     </div>
   </div>
@@ -995,7 +886,7 @@ tailwind.config = {
       </div>
     </div>
     <div class="sticky bottom-0 bg-white dark:bg-slate-900 px-5 py-4 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3 safe-bottom">
-      <button onclick="closeNameModal()" class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 font-medium">បោះបង់</button>
+      <button onclick="closeNameModal()" class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 font-medium">បោះបង់</button>
       <button onclick="saveName()" class="btn-primary text-white px-6 py-2.5 rounded-xl font-medium">រក្សាទុក</button>
     </div>
   </div>
@@ -1014,7 +905,7 @@ tailwind.config = {
       </div>
     </div>
     <div class="flex gap-3 justify-end">
-      <button onclick="closeConfirm()" class="px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 font-medium text-sm">បោះបង់</button>
+      <button onclick="closeConfirm()" class="px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 font-medium text-sm">បោះបង់</button>
       <button id="confirmOkBtn" class="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-medium text-sm">យល់ព្រម</button>
     </div>
   </div>
@@ -1024,6 +915,11 @@ tailwind.config = {
 <div id="toast" class="hidden fixed bottom-24 md:bottom-6 left-1/2 -translate-x-1/2 md:left-auto md:right-6 md:translate-x-0 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-3 rounded-2xl shadow-2xl z-[80] max-w-[90vw] text-center text-sm font-medium"></div>
 
 <script>
+// ============ PDF.JS CONFIG ============
+if (window.pdfjsLib) {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+}
+
 // ============ THEME ============
 function toggleDark() {
   const isDark = document.documentElement.classList.toggle('dark');
@@ -1080,6 +976,7 @@ const DB = {
 
 let statusChart = null;
 let currentUser = null;
+let currentPdfDoc = null;
 
 // ============ STATUS HELPERS ============
 function getStatusCategory(status) {
@@ -1104,13 +1001,12 @@ const FileDB = {
   dbName: 'CaseManagerFiles',
   storeName: 'documents',
   db: null,
-  
   async init() {
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open(this.dbName, 1);
-      request.onerror = () => reject(request.error);
-      request.onsuccess = () => { this.db = request.result; resolve(this.db); };
-      request.onupgradeneeded = (e) => {
+      const req = indexedDB.open(this.dbName, 1);
+      req.onerror = () => reject(req.error);
+      req.onsuccess = () => { this.db = req.result; resolve(this.db); };
+      req.onupgradeneeded = (e) => {
         const db = e.target.result;
         if (!db.objectStoreNames.contains(this.storeName)) {
           const store = db.createObjectStore(this.storeName, { keyPath: 'id' });
@@ -1264,18 +1160,15 @@ function showLogin() {
 function checkLoginLock() {
   const lock = DB.get('loginLock', null);
   if (lock && lock.until > Date.now()) {
-    const mins = Math.ceil((lock.until - Date.now()) / 60000);
-    return { locked: true, mins };
+    return { locked: true, mins: Math.ceil((lock.until - Date.now()) / 60000) };
   }
   if (lock && lock.until <= Date.now()) DB.remove('loginLock');
   return { locked: false };
 }
-
 function recordFailedLogin() {
   const attempts = DB.get('loginAttempts', { count: 0, firstAt: Date.now() });
   if (Date.now() - attempts.firstAt > 15 * 60 * 1000) {
-    attempts.count = 0;
-    attempts.firstAt = Date.now();
+    attempts.count = 0; attempts.firstAt = Date.now();
   }
   attempts.count++;
   DB.set('loginAttempts', attempts);
@@ -1286,11 +1179,7 @@ function recordFailedLogin() {
   }
   return { locked: false, remaining: 5 - attempts.count };
 }
-
-function resetLoginAttempts() {
-  DB.remove('loginAttempts');
-  DB.remove('loginLock');
-}
+function resetLoginAttempts() { DB.remove('loginAttempts'); DB.remove('loginLock'); }
 
 async function login() {
   const lock = checkLoginLock();
@@ -1651,7 +1540,6 @@ function editCase(id) { openCaseModal(id); }
 function deleteCase(id) {
   showConfirm('លុបរឿងក្ដី', 'តើអ្នកប្រាកដ?', async () => {
     DB.set('cases', DB.get('cases').filter(c => c.id !== id));
-    // លុប Files ដែលពាក់ព័ន្ធផងដែរ
     try {
       const files = await FileDB.getByCase(id);
       for (const f of files) await FileDB.delete(f.id);
@@ -1858,13 +1746,8 @@ async function renderDocs() {
             </div>
           </div>
           <div class="flex gap-1 shrink-0">
-            ${isImage ? `
-              <button onclick="previewDoc(${d.id})" class="w-9 h-9 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-950 text-purple-600 dark:text-purple-400 flex items-center justify-center" title="មើល">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-              </button>
-            ` : ''}
-            <button onclick="previewDoc(${d.id})" class="w-9 h-9 rounded-lg hover:bg-brand-50 dark:hover:bg-brand-950 text-brand-600 dark:text-brand-400 flex items-center justify-center" title="Open">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            <button onclick="previewDoc(${d.id})" class="w-9 h-9 rounded-lg hover:bg-brand-50 dark:hover:bg-brand-950 text-brand-600 dark:text-brand-400 flex items-center justify-center" title="មើល">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
             <button onclick="downloadDoc(${d.id})" class="w-9 h-9 rounded-lg hover:bg-green-50 dark:hover:bg-green-950 text-green-600 dark:text-green-400 flex items-center justify-center" title="ទាញយក">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -1950,7 +1833,7 @@ function fileToBase64(file) {
   });
 }
 
-// ============ PREVIEW / DOWNLOAD / DELETE ============
+// ============ PREVIEW (PDF.js — ដំណើរការលើ Mobile + Desktop) ============
 async function previewDoc(id) {
   try {
     const doc = await FileDB.get(id);
@@ -1962,30 +1845,190 @@ async function previewDoc(id) {
     }
     
     if (doc.category === 'pdf') {
-      const w = window.open();
-      if (w) {
-        w.document.write(`
-          <html><head><title>${doc.name}</title>
-          <style>body{margin:0;font-family:sans-serif}iframe{width:100%;height:100vh;border:0}
-          .bar{padding:10px;background:#f1f5f9;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center}
-          .btn{padding:6px 12px;background:#3563ff;color:white;border:none;border-radius:6px;cursor:pointer;font-size:14px}
-          h3{margin:0;font-size:14px;color:#334155}</style></head>
-          <body><div class="bar"><h3>📕 ${doc.name}</h3>
-          <button class="btn" onclick="window.close()">បិទ</button></div>
-          <iframe src="${doc.data}"></iframe></body></html>
-        `);
-      }
+      showPdfViewer(doc);
       return;
     }
     
+    // Word/Excel/Other → Download
     downloadDoc(id);
     toast('ℹ️ ឯកសារត្រូវបាន Download ដើម្បីបើក');
+    
   } catch (err) {
     console.error(err);
     toast('❌ មិនអាចបើកបាន');
   }
 }
 
+// ============ PDF VIEWER (PDF.js) ============
+async function showPdfViewer(doc) {
+  // បង្កើត Modal
+  const modal = document.createElement('div');
+  modal.className = 'fixed inset-0 bg-black/95 z-[100] flex flex-col animate-fade-in';
+  modal.innerHTML = `
+    <!-- Header -->
+    <div class="flex-shrink-0 bg-slate-900 text-white px-3 py-2.5 flex items-center gap-2 safe-top">
+      <button onclick="closePdfViewer(this)" class="w-10 h-10 rounded-xl hover:bg-white/10 flex items-center justify-center shrink-0">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="flex-1 min-w-0">
+        <p class="font-semibold text-sm truncate">${escapeHtml(doc.name)}</p>
+        <p class="text-xs opacity-70">${formatFileSize(doc.size)}</p>
+      </div>
+      <button onclick="downloadPdfFromDoc(${doc.id})" class="w-10 h-10 rounded-xl hover:bg-white/10 flex items-center justify-center shrink-0" title="ទាញយក">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </button>
+    </div>
+    
+    <!-- Controls -->
+    <div class="flex-shrink-0 bg-slate-800 text-white px-3 py-2 flex items-center justify-between text-sm">
+      <button onclick="pdfPrevPage()" id="pdfPrevBtn" class="px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 font-medium flex items-center gap-1">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+        មុន
+      </button>
+      <div class="flex items-center gap-2">
+        <span id="pdfPageInfo" class="text-xs">កំពុងផ្ទុក...</span>
+      </div>
+      <button onclick="pdfNextPage()" id="pdfNextBtn" class="px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 font-medium flex items-center gap-1">
+        បន្ទាប់
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+    
+    <!-- Canvas Container -->
+    <div id="pdfCanvasContainer" class="flex-1 overflow-auto bg-slate-700 p-2" style="display:flex;align-items:flex-start;justify-content:center;">
+      <div class="pdf-loading text-white">
+        <div class="spinner" style="width:40px;height:40px;border-width:4px"></div>
+        <p class="mt-3 text-sm">កំពុងផ្ទុក PDF...</p>
+      </div>
+    </div>
+    
+    <!-- Zoom Controls -->
+    <div class="flex-shrink-0 bg-slate-800 text-white px-3 py-2 flex items-center justify-center gap-2 safe-bottom">
+      <button onclick="pdfZoom(-0.25)" class="w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/></svg>
+      </button>
+      <span id="pdfZoomLevel" class="text-xs w-12 text-center">100%</span>
+      <button onclick="pdfZoom(0.25)" class="w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  document.body.style.overflow = 'hidden';
+  
+  try {
+    // Load PDF ដោយ PDF.js
+    const base64Data = doc.data.split(',')[1] || doc.data;
+    const pdfData = atob(base64Data);
+    const pdfArray = new Uint8Array(pdfData.length);
+    for (let i = 0; i < pdfData.length; i++) pdfArray[i] = pdfData.charCodeAt(i);
+    
+    const loadingTask = pdfjsLib.getDocument({ data: pdfArray });
+    const pdf = await loadingTask.promise;
+    
+    currentPdfDoc = {
+      pdf: pdf,
+      pageNum: 1,
+      scale: 1,
+      doc: doc,
+      modal: modal
+    };
+    
+    await renderPdfPage();
+    
+  } catch (err) {
+    console.error('PDF error:', err);
+    document.getElementById('pdfCanvasContainer').innerHTML = `
+      <div class="text-center text-white p-6">
+        <div class="text-5xl mb-3">⚠️</div>
+        <p class="font-semibold mb-2">មិនអាចបង្ហាញ PDF បាន</p>
+        <p class="text-xs opacity-70 mb-4">សូម Download ឯកសារដើម្បីបើក</p>
+        <button onclick="downloadPdfFromDoc(${doc.id})" class="btn-primary text-white px-5 py-2.5 rounded-lg font-medium">
+          ⬇️ ទាញយក PDF
+        </button>
+      </div>
+    `;
+  }
+}
+
+async function renderPdfPage() {
+  if (!currentPdfDoc) return;
+  const { pdf, pageNum, scale } = currentPdfDoc;
+  
+  const page = await pdf.getPage(pageNum);
+  const viewport = page.getViewport({ scale: scale * 1.5 }); // Base scale 1.5x
+  
+  const container = document.getElementById('pdfCanvasContainer');
+  container.innerHTML = '';
+  
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = viewport.width;
+  canvas.height = viewport.height;
+  canvas.style.maxWidth = '100%';
+  canvas.style.height = 'auto';
+  canvas.style.background = 'white';
+  canvas.style.borderRadius = '8px';
+  canvas.style.boxShadow = '0 4px 16px rgba(0,0,0,0.3)';
+  container.appendChild(canvas);
+  
+  await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+  
+  // Update UI
+  document.getElementById('pdfPageInfo').textContent = `ទំព័រ ${pageNum} / ${pdf.numPages}`;
+  document.getElementById('pdfZoomLevel').textContent = Math.round(scale * 100) + '%';
+  document.getElementById('pdfPrevBtn').disabled = pageNum <= 1;
+  document.getElementById('pdfNextBtn').disabled = pageNum >= pdf.numPages;
+  document.getElementById('pdfPrevBtn').style.opacity = pageNum <= 1 ? '0.4' : '1';
+  document.getElementById('pdfNextBtn').style.opacity = pageNum >= pdf.numPages ? '0.4' : '1';
+}
+
+async function pdfPrevPage() {
+  if (!currentPdfDoc || currentPdfDoc.pageNum <= 1) return;
+  currentPdfDoc.pageNum--;
+  await renderPdfPage();
+}
+
+async function pdfNextPage() {
+  if (!currentPdfDoc || currentPdfDoc.pageNum >= currentPdfDoc.pdf.numPages) return;
+  currentPdfDoc.pageNum++;
+  await renderPdfPage();
+}
+
+async function pdfZoom(delta) {
+  if (!currentPdfDoc) return;
+  const newScale = Math.max(0.5, Math.min(3, currentPdfDoc.scale + delta));
+  currentPdfDoc.scale = newScale;
+  await renderPdfPage();
+}
+
+function closePdfViewer(btn) {
+  const modal = btn.closest('.fixed');
+  if (currentPdfDoc?.pdf) {
+    try { currentPdfDoc.pdf.destroy(); } catch(e) {}
+  }
+  currentPdfDoc = null;
+  if (modal) modal.remove();
+  document.body.style.overflow = '';
+}
+
+async function downloadPdfFromDoc(id) {
+  try {
+    const doc = await FileDB.get(id);
+    if (!doc) return;
+    const a = document.createElement('a');
+    a.href = doc.data;
+    a.download = doc.name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    toast('✅ កំពុងទាញយក...');
+  } catch (err) {
+    toast('❌ ទាញយកបរាជ័យ');
+  }
+}
+
+// ============ IMAGE PREVIEW ============
 function showImagePreview(doc) {
   const modal = document.createElement('div');
   modal.className = 'fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4';
@@ -1995,7 +2038,7 @@ function showImagePreview(doc) {
       <div class="bg-white dark:bg-slate-900 rounded-2xl overflow-hidden flex flex-col max-h-[90vh]">
         <div class="p-3 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
           <div class="min-w-0">
-            <p class="font-semibold text-sm truncate">${doc.name}</p>
+            <p class="font-semibold text-sm truncate">${escapeHtml(doc.name)}</p>
             <p class="text-xs text-slate-500">${formatFileSize(doc.size)}</p>
           </div>
           <button onclick="this.closest('.fixed').remove()" class="w-8 h-8 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center">
@@ -2012,6 +2055,7 @@ function showImagePreview(doc) {
   document.body.appendChild(modal);
 }
 
+// ============ DOWNLOAD / DELETE ============
 async function downloadDoc(id) {
   try {
     const doc = await FileDB.get(id);
@@ -2040,6 +2084,11 @@ async function deleteDoc(id) {
   } catch (err) {
     toast('❌ លុបបរាជ័យ');
   }
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
 }
 
 // ============ PASSWORD MODAL ============
@@ -2200,7 +2249,6 @@ async function confirmImport() {
   
   const proceed = async () => {
     toast('📥 កំពុង Import...');
-    
     if (mode === 'replace') {
       DB.set('cases', incoming.cases || []);
       DB.set('clients', incoming.clients || []);
@@ -2222,7 +2270,6 @@ async function confirmImport() {
       }
       toast(`✅ បញ្ចូល: +${result.addedCases} រឿងក្ដី, +${result.addedClients} អតិថិជន, +${result.addedDocs} ឯកសារ`);
     }
-    
     pendingImportData = null;
     document.getElementById('importFile').value = '';
     document.getElementById('importPreview').classList.add('hidden');
@@ -2326,6 +2373,11 @@ function toast(msg) {
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
+    if (currentPdfDoc) {
+      // បិទ PDF Viewer
+      const modal = document.querySelector('.z-\\[100\\]');
+      if (modal) closePdfViewer(modal.querySelector('button'));
+    }
     closeCaseModal();
     closeClientModal();
     closePasswordModal();
