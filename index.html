@@ -10,7 +10,6 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="application-name" content="Case Manager">
 <meta name="description" content="ប្រព័ន្ធគ្រប់គ្រងរឿងក្ដីសម្រាប់មេធាវី">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -548,17 +547,81 @@ tailwind.config = {
         </div>
       </section>
 
-      <!-- DOCUMENTS -->
+      <!-- DOCUMENTS (UPLOAD) -->
       <section id="page-documents" class="page hidden animate-fade-in">
-        <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800">
-          <div class="flex items-center gap-2 mb-5">
-            <span class="w-9 h-9 bg-brand-50 dark:bg-brand-950 rounded-xl flex items-center justify-center">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3563ff" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
-            </span>
-            <h3 class="font-bold">ឯកសាររឿងក្ដី</h3>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-5">
+          
+          <!-- Upload Zone -->
+          <div class="lg:col-span-1">
+            <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 lg:sticky lg:top-24">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="w-9 h-9 bg-brand-50 dark:bg-brand-950 rounded-xl flex items-center justify-center">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3563ff" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <path d="M14 2v6h6"/>
+                  </svg>
+                </span>
+                <h3 class="font-bold">ឯកសាររឿងក្ដី</h3>
+              </div>
+
+              <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">ជ្រើសរឿងក្ដី</label>
+              <select id="docCaseSelect" onchange="renderDocs()" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl mb-3 text-sm outline-none"></select>
+
+              <div id="docDropZone" 
+                   ondragover="event.preventDefault(); this.classList.add('border-brand-500', 'bg-brand-50', 'dark:bg-brand-950')"
+                   ondragleave="this.classList.remove('border-brand-500', 'bg-brand-50', 'dark:bg-brand-950')"
+                   ondrop="handleDocDrop(event)"
+                   onclick="document.getElementById('docFileInput').click()"
+                   class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-6 text-center cursor-pointer transition-all hover:border-brand-500 hover:bg-brand-50 dark:hover:bg-brand-950 mb-3">
+                <div class="w-14 h-14 mx-auto mb-3 bg-gradient-to-br from-brand-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                  </svg>
+                </div>
+                <p class="text-sm font-semibold mb-1">ចុច Upload</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">ឬ Drag & Drop នៅទីនេះ</p>
+                <p class="text-[10px] text-slate-400 mt-2">PDF • Word • Excel • Image</p>
+                <p class="text-[10px] text-slate-400">អតិបរមា 50MB</p>
+                <input type="file" id="docFileInput" 
+                       accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.webp,.txt,.pptx,.ppt" 
+                       onchange="handleDocUpload(event)" class="hidden" multiple>
+              </div>
+
+              <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">ប្រភេទឯកសារ</label>
+              <select id="docFilterType" onchange="renderDocs()" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl text-sm outline-none">
+                <option value="">📁 ទាំងអស់</option>
+                <option value="pdf">📕 PDF</option>
+                <option value="word">📘 Word</option>
+                <option value="excel">📗 Excel</option>
+                <option value="image">🖼️ រូបភាព</option>
+                <option value="other">📄 ផ្សេងៗ</option>
+              </select>
+
+              <div class="mt-3 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                <div class="flex justify-between text-xs">
+                  <span class="text-slate-600 dark:text-slate-400">📄 ចំនួនឯកសារ:</span>
+                  <span id="docCount" class="font-semibold">0</span>
+                </div>
+                <div class="flex justify-between text-xs mt-1">
+                  <span class="text-slate-600 dark:text-slate-400">💾 ទំហំសរុប:</span>
+                  <span id="docTotalSize" class="font-semibold">0 KB</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <select id="docCaseSelect" onchange="renderDocs()" class="w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl mb-4 text-base outline-none"></select>
-          <div id="docsList" class="space-y-2"></div>
+
+          <!-- Documents List -->
+          <div class="lg:col-span-2">
+            <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-base">បញ្ជីឯកសារ</h3>
+                <span id="docsListCount" class="text-xs text-slate-500 dark:text-slate-400"></span>
+              </div>
+              <div id="docsList" class="space-y-2"></div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -624,7 +687,6 @@ tailwind.config = {
               </svg>
               <p class="text-sm font-medium">ចុចដើម្បីជ្រើស File</p>
               <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">ឬ Drag & Drop នៅទីនេះ</p>
-              <p class="text-[10px] text-slate-400 mt-2">គាំទ្រ: .json</p>
               <input type="file" id="importFile" accept=".json" onchange="handleImport(event)" class="hidden">
             </div>
 
@@ -651,7 +713,6 @@ tailwind.config = {
             <div id="importPreview" class="hidden p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl mb-4 text-xs space-y-1"></div>
 
             <button id="confirmImportBtn" onclick="confirmImport()" disabled class="w-full py-3 rounded-xl font-medium flex items-center justify-center gap-2 bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
               ដាក់បញ្ចូល
             </button>
           </div>
@@ -680,38 +741,6 @@ tailwind.config = {
             </button>
             <button onclick="openNameModal()" class="flex-1 px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl text-sm font-medium">
               ✏️ កែឈ្មោះ
-            </button>
-          </div>
-        </div>
-
-        <!-- App Update -->
-        <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 mb-5">
-          <div class="flex items-start gap-3 mb-4">
-            <div class="w-11 h-11 bg-emerald-50 dark:bg-emerald-950 rounded-xl flex items-center justify-center shrink-0">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9m9 9H3m9 9a9 9 0 0 1-9-9m9 9c1.66 0 3-4 3-9s-1.34-9-3-9m0 18c-1.66 0-3-4-3-9s1.34-9 3-9m-9 9a9 9 0 0 1 9-9"/>
-              </svg>
-            </div>
-            <div class="flex-1">
-              <h3 class="font-bold">ព័ត៌មាន App</h3>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">ពិនិត្យ និងធ្វើបច្ចុប្បន្នភាព</p>
-            </div>
-          </div>
-          <div class="grid grid-cols-1 gap-3 text-sm mb-3">
-            <div class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg flex justify-between items-center">
-              <div>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">កំណែបច្ចុប្បន្ន</p>
-                <p id="appVersion" class="font-semibold">v8.0</p>
-              </div>
-              <div id="updateStatus" class="text-xs"></div>
-            </div>
-          </div>
-          <div class="flex flex-col sm:flex-row gap-2">
-            <button onclick="checkAndUpdate()" id="checkUpdateBtn" class="flex-1 px-4 py-2.5 bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 rounded-xl text-sm font-medium flex items-center justify-center gap-2">
-              🔄 ពិនិត្យ Update
-            </button>
-            <button onclick="forceUpdate()" class="flex-1 px-4 py-2.5 bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-400 hover:bg-amber-100 rounded-xl text-sm font-medium">
-              ⚡ Force Update
             </button>
           </div>
         </div>
@@ -1016,9 +1045,8 @@ window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
   const btn = document.getElementById('installBtn');
-  if (btn && !isPWA()) btn.classList.remove('hidden');
+  if (btn) btn.classList.remove('hidden');
 });
-window.addEventListener('appinstalled', () => { deferredPrompt = null; toast('✅ បានដំឡើង!'); });
 function isPWA() { return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true; }
 async function installApp() {
   if (!deferredPrompt) { alert('📲 សូមចុច Menu → "Install App"'); return; }
@@ -1026,7 +1054,6 @@ async function installApp() {
   const { outcome } = await deferredPrompt.userChoice;
   deferredPrompt = null;
 }
-
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js').catch(() => {});
@@ -1054,60 +1081,137 @@ const DB = {
 let statusChart = null;
 let currentUser = null;
 
-// ============ STATUS HELPERS (សំខាន់!) ============
-// កំណត់ប្រភេទស្ថានភាព
+// ============ STATUS HELPERS ============
 function getStatusCategory(status) {
   if (!status) return 'unknown';
   const s = status.toLowerCase();
-  
-  // បានបញ្ចប់
-  if (s.includes('បញ្ចប់') || s.includes('ស្ថាពរ') || s.includes('បណ្ដឹងបានដក') || s.includes('ស្រុះស្រួល')) {
-    return 'closed';
-  }
-  
-  // រង់ចាំ
-  if (s.includes('រង់ចាំ')) {
-    return 'pending';
-  }
-  
-  // កំពុងដំណើរការ
-  if (s.includes('ដាក់ពាក្យ') || s.includes('នីតិវិធី') || s.includes('ដំណាក់កាល')) {
-    return 'active';
-  }
-  
+  if (s.includes('បញ្ចប់') || s.includes('ស្ថាពរ') || s.includes('បណ្ដឹងបានដក') || s.includes('ស្រុះស្រួល')) return 'closed';
+  if (s.includes('រង់ចាំ')) return 'pending';
+  if (s.includes('ដាក់ពាក្យ') || s.includes('នីតិវិធី') || s.includes('ដំណាក់កាល')) return 'active';
   return 'unknown';
 }
 
-// បង្ហាញ Status ជាមួយ Style
 function statusInfo(status) {
   const cat = getStatusCategory(status);
+  if (cat === 'active') return { label: status || 'កំពុងដំណើរការ', cls: 'bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-400', dot: 'bg-green-500' };
+  if (cat === 'pending') return { label: status || 'រង់ចាំ', cls: 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-400', dot: 'bg-amber-500' };
+  if (cat === 'closed') return { label: status || 'បានបញ្ចប់', cls: 'bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-400', dot: 'bg-purple-500' };
+  return { label: status || '—', cls: 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400', dot: 'bg-slate-400' };
+}
+
+// ============ INDEXEDDB ============
+const FileDB = {
+  dbName: 'CaseManagerFiles',
+  storeName: 'documents',
+  db: null,
   
-  if (cat === 'active') {
-    return {
-      label: status || 'កំពុងដំណើរការ',
-      cls: 'bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-400',
-      dot: 'bg-green-500'
-    };
+  async init() {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open(this.dbName, 1);
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => { this.db = request.result; resolve(this.db); };
+      request.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains(this.storeName)) {
+          const store = db.createObjectStore(this.storeName, { keyPath: 'id' });
+          store.createIndex('caseId', 'caseId', { unique: false });
+          store.createIndex('uploadedAt', 'uploadedAt', { unique: false });
+        }
+      };
+    });
+  },
+  async add(data) {
+    if (!this.db) await this.init();
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction(this.storeName, 'readwrite');
+      const req = tx.objectStore(this.storeName).put(data);
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  },
+  async get(id) {
+    if (!this.db) await this.init();
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction(this.storeName, 'readonly');
+      const req = tx.objectStore(this.storeName).get(id);
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  },
+  async getByCase(caseId) {
+    if (!this.db) await this.init();
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction(this.storeName, 'readonly');
+      const idx = tx.objectStore(this.storeName).index('caseId');
+      const req = idx.getAll(Number(caseId));
+      req.onsuccess = () => resolve(req.result || []);
+      req.onerror = () => reject(req.error);
+    });
+  },
+  async getAll() {
+    if (!this.db) await this.init();
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction(this.storeName, 'readonly');
+      const req = tx.objectStore(this.storeName).getAll();
+      req.onsuccess = () => resolve(req.result || []);
+      req.onerror = () => reject(req.error);
+    });
+  },
+  async delete(id) {
+    if (!this.db) await this.init();
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction(this.storeName, 'readwrite');
+      const req = tx.objectStore(this.storeName).delete(id);
+      req.onsuccess = () => resolve();
+      req.onerror = () => reject(req.error);
+    });
+  },
+  async clear() {
+    if (!this.db) await this.init();
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction(this.storeName, 'readwrite');
+      const req = tx.objectStore(this.storeName).clear();
+      req.onsuccess = () => resolve();
+      req.onerror = () => reject(req.error);
+    });
   }
-  if (cat === 'pending') {
-    return {
-      label: status || 'រង់ចាំ',
-      cls: 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-400',
-      dot: 'bg-amber-500'
-    };
-  }
-  if (cat === 'closed') {
-    return {
-      label: status || 'បានបញ្ចប់',
-      cls: 'bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-400',
-      dot: 'bg-purple-500'
-    };
-  }
-  return {
-    label: status || '—',
-    cls: 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400',
-    dot: 'bg-slate-400'
+};
+
+// ============ FILE HELPERS ============
+function getFileCategory(fileName, mimeType = '') {
+  const ext = (fileName || '').split('.').pop().toLowerCase();
+  const mime = (mimeType || '').toLowerCase();
+  if (ext === 'pdf' || mime.includes('pdf')) return 'pdf';
+  if (['doc', 'docx'].includes(ext) || mime.includes('word')) return 'word';
+  if (['xls', 'xlsx'].includes(ext) || mime.includes('excel') || mime.includes('sheet')) return 'excel';
+  if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'].includes(ext) || mime.startsWith('image/')) return 'image';
+  return 'other';
+}
+
+function getFileIcon(category) {
+  const icons = {
+    pdf: { emoji: '📕', color: 'red' },
+    word: { emoji: '📘', color: 'blue' },
+    excel: { emoji: '📗', color: 'green' },
+    image: { emoji: '🖼️', color: 'purple' },
+    other: { emoji: '📄', color: 'slate' }
   };
+  return icons[category] || icons.other;
+}
+
+function formatFileSize(bytes) {
+  if (!bytes || bytes === 0) return '0 B';
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  if (bytes < 1024 * 1024 * 1024) return (bytes / 1024 / 1024).toFixed(2) + ' MB';
+  return (bytes / 1024 / 1024 / 1024).toFixed(2) + ' GB';
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return '-';
+  try {
+    return new Date(dateStr).toLocaleDateString('km-KH', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  } catch { return dateStr; }
 }
 
 // ============ PASSWORD VISIBILITY ============
@@ -1190,10 +1294,7 @@ function resetLoginAttempts() {
 
 async function login() {
   const lock = checkLoginLock();
-  if (lock.locked) {
-    showLoginError(`🔒 ចាក់សោ ${lock.mins} នាទីទៀត`);
-    return;
-  }
+  if (lock.locked) { showLoginError(`🔒 ចាក់សោ ${lock.mins} នាទីទៀត`); return; }
   
   const password = document.getElementById('loginPass').value;
   const remember = document.getElementById('rememberMe').checked;
@@ -1251,8 +1352,7 @@ function checkSession() {
   const loggedIn = localStorage.getItem('loggedIn') || sessionStorage.getItem('loggedIn');
   if (!loggedIn) return false;
   const start = parseInt(localStorage.getItem('sessionStart') || sessionStorage.getItem('sessionStart') || '0');
-  const SESSION_TIMEOUT = 8 * 60 * 60 * 1000;
-  if (Date.now() - start > SESSION_TIMEOUT) {
+  if (Date.now() - start > 8 * 60 * 60 * 1000) {
     ['loggedIn','sessionStart','user'].forEach(k => {
       localStorage.removeItem(k);
       sessionStorage.removeItem(k);
@@ -1292,7 +1392,7 @@ const pageInfo = {
   cases: { title: 'សំណុំរឿងក្ដី', subtitle: 'គ្រប់គ្រងរឿងក្ដីទាំងអស់' },
   clients: { title: 'អតិថិជន', subtitle: 'ព័ត៌មានអតិថិជន' },
   calendar: { title: 'កាលវិភាគ', subtitle: 'ថ្ងៃកាត់ក្ដីខាងមុខ' },
-  documents: { title: 'ឯកសារ', subtitle: 'ឯកសាររឿងក្ដី' },
+  documents: { title: 'ឯកសារ', subtitle: 'Upload និងគ្រប់គ្រងឯកសាររឿងក្ដី' },
   settings: { title: 'ការកំណត់', subtitle: 'Backup, Restore និងគ្រប់គ្រងទិន្នន័យ' }
 };
 
@@ -1322,30 +1422,20 @@ function handleFAB() {
 // ============ DASHBOARD ============
 function renderDashboard() {
   const cases = DB.get('cases');
-  
-  const activeCount = cases.filter(c => getStatusCategory(c.status) === 'active').length;
-  const pendingCount = cases.filter(c => getStatusCategory(c.status) === 'pending').length;
-  const closedCount = cases.filter(c => getStatusCategory(c.status) === 'closed').length;
-  
   document.getElementById('statTotal').textContent = cases.length;
-  document.getElementById('statActive').textContent = activeCount;
-  document.getElementById('statPending').textContent = pendingCount;
-  document.getElementById('statClosed').textContent = closedCount;
+  document.getElementById('statActive').textContent = cases.filter(c => getStatusCategory(c.status) === 'active').length;
+  document.getElementById('statPending').textContent = cases.filter(c => getStatusCategory(c.status) === 'pending').length;
+  document.getElementById('statClosed').textContent = cases.filter(c => getStatusCategory(c.status) === 'closed').length;
 
-  // Upcoming hearings
-  const upcoming = cases
-    .filter(c => c.nextHearing)
-    .sort((a,b) => new Date(a.nextHearing) - new Date(b.nextHearing))
-    .slice(0, 4);
-  
+  const upcoming = cases.filter(c => c.nextHearing).sort((a,b) => new Date(a.nextHearing) - new Date(b.nextHearing)).slice(0, 4);
   document.getElementById('upcomingHearings').innerHTML = upcoming.length
     ? upcoming.map(c => {
         const days = Math.ceil((new Date(c.nextHearing) - new Date()) / 86400000);
         const badge = days <= 3 ? 'bg-red-50 text-red-600 dark:bg-red-950 dark:text-red-400' : 
                      days <= 7 ? 'bg-amber-50 text-amber-600 dark:bg-amber-950 dark:text-amber-400' : 
                      'bg-brand-50 text-brand-600 dark:bg-brand-950 dark:text-brand-400';
-        return `<div class="flex items-center gap-3 p-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-xl transition-colors">
-          <div class="w-11 h-11 bg-gradient-to-br from-brand-500 to-brand-700 text-white rounded-xl flex flex-col items-center justify-center shrink-0 shadow-sm">
+        return `<div class="flex items-center gap-3 p-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-xl">
+          <div class="w-11 h-11 bg-gradient-to-br from-brand-500 to-brand-700 text-white rounded-xl flex flex-col items-center justify-center shrink-0">
             <p class="text-sm font-bold leading-none">${c.nextHearing.slice(8,10)}</p>
             <p class="text-[9px] opacity-80 mt-0.5">${c.nextHearing.slice(5,7)}</p>
           </div>
@@ -1356,9 +1446,8 @@ function renderDashboard() {
           <span class="badge ${badge} whitespace-nowrap">${days > 0 ? days + ' ថ្ងៃ' : 'ថ្ងៃនេះ'}</span>
         </div>`;
       }).join('')
-    : `<div class="text-center py-8"><div class="empty-icon">📅</div><p class="text-slate-400 text-sm">មិនមានកាលវិភាគខាងមុខ</p></div>`;
+    : `<div class="text-center py-8"><div class="empty-icon">📅</div><p class="text-slate-400 text-sm">មិនមានកាលវិភាគ</p></div>`;
 
-  // Chart
   const ctx = document.getElementById('statusChart').getContext('2d');
   if (statusChart) statusChart.destroy();
   const isDark = document.documentElement.classList.contains('dark');
@@ -1367,7 +1456,11 @@ function renderDashboard() {
     data: {
       labels: ['កំពុងដំណើរការ','រង់ចាំ','បានបញ្ចប់'],
       datasets: [{
-        data: [activeCount, pendingCount, closedCount],
+        data: [
+          cases.filter(c => getStatusCategory(c.status) === 'active').length,
+          cases.filter(c => getStatusCategory(c.status) === 'pending').length,
+          cases.filter(c => getStatusCategory(c.status) === 'closed').length
+        ],
         backgroundColor: ['#22c55e','#f59e0b','#8b5cf6'],
         borderWidth: 0, spacing: 3, borderRadius: 8
       }]
@@ -1404,12 +1497,11 @@ function renderCases() {
     return matchSearch && matchCourt && matchStatus;
   });
 
-  // Desktop
   document.getElementById('casesTable').innerHTML = filtered.length
     ? filtered.map(c => {
         const client = clients.find(x => x.id === c.clientId);
         const s = statusInfo(c.status);
-        return `<tr class="border-t border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+        return `<tr class="border-t border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/40">
           <td class="px-5 py-4 font-semibold text-brand-600 dark:text-brand-400">${c.caseNumber}</td>
           <td class="px-5 py-4">${c.title}</td>
           <td class="px-5 py-4 text-slate-600 dark:text-slate-400 text-xs">${c.court||'-'}</td>
@@ -1433,7 +1525,6 @@ function renderCases() {
       }).join('')
     : '<tr><td colspan="7" class="px-5 py-12 text-center"><div class="empty-icon">📁</div><p class="text-slate-400 text-sm">មិនមានរឿងក្ដី</p></td></tr>';
 
-  // Mobile
   document.getElementById('casesCards').innerHTML = filtered.length
     ? filtered.map(c => {
         const client = clients.find(x => x.id === c.clientId);
@@ -1450,7 +1541,7 @@ function renderCases() {
             </span>
           </div>
           <div class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
-            <p class="flex items-start gap-2"><span class="shrink-0">🏛️</span><span class="text-xs">${c.court||'-'}</span></p>
+            <p class="flex items-start gap-2"><span>🏛️</span><span class="text-xs">${c.court||'-'}</span></p>
             <p class="flex items-center gap-2"><span>👤</span>${client?.name||'-'}</p>
             ${c.nextHearing ? `<p class="flex items-center gap-2"><span>📅</span>${c.nextHearing}</p>` : ''}
           </div>
@@ -1460,7 +1551,7 @@ function renderCases() {
           </div>
         </div>`;
       }).join('')
-    : '<div class="text-center py-12"><div class="icon">📁</div><p class="text-slate-400 text-sm">មិនមានរឿងក្ដី</p></div>';
+    : '<div class="text-center py-12"><div class="empty-icon">📁</div><p class="text-slate-400 text-sm">មិនមានរឿងក្ដី</p></div>';
 }
 
 function openCaseModal(id=null) {
@@ -1472,7 +1563,6 @@ function openCaseModal(id=null) {
   const courtSelect = document.getElementById('caseCourt');
   const statusSelect = document.getElementById('caseStatus');
   
-  // Cleanup old custom options
   const cleanCustom = (select) => {
     Array.from(select.options).forEach(opt => {
       if (opt.dataset.custom === '1') opt.remove();
@@ -1486,39 +1576,23 @@ function openCaseModal(id=null) {
     document.getElementById('caseNumber').value = c.caseNumber;
     document.getElementById('caseTitle').value = c.title;
     
-    // Court
     const savedCourt = c.court || '';
     cleanCustom(courtSelect);
-    const courtExists = Array.from(courtSelect.options).some(opt => opt.value === savedCourt);
-    if (courtExists) {
-      courtSelect.value = savedCourt;
-    } else if (savedCourt) {
-      const opt = document.createElement('option');
-      opt.value = savedCourt;
-      opt.textContent = savedCourt + ' (ចាស់)';
-      opt.dataset.custom = '1';
-      courtSelect.appendChild(opt);
-      courtSelect.value = savedCourt;
-    } else {
-      courtSelect.value = '';
-    }
+    if (Array.from(courtSelect.options).some(o => o.value === savedCourt)) courtSelect.value = savedCourt;
+    else if (savedCourt) {
+      const o = document.createElement('option');
+      o.value = savedCourt; o.textContent = savedCourt + ' (ចាស់)'; o.dataset.custom = '1';
+      courtSelect.appendChild(o); courtSelect.value = savedCourt;
+    } else courtSelect.value = '';
     
-    // Status
     const savedStatus = c.status || '';
     cleanCustom(statusSelect);
-    const statusExists = Array.from(statusSelect.options).some(opt => opt.value === savedStatus);
-    if (statusExists) {
-      statusSelect.value = savedStatus;
-    } else if (savedStatus) {
-      const opt = document.createElement('option');
-      opt.value = savedStatus;
-      opt.textContent = savedStatus + ' (ចាស់)';
-      opt.dataset.custom = '1';
-      statusSelect.appendChild(opt);
-      statusSelect.value = savedStatus;
-    } else {
-      statusSelect.value = '';
-    }
+    if (Array.from(statusSelect.options).some(o => o.value === savedStatus)) statusSelect.value = savedStatus;
+    else if (savedStatus) {
+      const o = document.createElement('option');
+      o.value = savedStatus; o.textContent = savedStatus + ' (ចាស់)'; o.dataset.custom = '1';
+      statusSelect.appendChild(o); statusSelect.value = savedStatus;
+    } else statusSelect.value = '';
     
     document.getElementById('caseType').value = c.caseType||'រដ្ឋប្បវេណី';
     document.getElementById('caseClient').value = c.clientId;
@@ -1527,8 +1601,7 @@ function openCaseModal(id=null) {
   } else {
     document.getElementById('caseModalTitle').textContent = 'បន្ថែមសំណុំរឿងក្ដីថ្មី';
     ['caseId','caseNumber','caseTitle','caseHearing','caseNote'].forEach(i => document.getElementById(i).value = '');
-    cleanCustom(courtSelect);
-    cleanCustom(statusSelect);
+    cleanCustom(courtSelect); cleanCustom(statusSelect);
     courtSelect.value = '';
     statusSelect.value = 'ដាក់ពាក្យបណ្ដឹង';
   }
@@ -1544,16 +1617,13 @@ function closeCaseModal() {
 function saveCase() {
   const id = document.getElementById('caseId').value;
   const clientVal = document.getElementById('caseClient').value;
-  const courtVal = document.getElementById('caseCourt').value;
-  const statusVal = document.getElementById('caseStatus').value;
-  
   const data = {
     caseNumber: document.getElementById('caseNumber').value.trim(),
     title: document.getElementById('caseTitle').value.trim(),
-    court: courtVal,
+    court: document.getElementById('caseCourt').value,
     caseType: document.getElementById('caseType').value,
     clientId: clientVal ? parseInt(clientVal) : null,
-    status: statusVal,
+    status: document.getElementById('caseStatus').value,
     nextHearing: document.getElementById('caseHearing').value,
     note: document.getElementById('caseNote').value.trim()
   };
@@ -1566,11 +1636,11 @@ function saveCase() {
   if (id) {
     const idx = cases.findIndex(c => c.id == id);
     cases[idx] = {...cases[idx], ...data};
-    toast('✅ បានកែប្រែសំណុំរឿងក្ដី');
+    toast('✅ បានកែប្រែ');
   } else {
     data.id = Date.now();
     cases.push(data);
-    toast('✅ បន្ថែមសំណុំរឿងក្ដីថ្មី');
+    toast('✅ បន្ថែមថ្មី');
   }
   DB.set('cases', cases);
   closeCaseModal();
@@ -1579,8 +1649,13 @@ function saveCase() {
 
 function editCase(id) { openCaseModal(id); }
 function deleteCase(id) {
-  showConfirm('លុបរឿងក្ដី', 'តើអ្នកប្រាកដជាចង់លុប?', () => {
+  showConfirm('លុបរឿងក្ដី', 'តើអ្នកប្រាកដ?', async () => {
     DB.set('cases', DB.get('cases').filter(c => c.id !== id));
+    // លុប Files ដែលពាក់ព័ន្ធផងដែរ
+    try {
+      const files = await FileDB.getByCase(id);
+      for (const f of files) await FileDB.delete(f.id);
+    } catch (e) {}
     toast('🗑️ បានលុប');
     renderCases();
   });
@@ -1681,14 +1756,14 @@ function renderCalendar() {
                      days <= 7 ? 'bg-amber-50 text-amber-600 dark:bg-amber-950 dark:text-amber-400' :
                      'bg-brand-50 text-brand-600 dark:bg-brand-950 dark:text-brand-400';
         return `<div class="flex items-center gap-3 p-4 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border-l-4 border-brand-500">
-          <div class="text-center bg-gradient-to-br from-brand-500 to-brand-700 text-white rounded-xl px-3 py-2 min-w-[64px] shrink-0 shadow-sm">
+          <div class="text-center bg-gradient-to-br from-brand-500 to-brand-700 text-white rounded-xl px-3 py-2 min-w-[64px] shrink-0">
             <p class="text-xl font-bold leading-none">${c.nextHearing.slice(8,10)}</p>
             <p class="text-[10px] mt-1 opacity-90">${c.nextHearing.slice(0,7)}</p>
           </div>
           <div class="flex-1 min-w-0">
             <p class="font-bold text-sm truncate">${c.caseNumber}</p>
             <p class="text-sm text-slate-600 dark:text-slate-400 truncate">${c.title}</p>
-            <p class="text-xs text-slate-500 dark:text-slate-500 truncate mt-1">🏛️ ${c.court}</p>
+            <p class="text-xs text-slate-500 truncate mt-1">🏛️ ${c.court}</p>
           </div>
           <span class="badge ${badge} whitespace-nowrap">${days > 0 ? days + ' ថ្ងៃ' : 'ថ្ងៃនេះ'}</span>
         </div>`;
@@ -1697,41 +1772,274 @@ function renderCalendar() {
 }
 
 // ============ DOCUMENTS ============
-function renderDocSelect() {
+async function renderDocSelect() {
   const cases = DB.get('cases');
-  document.getElementById('docCaseSelect').innerHTML = cases.length
-    ? cases.map(c => `<option value="${c.id}">${c.caseNumber} - ${c.title}</option>`).join('')
-    : '<option>មិនមានរឿងក្ដី</option>';
-  renderDocs();
+  const select = document.getElementById('docCaseSelect');
+  
+  if (!cases.length) {
+    select.innerHTML = '<option value="">— មិនមានរឿងក្ដី —</option>';
+    document.getElementById('docsList').innerHTML = `
+      <div class="text-center py-12">
+        <div class="text-5xl mb-3 opacity-40">📁</div>
+        <p class="text-slate-400 text-sm">សូមបង្កើតរឿងក្ដីជាមុន</p>
+      </div>`;
+    return;
+  }
+  
+  const currentValue = select.value;
+  select.innerHTML = cases.map(c => 
+    `<option value="${c.id}">${c.caseNumber} - ${c.title}</option>`
+  ).join('');
+  
+  if (currentValue && cases.find(c => c.id == currentValue)) {
+    select.value = currentValue;
+  }
+  
+  await renderDocs();
 }
 
-function renderDocs() {
+async function renderDocs() {
   const caseId = parseInt(document.getElementById('docCaseSelect').value);
-  const docs = DB.get('documents').filter(d => d.caseId === caseId);
-  document.getElementById('docsList').innerHTML = docs.length
-    ? docs.map(d => `
-      <div class="flex justify-between items-center p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-xl gap-2">
-        <div class="flex items-center gap-3 min-w-0">
-          <div class="w-10 h-10 bg-red-50 dark:bg-red-950 rounded-xl flex items-center justify-center shrink-0">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+  const typeFilter = document.getElementById('docFilterType')?.value || '';
+  const listEl = document.getElementById('docsList');
+  const countEl = document.getElementById('docsListCount');
+  const docCountEl = document.getElementById('docCount');
+  const docSizeEl = document.getElementById('docTotalSize');
+  
+  if (!caseId) {
+    listEl.innerHTML = `<div class="text-center py-12">
+      <div class="text-5xl mb-3 opacity-40">📄</div>
+      <p class="text-slate-400 text-sm">សូមជ្រើសរឿងក្ដី</p>
+    </div>`;
+    if (countEl) countEl.textContent = '';
+    return;
+  }
+  
+  try {
+    let docs = await FileDB.getByCase(caseId);
+    
+    if (docCountEl) docCountEl.textContent = docs.length;
+    const totalSize = docs.reduce((sum, d) => sum + (d.size || 0), 0);
+    if (docSizeEl) docSizeEl.textContent = formatFileSize(totalSize);
+    
+    if (typeFilter) docs = docs.filter(d => d.category === typeFilter);
+    docs.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
+    
+    if (countEl) countEl.textContent = docs.length ? `${docs.length} ឯកសារ` : '';
+    
+    if (!docs.length) {
+      listEl.innerHTML = `
+        <div class="text-center py-12">
+          <div class="text-5xl mb-3 opacity-40">📄</div>
+          <p class="text-slate-400 text-sm">មិនមានឯកសារ${typeFilter ? ' តាមប្រភេទនេះ' : ''}</p>
+          <p class="text-xs text-slate-400 mt-1">សូម Upload ឯកសារ</p>
+        </div>`;
+      return;
+    }
+    
+    listEl.innerHTML = docs.map(d => {
+      const icon = getFileIcon(d.category);
+      const isImage = d.category === 'image';
+      
+      return `
+        <div class="group flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/40 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 overflow-hidden ${isImage ? '' : `bg-${icon.color}-50 dark:bg-${icon.color}-950`}">
+            ${isImage 
+              ? `<img src="${d.data}" alt="${d.name}" class="w-full h-full object-cover cursor-pointer" onclick="previewDoc(${d.id})">`
+              : `<span class="text-2xl">${icon.emoji}</span>`
+            }
           </div>
-          <div class="min-w-0">
-            <p class="font-medium text-sm truncate">${d.name}</p>
-            <p class="text-xs text-slate-500 dark:text-slate-400">${d.date}</p>
+          <div class="flex-1 min-w-0">
+            <p class="font-medium text-sm truncate" title="${d.name}">${d.name}</p>
+            <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              <span>${formatFileSize(d.size)}</span>
+              <span>•</span>
+              <span>${formatDate(d.uploadedAt)}</span>
+            </div>
+          </div>
+          <div class="flex gap-1 shrink-0">
+            ${isImage ? `
+              <button onclick="previewDoc(${d.id})" class="w-9 h-9 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-950 text-purple-600 dark:text-purple-400 flex items-center justify-center" title="មើល">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            ` : ''}
+            <button onclick="previewDoc(${d.id})" class="w-9 h-9 rounded-lg hover:bg-brand-50 dark:hover:bg-brand-950 text-brand-600 dark:text-brand-400 flex items-center justify-center" title="Open">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </button>
+            <button onclick="downloadDoc(${d.id})" class="w-9 h-9 rounded-lg hover:bg-green-50 dark:hover:bg-green-950 text-green-600 dark:text-green-400 flex items-center justify-center" title="ទាញយក">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </button>
+            <button onclick="deleteDoc(${d.id})" class="w-9 h-9 rounded-lg hover:bg-red-50 dark:hover:bg-red-950 text-red-500 flex items-center justify-center" title="លុប">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+            </button>
           </div>
         </div>
-        <button onclick="deleteDoc(${d.id})" class="w-9 h-9 rounded-xl hover:bg-red-50 dark:hover:bg-red-950 text-red-500 shrink-0 flex items-center justify-center">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
-        </button>
-      </div>`).join('')
-    : '<div class="text-center py-8"><div class="empty-icon">📄</div><p class="text-slate-400 text-sm">មិនមានឯកសារ</p></div>';
+      `;
+    }).join('');
+  } catch (err) {
+    console.error(err);
+    listEl.innerHTML = `<div class="text-center py-8 text-red-500 text-sm">❌ មានបញ្ហាក្នុងការផ្ទុកឯកសារ</div>`;
+  }
 }
 
-function deleteDoc(id) {
-  showConfirm('លុបឯកសារ', 'តើអ្នកប្រាកដ?', () => {
-    DB.set('documents', DB.get('documents').filter(d => d.id !== id));
+// ============ UPLOAD ============
+async function handleDocDrop(event) {
+  event.preventDefault();
+  const dropZone = document.getElementById('docDropZone');
+  dropZone.classList.remove('border-brand-500', 'bg-brand-50', 'dark:bg-brand-950');
+  const files = Array.from(event.dataTransfer.files);
+  if (files.length) await uploadFiles(files);
+}
+
+async function handleDocUpload(event) {
+  const files = Array.from(event.target.files);
+  if (files.length) await uploadFiles(files);
+  event.target.value = '';
+}
+
+async function uploadFiles(files) {
+  const caseId = parseInt(document.getElementById('docCaseSelect').value);
+  if (!caseId) return toast('⚠️ សូមជ្រើសរឿងក្ដីជាមុន');
+  
+  const MAX_SIZE = 50 * 1024 * 1024;
+  let uploaded = 0, skipped = 0;
+  
+  toast(`📤 កំពុង Upload ${files.length} ឯកសារ...`);
+  
+  for (const file of files) {
+    if (file.size > MAX_SIZE) {
+      toast(`❌ ${file.name} ធំពេក (> 50MB)`);
+      skipped++;
+      continue;
+    }
+    
+    try {
+      const base64 = await fileToBase64(file);
+      const docData = {
+        id: Date.now() + Math.floor(Math.random() * 10000),
+        caseId: caseId,
+        name: file.name,
+        size: file.size,
+        type: file.type || 'application/octet-stream',
+        category: getFileCategory(file.name, file.type),
+        data: base64,
+        uploadedAt: new Date().toISOString()
+      };
+      await FileDB.add(docData);
+      uploaded++;
+    } catch (err) {
+      console.error(err);
+      skipped++;
+    }
+  }
+  
+  if (uploaded > 0) {
+    toast(`✅ Upload ${uploaded} ឯកសារ${skipped ? ` (${skipped} បរាជ័យ)` : ''}`);
     renderDocs();
+  } else if (skipped > 0) {
+    toast(`❌ Upload បរាជ័យទាំងអស់`);
+  }
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
   });
+}
+
+// ============ PREVIEW / DOWNLOAD / DELETE ============
+async function previewDoc(id) {
+  try {
+    const doc = await FileDB.get(id);
+    if (!doc) return toast('❌ រកមិនឃើញឯកសារ');
+    
+    if (doc.category === 'image') {
+      showImagePreview(doc);
+      return;
+    }
+    
+    if (doc.category === 'pdf') {
+      const w = window.open();
+      if (w) {
+        w.document.write(`
+          <html><head><title>${doc.name}</title>
+          <style>body{margin:0;font-family:sans-serif}iframe{width:100%;height:100vh;border:0}
+          .bar{padding:10px;background:#f1f5f9;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center}
+          .btn{padding:6px 12px;background:#3563ff;color:white;border:none;border-radius:6px;cursor:pointer;font-size:14px}
+          h3{margin:0;font-size:14px;color:#334155}</style></head>
+          <body><div class="bar"><h3>📕 ${doc.name}</h3>
+          <button class="btn" onclick="window.close()">បិទ</button></div>
+          <iframe src="${doc.data}"></iframe></body></html>
+        `);
+      }
+      return;
+    }
+    
+    downloadDoc(id);
+    toast('ℹ️ ឯកសារត្រូវបាន Download ដើម្បីបើក');
+  } catch (err) {
+    console.error(err);
+    toast('❌ មិនអាចបើកបាន');
+  }
+}
+
+function showImagePreview(doc) {
+  const modal = document.createElement('div');
+  modal.className = 'fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4';
+  modal.innerHTML = `
+    <div class="relative max-w-5xl w-full max-h-[90vh]">
+      <button onclick="this.closest('.fixed').remove()" class="absolute -top-12 right-0 w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white text-2xl">&times;</button>
+      <div class="bg-white dark:bg-slate-900 rounded-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        <div class="p-3 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+          <div class="min-w-0">
+            <p class="font-semibold text-sm truncate">${doc.name}</p>
+            <p class="text-xs text-slate-500">${formatFileSize(doc.size)}</p>
+          </div>
+          <button onclick="this.closest('.fixed').remove()" class="w-8 h-8 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div class="p-2 overflow-auto flex-1 flex items-center justify-center bg-slate-100 dark:bg-slate-950">
+          <img src="${doc.data}" alt="${doc.name}" class="max-w-full max-h-[70vh] object-contain rounded-lg">
+        </div>
+      </div>
+    </div>
+  `;
+  modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
+  document.body.appendChild(modal);
+}
+
+async function downloadDoc(id) {
+  try {
+    const doc = await FileDB.get(id);
+    if (!doc) return toast('❌ រកមិនឃើញ');
+    const a = document.createElement('a');
+    a.href = doc.data;
+    a.download = doc.name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    toast(`✅ ទាញយក ${doc.name}`);
+  } catch (err) {
+    toast('❌ ទាញយកបរាជ័យ');
+  }
+}
+
+async function deleteDoc(id) {
+  try {
+    const doc = await FileDB.get(id);
+    if (!doc) return;
+    showConfirm('លុបឯកសារ', `តើអ្នកប្រាកដជាចង់លុប "${doc.name}"?`, async () => {
+      await FileDB.delete(id);
+      toast('🗑️ បានលុបឯកសារ');
+      renderDocs();
+    }, 'លុប');
+  } catch (err) {
+    toast('❌ លុបបរាជ័យ');
+  }
 }
 
 // ============ PASSWORD MODAL ============
@@ -1748,15 +2056,12 @@ async function savePassword() {
   const oldPass = document.getElementById('oldPass').value;
   const newPass = document.getElementById('newPass').value;
   const newPass2 = document.getElementById('newPass2').value;
-  
   if (!oldPass || !newPass || !newPass2) return toast('⚠️ សូមបំពេញគ្រប់ប្រអប់');
   if (newPass.length < 4) return toast('⚠️ លេខសម្ងាត់ ≥ ៤ តួ');
   if (newPass !== newPass2) return toast('❌ មិនដូចគ្នា');
-  
   const auth = DB.get('auth', null);
   const oldHash = await hashPassword(oldPass);
   if (!auth || auth.password !== oldHash) return toast('❌ លេខសម្ងាត់មិនត្រឹមត្រូវ');
-  
   const newHash = await hashPassword(newPass);
   auth.password = newHash;
   DB.set('auth', auth);
@@ -1778,12 +2083,10 @@ function saveName() {
   const newName = document.getElementById('newName').value.trim();
   if (!newName) return toast('⚠️ សូមបំពេញឈ្មោះ');
   if (newName.length < 2) return toast('⚠️ ≥ ២ តួ');
-  
   const auth = DB.get('auth', null);
   if (!auth) return;
   auth.name = newName;
   DB.set('auth', auth);
-  
   currentUser.name = newName;
   const storage = localStorage.getItem('user') ? localStorage : sessionStorage;
   storage.setItem('user', JSON.stringify(currentUser));
@@ -1793,32 +2096,48 @@ function saveName() {
 }
 
 // ============ BACKUP / RESTORE ============
-function exportData() {
-  const data = {
-    version: '1.0',
-    appName: 'Case Manager Professional',
-    exportedAt: new Date().toISOString(),
-    exportedBy: currentUser?.name || 'unknown',
-    data: {
-      cases: DB.get('cases'),
-      clients: DB.get('clients'),
-      documents: DB.get('documents')
+async function exportData() {
+  try {
+    toast('📦 កំពុងបង្កើត Backup...');
+    const files = await FileDB.getAll();
+    
+    const data = {
+      version: '2.0',
+      appName: 'Case Manager Professional',
+      exportedAt: new Date().toISOString(),
+      exportedBy: currentUser?.name || 'unknown',
+      data: {
+        cases: DB.get('cases'),
+        clients: DB.get('clients'),
+        documents: files
+      }
+    };
+    
+    const json = JSON.stringify(data);
+    const sizeMB = (json.length / 1024 / 1024).toFixed(2);
+    
+    if (sizeMB > 100) {
+      if (!confirm(`⚠️ Backup ធំ ${sizeMB} MB!\n\nតើអ្នកចង់បន្តទេ?`)) return;
     }
-  };
-  const json = JSON.stringify(data, null, 2);
-  const blob = new Blob([json], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const now = new Date();
-  const dateStr = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`;
-  const timeStr = `${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}`;
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `case-manager-backup-${dateStr}-${timeStr}.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  toast('✅ បានទាញយក Backup!');
+    
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const now = new Date();
+    const dateStr = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`;
+    const timeStr = `${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}`;
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `case-manager-backup-${dateStr}-${timeStr}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    toast(`✅ បានទាញយក Backup (${sizeMB} MB)`);
+  } catch (err) {
+    console.error(err);
+    toast('❌ Backup បរាជ័យ');
+  }
 }
 
 let pendingImportData = null;
@@ -1837,7 +2156,7 @@ function handleImport(event) {
 
 function processImportFile(file) {
   if (!file.name.endsWith('.json')) return toast('❌ សូមជ្រើស .json');
-  if (file.size > 10 * 1024 * 1024) return toast('❌ File ធំពេក');
+  if (file.size > 500 * 1024 * 1024) return toast('❌ File ធំពេក');
   const reader = new FileReader();
   reader.onload = (e) => {
     try {
@@ -1874,21 +2193,36 @@ function showImportPreview(json) {
   btn.className = 'btn-primary w-full text-white py-3 rounded-xl font-medium flex items-center justify-center gap-2';
 }
 
-function confirmImport() {
+async function confirmImport() {
   if (!pendingImportData) return;
   const mode = document.querySelector('input[name="importMode"]:checked').value;
   const incoming = pendingImportData.data;
   
-  const proceed = () => {
+  const proceed = async () => {
+    toast('📥 កំពុង Import...');
+    
     if (mode === 'replace') {
       DB.set('cases', incoming.cases || []);
       DB.set('clients', incoming.clients || []);
-      DB.set('documents', incoming.documents || []);
-      toast('✅ បានជំនួស!');
+      await FileDB.clear();
+      if (Array.isArray(incoming.documents)) {
+        for (const doc of incoming.documents) await FileDB.add(doc);
+      }
+      toast('✅ បានជំនួសទាំងអស់!');
     } else {
       const result = mergeData(incoming);
-      toast(`✅ បញ្ចូល: +${result.addedCases}, +${result.addedClients}, +${result.addedDocs}`);
+      if (Array.isArray(incoming.documents)) {
+        const existingFiles = await FileDB.getAll();
+        const existingIds = new Set(existingFiles.map(f => f.id));
+        let added = 0;
+        for (const doc of incoming.documents) {
+          if (!existingIds.has(doc.id)) { await FileDB.add(doc); added++; }
+        }
+        result.addedDocs = added;
+      }
+      toast(`✅ បញ្ចូល: +${result.addedCases} រឿងក្ដី, +${result.addedClients} អតិថិជន, +${result.addedDocs} ឯកសារ`);
     }
+    
     pendingImportData = null;
     document.getElementById('importFile').value = '';
     document.getElementById('importPreview').classList.add('hidden');
@@ -1899,7 +2233,7 @@ function confirmImport() {
   };
   
   if (mode === 'replace') {
-    showConfirm('ជំនួសទាំងអស់', 'លុបទិន្នន័យចាស់ចោល?', proceed, 'ជំនួស');
+    showConfirm('ជំនួសទាំងអស់', 'ការជំនួសនឹងលុបទិន្នន័យបច្ចុប្បន្នចោលទាំងអស់ រួមទាំងឯកសារ! តើអ្នកប្រាកដទេ?', proceed, 'ជំនួស');
   } else {
     proceed();
   }
@@ -1908,7 +2242,6 @@ function confirmImport() {
 function mergeData(incoming) {
   const existingCases = DB.get('cases');
   const existingClients = DB.get('clients');
-  const existingDocs = DB.get('documents');
   let addedClients = 0;
   const clientIdMap = {};
   (incoming.clients || []).forEach(c => {
@@ -1937,39 +2270,30 @@ function mergeData(incoming) {
       addedCases++;
     }
   });
-  let addedDocs = 0;
-  const docKeys = new Set(existingDocs.map(d => `${d.name}|${d.caseId}`));
-  (incoming.documents || []).forEach(d => {
-    const newCaseId = caseIdMap[d.caseId] || d.caseId;
-    const key = `${d.name}|${newCaseId}`;
-    if (!docKeys.has(key)) {
-      existingDocs.push({ ...d, id: Date.now() + Math.floor(Math.random() * 10000), caseId: newCaseId });
-      addedDocs++;
-    }
-  });
   DB.set('cases', existingCases);
   DB.set('clients', existingClients);
-  DB.set('documents', existingDocs);
-  return { addedCases, addedClients, addedDocs };
+  return { addedCases, addedClients, addedDocs: 0 };
 }
 
 function clearAllData() {
-  showConfirm('លុបទាំងអស់', 'តើអ្នកប្រាកដ?', () => {
+  showConfirm('លុបទាំងអស់', 'តើអ្នកប្រាកដជាចង់លុបទិន្នន័យទាំងអស់ រួមទាំងឯកសារ?', async () => {
     DB.set('cases', []);
     DB.set('clients', []);
-    DB.set('documents', []);
-    toast('🗑️ បានលុប');
+    await FileDB.clear();
+    toast('🗑️ បានលុបទាំងអស់');
     renderSettingsStats();
     showPage('dashboard');
-  }, 'លុប');
+  }, 'លុបទាំងអស់');
 }
 
-function renderSettingsStats() {
+async function renderSettingsStats() {
   const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
   set('backupCaseCount', DB.get('cases').length);
   set('backupClientCount', DB.get('clients').length);
-  set('backupDocCount', DB.get('documents').length);
-  set('appVersion', 'v8.0');
+  try {
+    const files = await FileDB.getAll();
+    set('backupDocCount', files.length);
+  } catch { set('backupDocCount', '0'); }
 }
 
 // ============ CONFIRM MODAL ============
@@ -1986,8 +2310,8 @@ function closeConfirm() {
   document.getElementById('confirmModal').classList.add('hidden');
   confirmCallback = null;
 }
-document.getElementById('confirmOkBtn')?.addEventListener('click', () => {
-  if (confirmCallback) confirmCallback();
+document.getElementById('confirmOkBtn')?.addEventListener('click', async () => {
+  if (confirmCallback) await confirmCallback();
   closeConfirm();
 });
 
@@ -1997,7 +2321,7 @@ function toast(msg) {
   t.textContent = msg;
   t.classList.remove('hidden');
   clearTimeout(t._timer);
-  t._timer = setTimeout(() => t.classList.add('hidden'), 2500);
+  t._timer = setTimeout(() => t.classList.add('hidden'), 2800);
 }
 
 document.addEventListener('keydown', (e) => {
@@ -2019,12 +2343,13 @@ window.addEventListener('resize', () => {
 });
 
 // ============ INIT ============
-function initApp() {
+async function initApp() {
   loadUser();
+  await FileDB.init();
   showPage('dashboard');
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
   initTheme();
   const auth = DB.get('auth', null);
   
@@ -2032,7 +2357,7 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('setupScreen').classList.remove('hidden');
   } else if (checkSession()) {
     document.getElementById('app').classList.remove('hidden');
-    initApp();
+    await initApp();
   } else {
     showLogin();
   }
