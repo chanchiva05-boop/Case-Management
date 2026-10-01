@@ -1,6 +1,6 @@
 {
   "name": "Case Manager",
-  "short_name": "Case Manager 2026",
+  "short_name": "Case Manager",
   "description": "ប្រព័ន្ធគ្រប់គ្រងរឿងក្ដីសម្រាប់មេធាវី",
   "start_url": "./index.html",
   "scope": "./",
