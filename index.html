@@ -431,10 +431,10 @@ tailwind.config = {
                 <tr class="text-left text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider border-b border-slate-100 dark:border-slate-800">
                   <th class="px-5 py-4 font-semibold">លេខសំណុំរឿងក្ដី</th>
                   <th class="px-5 py-4 font-semibold">ចំណងជើង</th>
-                  <th class="px-5 py-4 font-semibold">តុលាការមានសម្ថកិច្ច</th>
+                  <th class="px-5 py-4 font-semibold">តុលាការមានសមត្ថកិច្ច</th>
                   <th class="px-5 py-4 font-semibold">អតិថិជន</th>
-                  <th class="px-5 py-4 font-semibold">ស្ថានភាព</th>
-                  <th class="px-5 py-4 font-semibold">ថ្ងៃកាលបរិតុលាការ</th>
+                  <th class="px-5 py-4 font-semibold">ស្ថានភាពសំណុំរឿងក្ដី</th>
+                  <th class="px-5 py-4 font-semibold">ថ្ងៃកាលបរិច្ឆេទតុលាការ</th>
                   <th class="px-5 py-4 font-semibold text-right">សកម្មភាព</th>
                 </tr>
               </thead>
@@ -549,7 +549,7 @@ tailwind.config = {
             </div>
             <div class="space-y-2 mb-4 text-sm">
               <div class="flex justify-between p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-                <span class="text-slate-600 dark:text-slate-400">📁 រឿងក្ដី</span>
+                <span class="text-slate-600 dark:text-slate-400">📁 សំណុំរឿងក្ដី</span>
                 <span id="backupCaseCount" class="font-semibold">0</span>
               </div>
               <div class="flex justify-between p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
@@ -673,7 +673,7 @@ tailwind.config = {
         <input id="caseTitle" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
       </div>
       <div class="md:col-span-2">
-        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">តុលាការមានសម្ថកិច្ច <span class="text-red-500">*</span></label>
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">តុលាការមានសមត្ថកិច្ច <span class="text-red-500">*</span></label>
         <select id="caseCourt" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
           <option value="">— សូមជ្រើសរើសតុលាការ —</option>
           <optgroup label="🏛️ សាលាដំបូង">
@@ -729,18 +729,15 @@ tailwind.config = {
         <select id="caseClient" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base"></select>
       </div>
       <div class="md:col-span-2">
-        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">ស្ថានភាព <span class="text-red-500">*</span></label>
+        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">ស្ថានភាពសំណុំរឿងក្ដី <span class="text-red-500">*</span></label>
         <select id="caseStatus" class="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-xl outline-none text-base">
-          <option value="">— សូមជ្រើសរើសស្ថានភាព —</option>
+          <option value="">— សូមជ្រើសរើសស្ថានភាពសំណុំរឿងក្ដី —</option>
           <optgroup label="📋 នីតិវិធីរដ្ឋប្បវេណី">
             <option value="ដាក់ពាក្យបណ្ដឹង">ដាក់ពាក្យបណ្ដឹង</option>
             <option value="នីតិវិធីត្រៀមទាញហេតុផល">នីតិវិធីត្រៀមទាញហេតុផល</option>
             <option value="នីតិវិធីទាញហេតុផលដោយផ្ទាល់មាត់">នីតិវិធីទាញហេតុផលដោយផ្ទាល់មាត់</option>
             <option value="រង់ចាំប្រកាសសេចក្ដីសម្រេច">រង់ចាំប្រកាសសេចក្ដីសម្រេច</option>
             <option value="រង់ចាំសេចក្ដីសម្រេចចូលជាស្ថាពរ">រង់ចាំសេចក្ដីសម្រេចចូលជាស្ថាពរ</option>
-            <option value="សេចក្ដីសម្រេចចូលជាស្ថាពរ">សេចក្ដីសម្រេចចូលជាស្ថាពរ</option>
-            <option value="បណ្ដឹងបានដក">បណ្ដឹងបានដក</option>
-            <option value="ស្រុះស្រួលគ្នា">ស្រុះស្រួលគ្នា</option>
           </optgroup>
           <optgroup label="⚖️ នីតិវិធីព្រហ្មទណ្ឌ">
             <option value="ដាក់ពាក្យបណ្ដឹង">ដាក់ពាក្យបណ្ដឹង</option>
@@ -749,11 +746,13 @@ tailwind.config = {
             <option value="ដំណាក់កាលចៅក្រមស៊ើបសួរ">ដំណាក់កាលចៅក្រមស៊ើបសួរ</option>
             <option value="ដំណាក់កាលជំនុំជម្រះ">ដំណាក់កាលជំនុំជម្រះ</option>
             <option value="រង់ចាំប្រកាសសេចក្ដីសម្រេច">រង់ចាំប្រកាសសេចក្ដីសម្រេច</option>
-            <option value="សេចក្ដីសម្រេចចូលជាស្ថាពរ">សេចក្ដីសម្រេចចូលជាស្ថាពរ</option>
-            <option value="បណ្ដឹងបានដក">បណ្ដឹងបានដក</option>
+            <option value="រង់ចាំសេចក្ដីសម្រេចចូលជាស្ថាពរ">រង់ចាំសេចក្ដីសម្រេចចូលជាស្ថាពរ</option>
           </optgroup>
-          <optgroup label="✅ បានបញ្ចប់">
-            <option value="បានបញ្ចប់">បានបញ្ចប់</option>
+          <optgroup label="✅ បញ្ចប់សំណុំរឿងក្ដី">
+            <option value="សេចក្ដីសម្រេចចូលជាស្ថាពរ">សេចក្ដីសម្រេចចូលជាស្ថាពរ</option>
+​​​            <option value="ពាក្យបណ្ដឹងបានដក">ពាក្យបណ្ដឹងបានដក</option>
+            <option value="លទ្ធផលសះជាគ្នា">លទ្ធផលសះជាគ្នា</option>
+            
           </optgroup>
         </select>
       </div>
@@ -974,22 +973,63 @@ let statusChart = null;
 let currentUser = null;
 let currentPdfDoc = null;
 
-// ============ STATUS HELPERS ============
+// ============ STATUS MAP (កំណត់ត្រង់នេះ) ============
+const STATUS_MAP = {
+  // ✅ បានបញ្ចប់ (Closed)
+  'សេចក្ដីសម្រេចចូលជាស្ថាពរ': 'closed',
+  'លទ្ធផលសះជាគ្នា': 'closed',
+  'ពាក្យបណ្ដឹងបានដក': 'closed',
+
+  // ⚠️ រង់ចាំ (Pending)
+  'រង់ចាំប្រកាសសេចក្ដីសម្រេច': 'pending',
+  'រង់ចាំសេចក្ដីសម្រេចចូលជាស្ថាពរ': 'pending',
+  
+  // ✅ កំពុងដំណើរការ (Active)
+  'ដាក់ពាក្យបណ្ដឹង': 'active',
+  'នីតិវិធីត្រៀមទាញហេតុផល': 'active',
+  'នីតិវិធីទាញហេតុផលដោយផ្ទាល់មាត់': 'active',
+  'ដំណាក់កាលមន្ត្រីនគរបាល': 'active',
+  'ដំណាក់កាលព្រះរាជអាជ្ញា': 'active',
+  'ដំណាក់កាលចៅក្រមស៊ើបសួរ': 'active',
+  'ដំណាក់កាលជំនុំជម្រះ': 'active',
+};
+
+// ============ GET STATUS CATEGORY ============
 function getStatusCategory(status) {
   if (!status) return 'unknown';
-  const s = status.toLowerCase();
-  if (s.includes('បញ្ចប់') || s.includes('ស្ថាពរ') || s.includes('បណ្ដឹងបានដក') || s.includes('ស្រុះស្រួល')) return 'closed';
-  if (s.includes('រង់ចាំ')) return 'pending';
-  if (s.includes('ដាក់ពាក្យ') || s.includes('នីតិវិធី') || s.includes('ដំណាក់កាល')) return 'active';
-  return 'unknown';
+  return STATUS_MAP[status.trim()] || 'unknown';
 }
 
+// ============ STATUS INFO ============
 function statusInfo(status) {
   const cat = getStatusCategory(status);
-  if (cat === 'active') return { label: status || 'កំពុងដំណើរការ', cls: 'bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-400', dot: 'bg-green-500' };
-  if (cat === 'pending') return { label: status || 'រង់ចាំ', cls: 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-400', dot: 'bg-amber-500' };
-  if (cat === 'closed') return { label: status || 'បានបញ្ចប់', cls: 'bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-400', dot: 'bg-purple-500' };
-  return { label: status || '—', cls: 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400', dot: 'bg-slate-400' };
+  
+  if (cat === 'active') {
+    return {
+      label: status || 'កំពុងដំណើរការ',
+      cls: 'bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-400',
+      dot: 'bg-green-500'
+    };
+  }
+  if (cat === 'pending') {
+    return {
+      label: status || 'រង់ចាំ',
+      cls: 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-400',
+      dot: 'bg-amber-500'
+    };
+  }
+  if (cat === 'closed') {
+    return {
+      label: status || 'បានបញ្ចប់',
+      cls: 'bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-400',
+      dot: 'bg-purple-500'
+    };
+  }
+  return {
+    label: status || '—',
+    cls: 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400',
+    dot: 'bg-slate-400'
+  };
 }
 
 // ============ HEARING DAY HELPER ============
@@ -1341,7 +1381,7 @@ const pageInfo = {
   dashboard: { title: 'ផ្ទាំងគ្រប់គ្រង', subtitle: 'ទិដ្ឋភាពទូទៅនៃរឿងក្ដីរបស់អ្នក' },
   cases: { title: 'សំណុំរឿងក្ដី', subtitle: 'គ្រប់គ្រងរឿងក្ដីទាំងអស់' },
   clients: { title: 'អតិថិជន', subtitle: 'ព័ត៌មានអតិថិជន' },
-  calendar: { title: 'កាលវិភាគ', subtitle: 'ថ្ងៃកាត់ក្ដីខាងមុខ' },
+  calendar: { title: 'កាលវិភាគ', subtitle: 'ថ្ងៃកាលបរិច្ឆេទ' },
   documents: { title: 'ឯកសារ', subtitle: 'Upload និងគ្រប់គ្រងឯកសាររឿងក្ដី' },
   settings: { title: 'ការកំណត់', subtitle: 'Backup, Restore និងគ្រប់គ្រងទិន្នន័យ' }
 };
@@ -1377,7 +1417,6 @@ function renderDashboard() {
   document.getElementById('statPending').textContent = cases.filter(c => getStatusCategory(c.status) === 'pending').length;
   document.getElementById('statClosed').textContent = cases.filter(c => getStatusCategory(c.status) === 'closed').length;
 
-  // ⚠️ Upcoming តែកាលបរិច្ឆេទមិនទាន់ផុត
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   
@@ -1707,14 +1746,13 @@ function deleteClient(id) {
   });
 }
 
-// ============ CALENDAR (កែថ្មី!) ============
+// ============ CALENDAR ============
 function renderCalendar() {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   
   const allCases = DB.get('cases').filter(c => c.nextHearing);
   
-  // ក្រុមទី ១: មិនទាន់ផុត (ថ្ងៃនេះ ឬ អនាគត)
   const activeCases = allCases
     .filter(c => {
       const target = new Date(c.nextHearing);
@@ -1723,7 +1761,6 @@ function renderCalendar() {
     })
     .sort((a, b) => new Date(a.nextHearing) - new Date(b.nextHearing));
   
-  // ក្រុមទី ២: ផុតថ្ងៃ
   const expiredCases = allCases
     .filter(c => {
       const target = new Date(c.nextHearing);
@@ -1740,15 +1777,12 @@ function renderCalendar() {
   
   let html = '';
   
-  // ក្រុមទី ១: មិនទាន់ផុត (ខាងលើ)
   if (activeCases.length) {
     html += `
       <div class="mb-5">
         <div class="flex items-center gap-2 mb-3 pb-2 border-b border-slate-200 dark:border-slate-700">
           <div class="w-1 h-5 bg-green-500 rounded-full"></div>
-          <h4 class="text-sm font-bold text-slate-700 dark:text-slate-300">
-            📅 កាលបរិច្ឆេទខាងមុខ
-          </h4>
+          <h4 class="text-sm font-bold text-slate-700 dark:text-slate-300">📅 កាលបរិច្ឆេទខាងមុខ</h4>
           <span class="badge bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-400 text-[10px]">${activeCases.length}</span>
         </div>
         <div class="space-y-3">
@@ -1758,15 +1792,12 @@ function renderCalendar() {
     `;
   }
   
-  // ក្រុមទី ២: ផុតថ្ងៃ (ខាងក្រោម)
   if (expiredCases.length) {
     html += `
       <div>
         <div class="flex items-center gap-2 mb-3 pb-2 border-b border-slate-200 dark:border-slate-700">
           <div class="w-1 h-5 bg-red-500 rounded-full"></div>
-          <h4 class="text-sm font-bold text-slate-700 dark:text-slate-300">
-            ⚠️ ផុតថ្ងៃ
-          </h4>
+          <h4 class="text-sm font-bold text-slate-700 dark:text-slate-300">⚠️ ផុតថ្ងៃ</h4>
           <span class="badge bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-400 text-[10px] font-bold">${expiredCases.length}</span>
         </div>
         <div class="space-y-3 opacity-60">
